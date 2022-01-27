@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="member">
+	<select id="loginMember" parameterType="member" resultType="member">
+		SELECT MEMBER_NO AS MEMBERNO,
+			   MEMBER_ID AS MEMBERID,
+			   MEMBER_PWD AS MEMBERPWD,
+			   AUTH_PROVIDER AS AUTHPROVIDER,
+			   MEMBER_NICKNAME AS MEMBERNICKNAME,
+			   MEMBER_GENDER AS MEMBERGENDER,
+			   BIRTHDATE AS BIRTHDATE,
+			   EMAIL AS EMAIL,
+			   ADDRESS AS ADDRESS,
+			   DETAIL_ADDRESS AS DETAILADDRESS,
+			   ENROLL_DATE AS ENROLLDATE,
+			   MEMBER_STATUS AS MEMBER_STATUS,
+			   DOG_YN AS DOGYN
+		  FROM MEMBER
+		 WHERE MEMBER_ID=#{memberId} AND MEMBER_PWD=#{memberPwd}
+	</select>
+
+</mapper>
