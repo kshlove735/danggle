@@ -1,5 +1,7 @@
 package kr.co.todaydaeng.member.model.service;
 
-public interface MemberService {
+import kr.co.todaydaeng.member.model.vo.Member;
 
+public interface MemberService {
+	Member loginMember(Member member);
 }
