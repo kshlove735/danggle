@@ -31,4 +31,20 @@ public class MemberAOP {
 		System.out.println(encryptPwd);
 		m.setMemberPwd(encryptPwd);
 	}
+	
+	
+	@Pointcut("execution(int kr.co.todaydaeng.member.model.service.MemberServiceImpl.joinMember(..))")
+	public void joinMemberPointCut() {
+	}
+	
+	@Before("joinMemberPointCut()")
+	public void joinMemberPwdEncryption(JoinPoint jp) throws Exception{
+		Member m = (Member)jp.getArgs()[0];
+		String userPwd = m.getMemberPwd();
+		String userId = m.getMemberId();
+		
+		String encryptPwd = enc.encryptionData(userPwd, userId);
+		System.out.println(encryptPwd);
+		m.setMemberPwd(encryptPwd);
+	}
 }

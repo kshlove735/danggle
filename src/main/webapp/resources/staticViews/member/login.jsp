@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>오늘의 댕댕 ｜ 로그인</title>
 <link rel="stylesheet" type="text/css" href="/resources/css/loginForm.css">
 </head>
 <body>
@@ -15,9 +15,9 @@
 	      <h2 style="margin-top:0px;">로그인</h2>
 	      <input type="text" name="memberId" placeholder="아이디"/>
 	      <input type="password" style="margin-bottom:1px;" name="memberPwd" placeholder="비밀번호"/>
-	      <a href="/resources/views/searchId.jsp" class="message">아이디 찾기</a><a class="message"> │</a>
-	      <a href="/resources/views/searchPwd.jsp" class="message">비밀번호 찾기</a><a class="message"> │</a>
-	      <a href="/resources/views/join.jsp" class="message">회원가입</a>&emsp;&emsp;&emsp;&emsp;
+	      <a href="/resources/staticViews/member/searchIdPage.jsp" class="message">아이디 찾기</a><a class="message"> │</a>
+	      <a href="/resources/staticViews/member/searchPwdPage.jsp" class="message">비밀번호 찾기</a><a class="message"> │</a>
+	      <a href="/resources/staticViews/member/join.jsp" class="message">회원가입</a>
 	      <button type="submit">확인</button><br>
 	      
 		  <!-- 카카오 로그인화면 띄우기 (로그인 되어있으면 정보이용 동의 창) -->
@@ -32,5 +32,6 @@
 	  </div>
 	  
 <div class="footer"></div>
+
 </body>
 </html>

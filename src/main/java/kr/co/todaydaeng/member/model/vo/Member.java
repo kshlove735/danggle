@@ -7,37 +7,53 @@ public class Member {
 	private String memberId;
 	private String memberPwd;
 	private String authProvider;
-	private String memberNickname;
-	private char gender;
+	private String nickname;
+	private String gender;
 	private String birthdate;
 	private String email;
 	private String address;
-	private String detailAddress;
+	private String addressDetail;
 	private Date enrollDate;
 	private char memberStatus;
 	private char dogYN;
+	private String memberProfile;
 	
 	public Member() {
 		super();
 	}
 
-	public Member(int memberNo, String memberId, String memberPwd, String authProvider, String memberNickname,
-			char gender, String birthdate, String email, String address, String detailAddress, Date enrollDate,
-			char memberStatus, char dogYN) {
+	public Member(int memberNo, String memberId, String memberPwd, String authProvider, String nickname, String gender,
+			String birthdate, String email, String address, String addressDetail, Date enrollDate, char memberStatus,
+			char dogYN, String memberProfile) {
 		super();
 		this.memberNo = memberNo;
 		this.memberId = memberId;
 		this.memberPwd = memberPwd;
 		this.authProvider = authProvider;
-		this.memberNickname = memberNickname;
+		this.nickname = nickname;
 		this.gender = gender;
 		this.birthdate = birthdate;
 		this.email = email;
 		this.address = address;
-		this.detailAddress = detailAddress;
+		this.addressDetail = addressDetail;
 		this.enrollDate = enrollDate;
 		this.memberStatus = memberStatus;
 		this.dogYN = dogYN;
+		this.memberProfile = memberProfile;
+	}
+
+	public Member(String memberId, String memberPwd, String email, String nickname, String gender,
+			String birthdate, String address, String addressDetail, String memberProfile) {
+		super();
+		this.memberId = memberId;
+		this.memberPwd = memberPwd;
+		this.nickname = nickname;
+		this.gender = gender;
+		this.birthdate = birthdate;
+		this.email = email;
+		this.address = address;
+		this.addressDetail = addressDetail;
+		this.memberProfile = memberProfile;
 	}
 
 	public int getMemberNo() {
@@ -72,19 +88,19 @@ public class Member {
 		this.authProvider = authProvider;
 	}
 
-	public String getMemberNickname() {
-		return memberNickname;
+	public String getNickname() {
+		return nickname;
 	}
 
-	public void setMemberNickname(String memberNickname) {
-		this.memberNickname = memberNickname;
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
-	public char getGender() {
+	public String getGender() {
 		return gender;
 	}
 
-	public void setGender(char gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
 
@@ -112,12 +128,12 @@ public class Member {
 		this.address = address;
 	}
 
-	public String getDetailAddress() {
-		return detailAddress;
+	public String getAddressDetail() {
+		return addressDetail;
 	}
 
-	public void setDetailAddress(String detailAddress) {
-		this.detailAddress = detailAddress;
+	public void setAddressDetail(String addressDetail) {
+		this.addressDetail = addressDetail;
 	}
 
 	public Date getEnrollDate() {
@@ -144,12 +160,30 @@ public class Member {
 		this.dogYN = dogYN;
 	}
 
+	public String getMemberProfile() {
+		return memberProfile;
+	}
+
+	public void setMemberProfile(String memberProfile) {
+		this.memberProfile = memberProfile;
+	}
+
 	@Override
 	public String toString() {
-		return "Member [memberNo=" + memberNo + ", memberId=" + memberId + ", memberPwd=" + memberPwd
-				+ ", authProvider=" + authProvider + ", memberNickname=" + memberNickname + ", gender=" + gender
-				+ ", birthdate=" + birthdate + ", email=" + email + ", address=" + address + ", detailAddress="
-				+ detailAddress + ", enrollDate=" + enrollDate + ", memberStatus=" + memberStatus + ", dogYN=" + dogYN
+		return "Member [memberNo=" + memberNo 
+				+ ", memberId=" + memberId 
+				+ ", memberPwd=" + memberPwd
+				+ ", authProvider=" + authProvider 
+				+ ", nickname=" + nickname 
+				+ ", gender=" + gender 
+				+ ", birthdate="+ birthdate 
+				+ ", email=" + email 
+				+ ", address=" + address
+				+ ", addressDetail=" + addressDetail
+				+ ", enrollDate=" + enrollDate 
+				+ ", memberStatus=" + memberStatus 
+				+ ", dogYN=" + dogYN
+				+ ", memberProfile=" + memberProfile 
 				+ "]";
 	}
 }

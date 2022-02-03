@@ -14,8 +14,9 @@ public class MemberDAO {
 	@Qualifier(value="sqlSessionTemplate")
 	private SqlSessionTemplate sqlSession;
 	
-	public Member loginMember(Member member) {
-		return sqlSession.selectOne("member.loginMember",member);
+	//회원가입
+	public int joinMember(Member member) {
+		return sqlSession.insert("member.insertMember",member);
 	}
 	
 }
