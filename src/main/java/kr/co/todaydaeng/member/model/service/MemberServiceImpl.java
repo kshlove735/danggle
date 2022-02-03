@@ -21,4 +21,9 @@ public class MemberServiceImpl implements MemberService{
 	public int memberIdCheck(String memberId) {
 		return mDAO.memberIdCheck(memberId);
 	}
+	
+	@Override
+	public Member loginMember(Member member) {
+		return mDAO.loginMember(member);
+	}
 }

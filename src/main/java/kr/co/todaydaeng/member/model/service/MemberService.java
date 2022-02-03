@@ -8,4 +8,7 @@ public interface MemberService {
 
 	//id 중복 확인
 	int memberIdCheck(String userId);
+	
+	//로그인
+	Member loginMember(Member member);
 }

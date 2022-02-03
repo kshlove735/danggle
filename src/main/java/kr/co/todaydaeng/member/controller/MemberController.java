@@ -101,4 +101,26 @@ public class MemberController {
 		else
 			response.getWriter().print(false);
 	}
+	
+	@RequestMapping(value = "/member/loginMember.do", method = RequestMethod.POST)
+	public String loginMember(Member member, HttpServletRequest request, Model model) {
+		Member m = mService.loginMember(member);
+		if (m != null) {
+			switch (m.getMemberStatus()) {
+			case '0':
+				HttpSession session = request.getSession();
+				session.setAttribute("member", m);
+				return "redirect:/";
+			case '1':
+				model.addAttribute("member", m);
+				return "dormantMember";
+			default:
+				return "common/errorPage";
+			}
+		} else {
+			model.addAttribute("msg", "아이디와 비밀번호를 재확인 해주세요.");
+			model.addAttribute("location", "/resources/staticViews/member/login.jsp");
+			return "common/msg";
+		}
+	}
 }

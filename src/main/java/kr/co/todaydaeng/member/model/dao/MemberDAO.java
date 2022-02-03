@@ -23,4 +23,9 @@ public class MemberDAO {
 	public int memberIdCheck(String memberId) {
 		return sqlSession.selectOne("member.selectId",memberId)!=null?1:0;
 	}
+	
+	//로그인
+	public Member loginMember(Member member) {
+		return sqlSession.selectOne("member.loginMember",member);
+	}
 }
