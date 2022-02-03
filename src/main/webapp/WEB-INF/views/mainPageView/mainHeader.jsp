@@ -225,7 +225,7 @@
         <c:choose>
             <c:when test="${sessionScope.member != null }" >    
                 <div id="logoutBox">
-                    <span id="logout"> ${(sessionScope.member.member_nickname)} </span> 
+                    <span id="logout"> ${(sessionScope.member.nickname)} </span> 
                 </div>
             
                 <div id="infoBox"> 
