@@ -13,6 +13,7 @@
 	<c:choose>
 		<c:when test="${sessionScope.member != null}">
 			[${sessionScope.member.memberNickname }]님 환영합니다.
+			<a href="/myPage/memberInfoPage.do">마이페이지</a>
 		</c:when>
 
 		<c:otherwise>
