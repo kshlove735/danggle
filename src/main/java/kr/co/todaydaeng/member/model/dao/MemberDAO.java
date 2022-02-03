@@ -19,4 +19,8 @@ public class MemberDAO {
 		return sqlSession.insert("member.insertMember",member);
 	}
 	
+	//회원가입 id 중복 확인
+	public int memberIdCheck(String memberId) {
+		return sqlSession.selectOne("member.selectId",memberId)!=null?1:0;
+	}
 }

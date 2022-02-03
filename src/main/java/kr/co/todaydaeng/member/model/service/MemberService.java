@@ -6,4 +6,6 @@ public interface MemberService {
 	//회원가입
 	int joinMember(Member member);
 
+	//id 중복 확인
+	int memberIdCheck(String userId);
 }

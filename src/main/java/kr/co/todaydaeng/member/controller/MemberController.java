@@ -3,7 +3,9 @@ package kr.co.todaydaeng.member.controller;
 import java.io.File;
 import java.io.IOException;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
@@ -24,10 +27,17 @@ public class MemberController {
 	@Autowired
 	private MemberService mService;
 	
+	@Autowired
+	private ServletContext context;
+	
 	@RequestMapping(value = "/member/joinMember.do", method = RequestMethod.POST)
 	public String joinMember(HttpServletRequest request) throws IOException {
 		// 파일이 업로드되는 경로
-		String uploadFilePath = "C:\\final_project_daeng\\todaydaeng\\src\\main\\webapp\\WEB-INF\\upload\\memberProfile\\";
+		String uploadPath = "/WEB-INF/upload/memberProfile/";	
+		String uploadFilePath = context.getRealPath(uploadPath);
+		System.out.println("파일 경로 확인 : " + uploadFilePath);
+		
+		//String uploadFilePath = "C:\\final_project_daeng\\todaydaeng\\src\\main\\webapp\\WEB-INF\\upload\\memberProfile\\";
 
 		// 파일 사이즈 설정 (50MB)
 		int uploadFileSizeLimit = 50 * 1024 * 1024;
@@ -80,5 +90,15 @@ public class MemberController {
 		} else {
 			return "joinFail";
 		}
+	}
+	
+	
+	@RequestMapping(value = "/member/memberIdCheck.do")
+	public void memberIdCheck(@RequestParam String memberId, HttpServletResponse response) throws IOException {
+		int result = mService.memberIdCheck(memberId);
+		if (result > 0)
+			response.getWriter().print(true);
+		else
+			response.getWriter().print(false);
 	}
 }

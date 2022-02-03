@@ -28,8 +28,8 @@ integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="ano
 	          <br>
 	          
 	          <label>비밀번호<a style="color:red">*</a></label>
-	          <input type="password" name="memberPwd" id="memberPwd" placeholder="비밀번호를 입력해 주세요." style="margin-bottom: 3px;">
-	          <input type="password" name="memberPwd_re" id="memberPwd_re" placeholder="비밀번호를 한 번 더 입력해주세요." style="margin-bottom:15px;">
+	          <input type="password" name="memberPwd" id="memberPwd" placeholder="영문/숫자/특수문자를 조합하여 8~15자" style="margin-bottom: 3px;">
+	          <input type="password" name="memberPwd_re" id="memberPwd_re" placeholder="영문/숫자/특수문자를 조합하여 8~15자" style="margin-bottom:15px;">
 	          <div id="pwdMsg" style="font-size:12px;"></div>
 	          <br>
 	          
