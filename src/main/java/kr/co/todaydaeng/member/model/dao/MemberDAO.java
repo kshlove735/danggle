@@ -39,4 +39,9 @@ public class MemberDAO {
 	public int insertAuthNo(EmailAuthHist emailAuthHist) {
 		return sqlSession.insert("member.insertAuthNo",emailAuthHist);
 	}
+	
+	//기존 소셜 회원인지 id값 확인
+	public Member selectSocialId(String socialId) {
+		return sqlSession.selectOne("member.selectId",socialId);
+	}
 }
