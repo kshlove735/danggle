@@ -88,23 +88,23 @@ public class MyPageController {
 		m.setBirthdate(birthdate);
 
 		System.out.println(m.getMemberId());
-		System.out.println(m.getMemberNickname());
+		System.out.println(m.getNickname());
 		System.out.println(m.getGender());
 		System.out.println(m.getBirthdate());
 		System.out.println(m.getEmail());
 		System.out.println(m.getAddress());
-		System.out.println(m.getDetailAddress());
+		System.out.println(m.getAddressDetail());
 
 		int result = mpService.updateMemberInfo(m);
 
 		if (result > 0) {
 			/* 세션 갱신 */
-			member.setMemberNickname(m.getMemberNickname());
+			member.setNickname(m.getNickname());
 			member.setGender(m.getGender());
 			member.setBirthdate(m.getBirthdate());
 			member.setEmail(m.getEmail());
 			member.setAddress(m.getAddress());
-			member.setDetailAddress(m.getDetailAddress());
+			member.setAddressDetail(m.getAddress());
 
 			mav.addObject("msg", "회원 정보 수정 성공");
 			mav.addObject("location", "/myPage/memberInfoPage.do");

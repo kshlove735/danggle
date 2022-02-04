@@ -4,19 +4,19 @@
 
 	<!-- 비밀번호 확인 SQL -->
 	<select id="selectPwdCheck" parameterType="hashmap" resultType="member">
-		SELECT MEMBER_NO AS MEMBERNO,
-			   MEMBER_ID AS MEMBERID,
-			   MEMBER_PWD AS MEMBERPWD,
-			   AUTH_PROVIDER AS AUTHPROVIDER,
-			   NICKNAME AS MEMBERNICKNAME,
-			   GENDER AS MEMBERGENDER,
-			   BIRTHDATE AS BIRTHDATE,
-			   EMAIL AS EMAIL,
-			   ADDRESS AS ADDRESS,
-			   ADDRESS_DETAIL AS DETAILADDRESS,
-			   ENROLL_DATE AS ENROLLDATE,
-			   MEMBER_STATUS AS MEMBER_STATUS,
-			   DOG_YN AS DOGYN,
+		SELECT MEMBER_NO AS memberNo,
+			   MEMBER_ID AS memberId,
+			   MEMBER_PWD AS memberPwd,
+			   AUTH_PROVIDER AS authProvider,
+			   NICKNAME AS nickname,
+			   GENDER AS gender,
+			   BIRTHDATE AS birthdate,
+			   EMAIL AS email,
+			   ADDRESS AS address,
+			   ADDRESS_DETAIL AS addressDetail,
+			   ENROLL_DATE AS enrollDate,
+			   MEMBER_STATUS AS memberStatus,
+			   DOG_YN AS dogYN,
 			   MEMBER_PROFILE AS memberProfile
 		  FROM MEMBER 
 		 WHERE MEMBER_ID=#{memberId} AND MEMBER_PWD=#{memberPwd}

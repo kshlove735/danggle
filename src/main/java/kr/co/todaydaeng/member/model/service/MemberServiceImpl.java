@@ -13,7 +13,7 @@ public class MemberServiceImpl implements MemberService{
 	private MemberDAO mDAO;
 	
 	@Override
-	public Member loginMember(Member member) {
-		return mDAO.loginMember(member);
+	public int joinMember(Member member) {
+		return mDAO.joinMember(member);
 	}
 }

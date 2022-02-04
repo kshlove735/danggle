@@ -6,7 +6,23 @@
 }
 
 .login-form{
-	width: 290px;
+	width: 260px;
+}
+
+.icon_box{
+    margin: 0px auto;
+}
+
+h2 {
+  margin: 0 0 10px 0;
+  text-align: center;
+  color: #400040;
+}
+
+hr{
+  margin-bottom:20px;
+  align:center;
+  width:200px;
 }
 
 .footer{
@@ -23,26 +39,27 @@ input::placeholder{
   position: relative;
   z-index: 1;
   background: #FFFFFF;
-  max-width: 290px;
+  max-width: 260px;
   margin: 105px auto;
   padding: 35px 70px 55px 70px;
   text-align: center;
-  filter: drop-shadow(4px 4px 4px rgba(0,0,0,0.1));
+  filter:drop-shadow(4px 4px 4px rgba(0,0,0,0.1));
+  
 }
-
 .form input {
+  font-family: 'Noto Sans KR', sans-serif;
   outline: 0;
   background: #ffffff;
   width: 100%;
   border: 1px solid #b3b3b3;
   margin: 0 0 5px;
-  padding: 12px;
+  padding: 9px 8px 6px 8px;
   box-sizing: border-box;
   font-size: 14px;
   border-radius: 5px;
 }
 .form button {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
   text-transform: uppercase;
   outline: 0;
   background: #ffbc79;
@@ -51,7 +68,6 @@ input::placeholder{
   padding: 12px;
   color: #3c1e00;
   font-size: 15px;
-  font-weight:bold;
   -webkit-transition: all 0.3 ease;
   transition: all 0.3 ease;
   cursor: pointer;
@@ -107,8 +123,8 @@ placeholder {
 }
 
 body {
-  font-family: 'Noto Sans KR', sans-serif;
   background: #fafbfe; /* fallback for old browsers */
+  font-family: 'Noto Sans KR', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100%;  
