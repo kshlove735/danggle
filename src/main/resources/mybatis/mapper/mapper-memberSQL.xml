@@ -23,4 +23,41 @@
 							)
 	</insert>
 
+	<select id="selectId" parameterType="string" resultType="member">
+		SELECT MEMBER_NO AS memberNo,
+			   MEMBER_ID AS memberId,
+			   MEMBER_PWD AS memberPwd,
+			   AUTH_PROVIDER AS authProvider,
+			   NICKNAME AS nickname,
+			   GENDER AS gender,
+			   BIRTHDATE AS birthdate,
+			   EMAIL AS email,
+			   ADDRESS AS address,
+			   ADDRESS_DETAIL AS addressDetail,
+			   ENROLL_DATE AS enrollDate,
+			   MEMBER_STATUS AS memberStatus,
+			   DOG_YN AS dogYN,
+			   MEMBER_PROFILE AS memberProfile
+		  FROM MEMBER
+		 WHERE MEMBER_ID=#{value}
+	</select>
+	
+		<select id="loginMember" parameterType="member" resultType="member">
+		SELECT MEMBER_NO AS memberNo,
+			   MEMBER_ID AS memberId,
+			   MEMBER_PWD AS memberPwd,
+			   AUTH_PROVIDER AS authProvider,
+			   NICKNAME AS nickname,
+			   GENDER AS gender,
+			   BIRTHDATE AS birthdate,
+			   EMAIL AS email,
+			   ADDRESS AS address,
+			   ADDRESS_DETAIL AS addressDetail,
+			   ENROLL_DATE AS enrollDate,
+			   MEMBER_STATUS AS memberStatus,
+			   DOG_YN AS dogYN,
+			   MEMBER_PROFILE AS memberProfile
+		  FROM MEMBER
+		 WHERE MEMBER_ID=#{memberId} AND MEMBER_PWD=#{memberPwd}
+	</select>
 </mapper>

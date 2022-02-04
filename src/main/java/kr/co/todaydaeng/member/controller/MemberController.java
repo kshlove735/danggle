@@ -3,7 +3,9 @@ package kr.co.todaydaeng.member.controller;
 import java.io.File;
 import java.io.IOException;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
@@ -24,11 +27,16 @@ public class MemberController {
 	@Autowired
 	private MemberService mService;
 	
+	@Autowired
+	private ServletContext context;
+	
 	@RequestMapping(value = "/member/joinMember.do", method = RequestMethod.POST)
 	public String joinMember(HttpServletRequest request) throws IOException {
 		// 파일이 업로드되는 경로
-		String uploadFilePath = "C:\\final_project_daeng\\todaydaeng\\src\\main\\webapp\\WEB-INF\\upload\\memberProfile\\";
-
+		String uploadPath = "/WEB-INF/upload/memberProfile/";	
+		String uploadFilePath = context.getRealPath(uploadPath);
+		System.out.println("파일 경로 확인 : " + uploadFilePath);
+		
 		// 파일 사이즈 설정 (50MB)
 		int uploadFileSizeLimit = 50 * 1024 * 1024;
 
@@ -79,6 +87,38 @@ public class MemberController {
 			return "welcomeJoin";
 		} else {
 			return "joinFail";
+		}
+	}
+	
+	
+	@RequestMapping(value = "/member/memberIdCheck.do")
+	public void memberIdCheck(@RequestParam String memberId, HttpServletResponse response) throws IOException {
+		int result = mService.memberIdCheck(memberId);
+		if (result > 0)
+			response.getWriter().print(true);
+		else
+			response.getWriter().print(false);
+	}
+	
+	@RequestMapping(value = "/member/loginMember.do", method = RequestMethod.POST)
+	public String loginMember(Member member, HttpServletRequest request, Model model) {
+		Member m = mService.loginMember(member);
+		if (m != null) {
+			switch (m.getMemberStatus()) {
+			case '0':
+				HttpSession session = request.getSession();
+				session.setAttribute("member", m);
+				return "redirect:/";
+			case '1':
+				model.addAttribute("member", m);
+				return "dormantMember";
+			default:
+				return "common/errorPage";
+			}
+		} else {
+			model.addAttribute("msg", "아이디와 비밀번호를 재확인 해주세요.");
+			model.addAttribute("location", "/resources/staticViews/member/login.jsp");
+			return "common/msg";
 		}
 	}
 }
