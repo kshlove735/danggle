@@ -37,8 +37,6 @@ public class MemberController {
 		String uploadFilePath = context.getRealPath(uploadPath);
 		System.out.println("파일 경로 확인 : " + uploadFilePath);
 		
-		//String uploadFilePath = "C:\\final_project_daeng\\todaydaeng\\src\\main\\webapp\\WEB-INF\\upload\\memberProfile\\";
-
 		// 파일 사이즈 설정 (50MB)
 		int uploadFileSizeLimit = 50 * 1024 * 1024;
 
