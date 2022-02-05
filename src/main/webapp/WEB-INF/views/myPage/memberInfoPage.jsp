@@ -296,7 +296,7 @@
                         </tr>
                         <tr>
                             <td>닉네임</td>
-                            <td>${sessionScope.member.memberNickname }</td>
+                            <td>${sessionScope.member.nickname }</td>
                         </tr>
                         <tr>
                             <td>성별</td>
@@ -326,7 +326,7 @@
                         </tr>
                         <tr>
                             <td>상세주소</td>
-                            <td>${sessionScope.member.detailAddress }</td>
+                            <td>${sessionScope.member.addressDetail }</td>
                         </tr>
                     </table>
                 </div>

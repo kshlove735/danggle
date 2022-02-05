@@ -16,6 +16,8 @@ public interface MyPageService {
 
 	int withdrawCheck(HashMap<String, String> map);
 
-	ArrayList<Dog> selectDogInfo(int memberNo);
+	HashMap<String , Object> selectDogInfo(int currentPage,int memberNo);
+
+	int insertDogInfo(Dog dog);
 
 }

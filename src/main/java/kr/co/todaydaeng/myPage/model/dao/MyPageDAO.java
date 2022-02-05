@@ -40,8 +40,66 @@ public class MyPageDAO {
 		return sqlSession.update("myPage.withdrawCheck", map);
 	}
 
-	public ArrayList<Dog> selectDogInfo(int memberNo) {
-		return new ArrayList<Dog>(sqlSession.selectList("myPage.selectDogInfo",memberNo));
+	
+	public ArrayList<Dog> selectAllDogInfoList(int currentPage, int recordCountPerPage, int memberNo) {
+
+		int start=currentPage*recordCountPerPage-(recordCountPerPage-1);
+		int end= currentPage*recordCountPerPage;
+		
+		HashMap<String, Object>map = new HashMap<>();
+		map.put("memberNo", memberNo);
+		map.put("start", start);
+		map.put("end", end);
+		
+		return new ArrayList<Dog>(sqlSession.selectList("myPage.selectAllDogInfoList", map));
+		
+	}
+
+	public String getPageNavi(int naviContPerPage, int currentPage, int recordCountPerPage, int memberNo) {
+
+		int recordTotalCount =totalCount(memberNo);
+		
+		int pageTotalCount=(int)Math.ceil(recordTotalCount/(double)recordCountPerPage);
+		
+		int startNavi=(((currentPage-1)/naviContPerPage)*naviContPerPage)+1;
+		int endNavi=startNavi+(naviContPerPage-1);
+		
+		
+		// 총 강아지 정보 수보다 endNavi가 크다면 총 강이지 정보 수로 세팅
+		if(endNavi>pageTotalCount) {
+			endNavi=pageTotalCount;
+		}
+		
+		//pageNavi 모양 만들기
+		StringBuffer sb = new StringBuffer();
+		
+		if(startNavi !=1) {
+			sb.append("<a href='/myPage/dogInfoPage.do?currentPage="+(startNavi-1)+"'> < Prev </a>");
+		}
+		
+		for(int i =startNavi; i<=endNavi;i++) {
+			//현재 페이지이면 Bold 처리
+			if(i==currentPage) {
+				sb.append("<a href='/myPage/dogInfoPage.do?currentPage="+i+"'><b style='font-size:1.2em;'>"+i+"</b></a> ");
+			}else {
+				sb.append("<a href='/myPage/dogInfoPage.do?currentPage="+i+"'>"+i+"</a> ");
+			}
+		}
+		
+		if(endNavi!=pageTotalCount) {
+			sb.append("<a href='/myPage/dogInfoPage.do?currentPage="+(endNavi+1)+"'> Next > </a>");
+		}
+		
+		return sb.toString();
+	}
+
+	private int totalCount(int memberNo) {
+		
+		return Integer.parseInt(sqlSession.selectOne("myPage.selectTotalCount", memberNo));
+	}
+
+	public int insertDogInfo(Dog dog) {
+		return sqlSession.insert("myPage.insertDogInfo", dog);
 	}
 
 }

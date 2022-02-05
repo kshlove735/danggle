@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <!-- JQuery 라이브러리 -->
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
 <!-- JSTL 라이브러리 -->
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -260,14 +261,14 @@
 	                        </tr>
 	                        <tr>
 	                            <td>닉네임</td>
-	                            <td><input type="text" name="memberNickname" value="${sessionScope.member.memberNickname }"></td>
+	                            <td><input type="text" name="nickname" value="${sessionScope.member.nickname }"></td>
 	                        </tr>
 	                        <tr>
 	                            <td>성별</td>
 	                            <td>
 	                            	
 	                            	<c:choose>
-	                            		<c:when test="${sessionScope.member.gender='F' }">
+	                            		<c:when test="${sessionScope.member.gender=='M' }">
 	                            			<label><input type="radio" name="gender" value="M" checked>남</label> <label><input type="radio" name="gender" value="F" >여</label>	
 	                            		</c:when>
 	                            		<c:otherwise>
@@ -297,7 +298,7 @@
 	                        </tr>
 	                        <tr>
 	                            <td>상세주소</td>
-	                            <td><input type="text" name="detailAddress" value="${sessionScope.member.detailAddress }"></td>
+	                            <td><input type="text" name="addressDetail" value="${sessionScope.member.addressDetail }"></td>
 	                        </tr>
 	                    </table>
 	                </div>
@@ -315,27 +316,27 @@
 
       <!-- 생년월일 -->
       <script>
-       $(document).ready(function(){            
-          var now = new Date();
-          var year = now.getFullYear();
-          var mon = (now.getMonth() + 1) > 9 ? ''+(now.getMonth() + 1) : '0'+(now.getMonth() + 1); 
-          var day = (now.getDate()) > 9 ? ''+(now.getDate()) : '0'+(now.getDate());           
-          //년도 selectbox만들기               
-          for(var i = 1900 ; i <= year ; i++) {
-              $('#year').append('<option value="' + i + '">' + i + '</option>');    
-          }
-      
-          // 월별 selectbox 만들기            
-          for(var i=1; i <= 12; i++) {
-              var mm = i > 9 ? i : "0"+i ;            
-              $('#month').append('<option value="' + mm + '">' + mm + '</option>');    
-          }
-          
-          // 일별 selectbox 만들기
-          for(var i=1; i <= 31; i++) {
-              var dd = i > 9 ? i : "0"+i ;            
-              $('#day').append('<option value="' + dd + '">' + dd+ '</option>');    
-          }
+      $(document).ready(function(){            
+		    var now = new Date();
+		    var year = now.getFullYear();
+		    var mon = (now.getMonth() + 1) > 9 ? ''+(now.getMonth() + 1) : '0'+(now.getMonth() + 1); 
+		    var day = (now.getDate()) > 9 ? ''+(now.getDate()) : '0'+(now.getDate());           
+		    //년도 selectbox만들기               
+		    for(var i = 1900 ; i <= year ; i++) {
+		        $('#year').append('<option value="' + i + '">' + i + '</option>');    
+		    }
+		
+		    // 월별 selectbox 만들기            
+		    for(var i=1; i <= 12; i++) {
+		        var mm = i > 9 ? i : "0"+i ;            
+		        $('#month').append('<option value="' + mm + '">' + mm + '</option>');    
+		    }
+		    
+		    // 일별 selectbox 만들기
+		    for(var i=1; i <= 31; i++) {
+		        var dd = i > 9 ? i : "0"+i ;            
+		        $('#day').append('<option value="' + dd + '">' + dd+ '</option>');    
+		    }
           
           // 기존 정보 가져와서 기본 값으로 설정
           var birthdate= $('input[name=b_birthdate]').val();

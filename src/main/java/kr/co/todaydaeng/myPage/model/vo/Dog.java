@@ -8,17 +8,18 @@ public class Dog {
 	private char gender;
 	private String breed;
 	private String dogSize;
-	private char neutralization_YN;
-	private String vaccination_YN;
+	private char neutralizationYN;
+	private String vaccinationYN;
 	private String birthdate;
 	private String dogProfile;
+	private char delYN;
 
 	public Dog() {
 		super();
 	}
 
 	public Dog(int dogNo, int memberNo, String dogName, char gender, String breed, String dogSize,
-			char neutralization_YN, String vaccination_YN, String birthdate, String dogProfile) {
+			char neutralizationYN, String vaccinationYN, String birthdate, String dogProfile, char delYN) {
 		super();
 		this.dogNo = dogNo;
 		this.memberNo = memberNo;
@@ -26,10 +27,11 @@ public class Dog {
 		this.gender = gender;
 		this.breed = breed;
 		this.dogSize = dogSize;
-		this.neutralization_YN = neutralization_YN;
-		this.vaccination_YN = vaccination_YN;
+		this.neutralizationYN = neutralizationYN;
+		this.vaccinationYN = vaccinationYN;
 		this.birthdate = birthdate;
 		this.dogProfile = dogProfile;
+		this.delYN = delYN;
 	}
 
 	public int getDogNo() {
@@ -80,20 +82,20 @@ public class Dog {
 		this.dogSize = dogSize;
 	}
 
-	public char getNeutralization_YN() {
-		return neutralization_YN;
+	public char getNeutralizationYN() {
+		return neutralizationYN;
 	}
 
-	public void setNeutralization_YN(char neutralization_YN) {
-		this.neutralization_YN = neutralization_YN;
+	public void setNeutralizationYN(char neutralizationYN) {
+		this.neutralizationYN = neutralizationYN;
 	}
 
-	public String getVaccination_YN() {
-		return vaccination_YN;
+	public String getVaccinationYN() {
+		return vaccinationYN;
 	}
 
-	public void setVaccination_YN(String vaccination_YN) {
-		this.vaccination_YN = vaccination_YN;
+	public void setVaccinationYN(String vaccinationYN) {
+		this.vaccinationYN = vaccinationYN;
 	}
 
 	public String getBirthdate() {
@@ -112,12 +114,20 @@ public class Dog {
 		this.dogProfile = dogProfile;
 	}
 
+	public char getDelYN() {
+		return delYN;
+	}
+
+	public void setDelYN(char delYN) {
+		this.delYN = delYN;
+	}
+
 	@Override
 	public String toString() {
 		return "Dog [dogNo=" + dogNo + ", memberNo=" + memberNo + ", dogName=" + dogName + ", gender=" + gender
-				+ ", breed=" + breed + ", dogSize=" + dogSize + ", neutralization_YN=" + neutralization_YN
-				+ ", vaccination_YN=" + vaccination_YN + ", birthdate=" + birthdate + ", dogProfile=" + dogProfile
-				+ "]";
+				+ ", breed=" + breed + ", dogSize=" + dogSize + ", neutralizationYN=" + neutralizationYN
+				+ ", vaccinationYN=" + vaccinationYN + ", birthdate=" + birthdate + ", dogProfile=" + dogProfile
+				+ ", delYN=" + delYN + "]";
 	}
 
 }

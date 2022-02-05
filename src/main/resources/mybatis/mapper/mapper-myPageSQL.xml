@@ -30,7 +30,7 @@
 			BIRTHDATE=#{birthdate},
 			EMAIL=#{email},
 			ADDRESS=#{address},
-			ADDRESS_DETAIL=#{detailAddress} 
+			ADDRESS_DETAIL=#{addressDetail} 
 		where MEMBER_ID=#{memberId}
 	</update>
 	
@@ -49,20 +49,41 @@
 	</update>
 	
 	<!-- 반려경 정보 출력  SQL -->
-	<select id="selectDogInfo" resultType="kr.co.todaydaeng.myPage.model.vo.Dog">
-		select 
+	<select id="selectAllDogInfoList" parameterType="hashmap" resultType="kr.co.todaydaeng.myPage.model.vo.Dog">
+		select  
 			DOG_NO as dogNo, 
 			MEMBER_NO as memberNo, 
 			DOG_NAME as dogName,
 			GENDER as gender,
 			BREED as breed,
 			DOG_SIZE as dogSize,
-			NEUTRALIZATION_YN as neutralization_YN,
-			VACCINATION_YN as vaccination_YN,
+			NEUTRALIZATION_YN as neutralizationYN,
+			VACCINATION_YN as vaccinationYN,
 			BIRTHDATE  as birthdate,
-			DOG_PROFILE as dogProfile 
-		from dog 
-		where MEMBER_NO=#{memberNo}
+			DOG_PROFILE as dogProfile,
+			DEL_YN as delYN 
+		from(select row_number() over(order by DOG_NO asc) as num , dog.*  from dog) where member_no=#{memberNo} and num between #{start} and #{end} and DEL_YN='N'
 	</select>
+	
+	<!-- 반려견 정보 출력 페이지 네비  SQL -->
+	<select id="selectTotalCount" resultType="string">
+		select count(*) as count from dog where member_no=#{member_no} and DEL_YN='N'
+	</select>
+	
+	<insert id="insertDogInfo" parameterType="kr.co.todaydaeng.myPage.model.vo.Dog">
+		insert into dog values(
+			DOG_SQ.nextval, 
+			#{memberNo},
+			#{dogName},
+			#{gender},
+			#{breed},
+			#{dogSize},
+			#{neutralizationYN},
+			#{vaccinationYN},
+			#{birthdate},
+			#{dogProfile},
+			'N'
+		)
+	</insert>
   
 </mapper>

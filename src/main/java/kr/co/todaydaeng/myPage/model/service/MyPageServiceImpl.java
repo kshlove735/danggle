@@ -39,7 +39,25 @@ public class MyPageServiceImpl implements MyPageService {
 	}
 
 	@Override
-	public ArrayList<Dog> selectDogInfo(int memberNo) {
-		return mpDAO.selectDogInfo(memberNo);
+	public HashMap<String , Object> selectDogInfo(int currentPage,int memberNo) {
+		
+		// 하나의 Page에 몇개의 강아지 정보를 보여 줄 것인지 설정
+		int recordCountPerPage=2;
+		ArrayList<Dog> list = mpDAO.selectAllDogInfoList(currentPage,recordCountPerPage, memberNo);
+		
+		// 하나의 PageNavi Bar 에 보여질 Navi 개수 설정
+		int naviContPerPage=2;
+		String pageNavi = mpDAO.getPageNavi(naviContPerPage,currentPage,recordCountPerPage, memberNo);
+		
+		HashMap<String , Object> result=new HashMap<>();
+		result.put("list", list);
+		result.put("pageNavi", pageNavi);
+		
+		return result;
+	}
+
+	@Override
+	public int insertDogInfo(Dog dog) {
+		return mpDAO.insertDogInfo(dog);
 	}
 }

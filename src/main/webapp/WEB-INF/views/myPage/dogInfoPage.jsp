@@ -6,6 +6,7 @@
 	crossorigin="anonymous"></script>
 <!-- JSTL 라이브러리 -->
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 
 <!DOCTYPE html>
 <html>
@@ -191,6 +192,13 @@
 	border-radius: 5px 5px 0px 0px;
 }
 
+img{
+	width: 100%;
+	height: 100%;
+	object-fit: fill;
+	border-radius: 5px 5px 0px 0px;
+}
+
 .dogInfoText {
 	/*border: 1px solid blue;*/
 	width: 100%;
@@ -238,7 +246,7 @@ tr>td:last-child {
 
 /*페이지 네비 div*/
 .pageNavi {
-	border: 1px solid blue;
+	/* border: 1px solid blue; */
 	position: relative;
 	bottom: 0px;
 	height: 50px;
@@ -249,6 +257,10 @@ tr>td:last-child {
 .pageNavi>span {
 	font-size: 16px;
 	line-height: 80px;
+}
+
+a{
+	text-decoration: none;
 }
 
 /*footer(풋터)*/
@@ -278,7 +290,7 @@ tr>td:last-child {
 			<!--사이드 네비-->
 			<div class="navi">
 				<ul class="side_menu">
-					<li><a href="">마이 페이지</a>
+					<li><a href="/myPage/memberInfoPage.do">마이 페이지</a>
 						<ul class="side_submenu">
 							<li><a href="/myPage/memberInfoPage.do">회원 정보</a></li>
 							<li><a href="/myPage/dogInfoPage.do">반려견 정보</a></li>
@@ -295,8 +307,16 @@ tr>td:last-child {
 				<p>반려견 정보</p>
 
 				<div class="enrollDogInfo">
-					<button class='enrollDogInfoBtn'>등록</button>
+					<button type="button" class='enrollDogInfoBtn'>등록</button>
 				</div>
+
+				<!-- 반려견 정보 등록 페이지 호출 -->
+				<script>
+					$('.enrollDogInfoBtn').click(function(){
+						location.replace("/myPage/insertDogInfoPage.do");
+						
+					});
+				</script>
 
 
 				<!--메인 컨텐츠-->
@@ -304,11 +324,23 @@ tr>td:last-child {
 					<div class="contentCenterInner">
 
 						<c:choose>
-							<c:when test="${!requestScope.list.isEmpty() }">
-								<c:forEach items="${requestScope.list }" var="d">
+							<c:when test="${!requestScope.map.list.isEmpty() }">
+								<c:forEach items="${requestScope.map.list }" var="d">
 									<!--출력-->
 									<div class='dogInfo'>
-										<div class='dogImg'></div>
+										<div class='dogImg'>
+											<c:set var="dogProfile" value="${d.dogProfile }"/>
+											<c:choose>
+												<c:when test="${fn:contains(dogProfile,'null') }">
+													<img src="/resources/upload/dogProfile/dog_default.jpg "></img>
+												</c:when>
+												<c:otherwise>
+													<img src="/resources/upload/dogProfile/${d.dogProfile }"></img>
+												</c:otherwise>
+											</c:choose>
+										
+											
+										</div>
 										<div class='dogInfoText'>
 											<table>
 												<tr>
@@ -333,11 +365,11 @@ tr>td:last-child {
 												</tr>
 												<tr>
 													<td>접종 유무</td>
-													<td>${d.neutralization_YN }</td>
+													<td>${d.neutralizationYN }</td>
 												</tr>
 												<tr>
 													<td>중성화 유무</td>
-													<td>${d.vaccination_YN }</td>
+													<td>${d.vaccinationYN }</td>
 												</tr>
 											</table>
 											<div class="btn">
@@ -356,7 +388,7 @@ tr>td:last-child {
 					</div>
 
 					<div class="pageNavi">
-						<span> 1 2 </span>
+						<span> ${map.pageNavi } </span>
 					</div>
 
 
