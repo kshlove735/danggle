@@ -43,7 +43,7 @@ public class AuthServiceImpl implements AuthService {
 			StringBuilder sb = new StringBuilder();
 			sb.append("grant_type=authorization_code");
 			sb.append("&client_id=81af0dfe58ccf188fe47f9f421528ad2"); 
-			sb.append("&redirect_uri=http://localhost:80/login/kakao"); 
+			sb.append("&redirect_uri=http://localhost/login/kakao"); 
 			sb.append("&code=" + authorize_code);
 			bw.write(sb.toString());
 			bw.flush();

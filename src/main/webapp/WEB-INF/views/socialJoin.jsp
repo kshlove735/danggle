@@ -33,7 +33,8 @@
 	            <input type="email" id="email" name="email" placeholder="${requestScope.userInfo.email}" value="${requestScope.userInfo.email}" readonly>
 	          </c:when>
 	          <c:otherwise>
-	          	<input type="email" id="email" name="email">
+	          	<input type="email" id="email" name="email" placeholder="이메일을 입력해 주세요.">
+	          	<div id="emailMsg" style="font-size:12px;"></div>
 	          </c:otherwise>
           </c:choose>
           
@@ -46,13 +47,19 @@
           
           <input type="radio" value="F" name="gender">
           <label for="gender" class="light">여자</label>
-          
           <br><br>
+          
           <label>생년월일</label>
-	        <select name="yy" id="year" style="width:90px;"></select>년
-			<select name="mm" id="month" style="width:90px;"></select>월
-			<select name="dd" id="day" style="width:90px;"></select>일
-			<input type="text" id="birthdate" name="birthdate" value="" style="display:none;">           
+	        <select name="yy" id="year" style="width:90px;">
+	        	<option value="" selected disabled hidden>--</option>
+	        </select>년
+			<select name="mm" id="month" style="width:90px;">
+				<option value="" selected disabled hidden>--</option>
+			</select>월
+			<select name="dd" id="day" style="width:90px;">
+				<option value="" selected disabled hidden>--</option>
+			</select>일
+			<input type="text" id="birthdate" name="birthdate" value="" style="display:none;">
           <br>
           
           <label for="address">주소</label>
@@ -79,14 +86,31 @@
 		}
 		</script>
 
-      <script>
+
+		<script>
+		//이메일 정규식
+	      $('#email').blur(function(){
+	    	var email = $('#email').val();
+	    	var emailRule = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+			if(!emailRule.test(email)){
+				$('#email').css('margin-bottom','0px');
+				$('#emailMsg').html("이메일 형식으로 입력해주세요.").css('color','red');
+				$('#emailMsg').html("이메일 형식으로 입력해주세요.").css('margin-bottom','15px');
+			}else{
+				$('#emailMsg').html("");
+			}
+	      })
+       </script>
+
+		<!-- 생년월일 -->
+      	<script>
 		 $(document).ready(function(){            
 		    var now = new Date();
 		    var year = now.getFullYear();
 		    var mon = (now.getMonth() + 1) > 9 ? ''+(now.getMonth() + 1) : '0'+(now.getMonth() + 1); 
 		    var day = (now.getDate()) > 9 ? ''+(now.getDate()) : '0'+(now.getDate());           
 		    //년도 selectbox만들기               
-		    for(var i = 1900 ; i <= year ; i++) {
+		    for(var i = 2022 ; i >= 1900 ; i--) {
 		        $('#year').append('<option value="' + i + '">' + i + '</option>');    
 		    }
 		
@@ -101,12 +125,21 @@
 		        var dd = i > 9 ? i : "0"+i ;            
 		        $('#day').append('<option value="' + dd + '">' + dd+ '</option>');    
 		    }
-		    $("#year  > option[value="+year+"]").attr("selected", "true");        
-		    $("#month  > option[value="+mon+"]").attr("selected", "true");    
-		    $("#day  > option[value="+day+"]").attr("selected", "true");       
-			
-		    $('#birthdate').attr('value',year+mon+day);
-		 })
+		    
+		    if ($('#year').val() != null && $('#month').val() != null && $('#day').val() != null) {
+		    	$('#birthdate').attr('value',year+mon+day);	
+		    }
+		})
+	</script>
+	
+	<script>
+		function checkForm() {
+			var emailText = $('#emailMsg').text();
+			if (emailText != ''){
+    			alert("이메일을 확인해주세요.");
+    			return false;
+    		}
+		}
 	</script>
 </body>
 </html>
