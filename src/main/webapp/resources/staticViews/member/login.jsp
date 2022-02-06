@@ -21,11 +21,11 @@
 	      <button type="submit">확인</button><br>
 	      
 		  <!-- 카카오 로그인화면 띄우기 (로그인 되어있으면 정보이용 동의 창) -->
-		  <a href="https://kauth.kakao.com/oauth/authorize?client_id=ab9765f7a2a60e948050857a31641db8&redirect_uri=http://localhost:8282/login/kakao&response_type=code">
+		  <a href="https://kauth.kakao.com/oauth/authorize?client_id=81af0dfe58ccf188fe47f9f421528ad2&redirect_uri=http://localhost/login/kakao&response_type=code">
 		  	<image style="width:290px; margin-bottom:3px;" src="/resources/images/kakao_login_btn.png"></image>
 		  </a>
 		  <!-- 네이버 로그인 -->
-		  <a href="https://nid.naver.com/oauth2.0/authorize?client_id=odccQp1GnFhapuKs6al9&redirect_uri=http://localhost:8282/login/naver&response_type=code">
+		  <a href="https://nid.naver.com/oauth2.0/authorize?client_id=odccQp1GnFhapuKs6al9&redirect_uri=http://localhost:80/login/naver&response_type=code">
 		  	<image style= "width:290px; height:45px;" src="/resources/images/naver_login_btn.png"></image>
 		  </a>
 	    </form>
