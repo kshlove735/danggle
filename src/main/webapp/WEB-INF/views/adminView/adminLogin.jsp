@@ -125,7 +125,7 @@
 			 success : function(data) {           
 			    if (data == 'true')	{            	
 			      alert('로그인 성공');
-			      location.replace("admin/adminMain.do");
+			      location.replace("/admin/adminMain.do");
 			    }else{
 			 	  alert('로그인 실패');
 			    }			        
