@@ -7,10 +7,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
+<<<<<<< HEAD
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <link rel="stylesheet" type="text/css" href="/resources/css/mainIndex.css">
 
+=======
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="/resources/css/mainIndex.css">
+>>>>>>> a1afd82fa526216a8805f23ed570e55f057ee110
 </head>
 
 <body>
