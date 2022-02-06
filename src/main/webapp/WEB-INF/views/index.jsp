@@ -11,6 +11,8 @@
 <link rel="stylesheet" type="text/css" href="/resources/css/mainIndex.css">
 </head>
 
+<body>
+
 <script>
 window.onload = function(){
     alert('메인페이지 데이터.do');
@@ -414,5 +416,6 @@ function prevSlide() {
        
    </script>
     
+
 </body>
 </html>
