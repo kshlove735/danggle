@@ -9,6 +9,8 @@
 	<typeAliases>
 		<typeAlias type="kr.co.todaydaeng.member.model.vo.Member" alias="member"/>
 		<typeAlias type="kr.co.todaydaeng.member.model.vo.EmailAuthHist" alias="emailAuthHist"/>
+		<typeAlias type="kr.co.todaydaeng.admin.model.vo.AdminVO" alias="adminVO" />
 	</typeAliases>
+		
 
 </configuration>
