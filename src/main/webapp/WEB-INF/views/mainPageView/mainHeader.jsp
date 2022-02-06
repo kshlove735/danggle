@@ -85,7 +85,7 @@
         });
         
         $('#info').click(function(){
-            location.replcae("/myPage/memberInfoPage.do");
+            location.replace("/myPage/memberInfoPage.do");
         });
         
     </script>
