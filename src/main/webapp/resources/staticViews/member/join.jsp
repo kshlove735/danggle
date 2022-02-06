@@ -28,8 +28,8 @@ integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="ano
 	          <br>
 	          
 	          <label>비밀번호<a style="color:red">*</a></label>
-	          <input type="password" name="memberPwd" id="memberPwd" placeholder="영문/숫자/특수문자를 조합하여 8~15자" style="margin-bottom: 3px;">
-	          <input type="password" name="memberPwd_re" id="memberPwd_re" placeholder="영문/숫자/특수문자를 조합하여 8~15자" style="margin-bottom:15px;">
+	          <input type="password" name="memberPwd" id="memberPwd" placeholder="비밀번호를 입력해 주세요." style="margin-bottom: 3px;">
+	          <input type="password" name="memberPwd_re" id="memberPwd_re" placeholder="비밀번호를 한 번 더 입력해주세요." style="margin-bottom:15px;">
 	          <div id="pwdMsg" style="font-size:12px;"></div>
 	          <br>
 	          
@@ -52,9 +52,15 @@ integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="ano
 	          <br><br>
 			  
 	          <label>생년월일</label><br>
-		        <select name="yy" id="year" style="width:90px;"></select>년
-				<select name="mm" id="month" style="width:90px;"></select>월
-				<select name="dd" id="day" style="width:90px;"></select>일
+		        <select name="yy" id="year" style="width:90px;">
+		        	<option value="" selected disabled hidden>--</option>
+		        </select>년
+				<select name="mm" id="month" style="width:90px;">
+					<option value="" selected disabled hidden>--</option>
+				</select>월
+				<select name="dd" id="day" style="width:90px;">
+					<option value="" selected disabled hidden>--</option>
+				</select>일
 				<input type="text" id="birthdate" name="birthdate" value="" style="display:none;">
 	          <br>
 	          
@@ -187,7 +193,7 @@ integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="ano
 		    var mon = (now.getMonth() + 1) > 9 ? ''+(now.getMonth() + 1) : '0'+(now.getMonth() + 1); 
 		    var day = (now.getDate()) > 9 ? ''+(now.getDate()) : '0'+(now.getDate());           
 		    //년도 selectbox만들기               
-		    for(var i = 1900 ; i <= year ; i++) {
+		    for(var i = 2022 ; i >= 1900 ; i--) {
 		        $('#year').append('<option value="' + i + '">' + i + '</option>');    
 		    }
 		
@@ -202,11 +208,10 @@ integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="ano
 		        var dd = i > 9 ? i : "0"+i ;            
 		        $('#day').append('<option value="' + dd + '">' + dd+ '</option>');    
 		    }
-		    $("#year  > option[value="+year+"]").attr("selected", "true");        
-		    $("#month  > option[value="+mon+"]").attr("selected", "true");    
-		    $("#day  > option[value="+day+"]").attr("selected", "true");   
 		    
-		    $('#birthdate').attr('value',year+mon+day);
+		    if ($('#year').val() != null && $('#month').val() != null && $('#day').val() != null) {
+		    	$('#birthdate').attr('value',year+mon+day);	
+		    }
 		})
 	</script>
 	
@@ -214,23 +219,44 @@ integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="ano
 	<script>
 		function checkForm() {
 			// 플래그값 관리
-			var flag     = 1;
+			var flag = 0;
 			// 필수입력값 체크
-			var memberId = $('#memberId').val();
-			var pw1      = $('#memberPwd').val();
-    		var pw2      = $('#memberPwd_re').val();
-    		var email    = $('#email').val();
-    		var nickname = $('#nickname').val();
-    		var gender   = $("input:radio[name='gender']:checked").val();
+			var memberId     = $('#memberId').val();
+			var pw1          = $('#memberPwd').val();
+    		var pw2          = $('#memberPwd_re').val();
+    		var email        = $('#email').val();
+    		var nickname     = $('#nickname').val();
+    		var memberIdText = $('#idMsg').text();
+    		var pwdText      = $('#pwdMsg').text();
+    		var emailText    = $('#emailMsg').text();
+    		var nicknameText = $('#nicknameMsg').text();
     		
-    		if (memberId == "" || memberId == null || memberId == undefined) flag = 0;
-    		if (pw1 == ""      || pw1 == null      || pw1 == undefined)      flag = 0;
-    		if (pw2 == ""      || pw2 == null      || pw2 == undefined)      flag = 0;
-    		if (email == ""    || email == null    || email == undefined)    flag = 0;
-    		if (nickname == "" || nickname == null || nickname == undefined) flag = 0;
-    		if (gender == ""   || gender == null   || gender == undefined)   flag = 0;
+    		// 필수입력값 체크
+    		if (memberId == "" || memberId == null || memberId == undefined) flag = 1;
+    		if (pw1 == ""      || pw1 == null      || pw1 == undefined)      flag = 1;
+    		if (pw2 == ""      || pw2 == null      || pw2 == undefined)      flag = 1;
+    		if (email == ""    || email == null    || email == undefined)    flag = 1;
+    		if (nickname == "" || nickname == null || nickname == undefined) flag = 1;
+	    		
+    		// 유효성검증 체크(메시지가 없는 것만 패스)
+    		if (memberIdText != '사용 가능한 아이디입니다.') {
+    			alert("아이디를 확인해주세요.");
+    			return false;
+    		}
+    		if (pwdText != ''){
+    			alert("비밀번호를 확인해주세요.");
+    			return false;
+    		}
+    		if (emailText != ''){
+    			alert("이메일을 확인해주세요.");
+    			return false;
+    		}
+    		if (nicknameText != '') {
+    			alert("닉네임을 확인해주세요.");
+    			return false;
+    		}
     		
-    		if (flag == 0) {
+    		if (flag == 1) {
     			alert("필수 입력값을 채워주세요.");
     			return false;
     		} else {
