@@ -51,17 +51,35 @@ public class AuthController {
 	}
 	
 	@RequestMapping(value = "/login/naver")
-	public String naverLogin(@RequestParam(value = "code", required = false) String code) {
-		System.out.println("네이버 액세스 토큰" + code);
-		return null;
+	public String naverLogin(@RequestParam(value = "code", required = false) String code,
+			HttpServletRequest request, Model model) throws Exception {
+		// 인가 코드 확인
+		System.out.println("1. 인가코드 : " + code);
+		
+		// 인가 코드로 액세스 토큰 요청
+		String access_Token = authService.getNaverAccessToken(code);
+		
+		// 액세스 토큰으로 사용자 정보 요청
+		HashMap<String, Object> userInfo = authService.getNaverUserInfo(access_Token);
+		userInfo.put("authProvider", "naver");
+		String socialId = (String)userInfo.get("socialId");
+		
+		//고유 id값으로 기존 회원인지 확인
+		Member m = authService.selectSocialId(socialId);
+		if(m != null) {
+			HttpSession session = request.getSession();
+			session.setAttribute("member", m);
+			return "redirect:/";
+		}else {
+			model.addAttribute("userInfo",userInfo);
+			return "socialJoin";
+		}
 	}
 	
 	
-	@RequestMapping(value = "/join/kakao")
+	@RequestMapping(value = "/socialJoin.do")
 	public String kakaoJoin(Member member,HttpServletRequest request) {
-		member.setAuthProvider("kakao");
-		System.out.println("카카오 가입 정보 : " + member);
-		int result = authService.kakaoJoin(member);
+		int result = authService.socialJoin(member);
 		if(result>0) {
 			HttpSession session = request.getSession();
 			session.setAttribute("member", member);
