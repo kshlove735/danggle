@@ -12,7 +12,7 @@
 </head>
 <body>
     <div class="header"></div>
-	<form action="/join/kakao" method="post">
+	<form action="/socialJoin.do" method="post">
         <h2>추가 입력 사항</h2>
         <fieldset>
         <c:choose>
@@ -25,6 +25,7 @@
         </c:choose>
           <br>
           
+          <input type="hidden" name="authProvider" value="${requestScope.userInfo.authProvider}">
           <input type="hidden" name="memberId" value="${requestScope.userInfo.socialId}">
           
           <label>이메일<a style="color:red">*</a></label>
