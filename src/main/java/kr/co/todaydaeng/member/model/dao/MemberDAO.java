@@ -1,5 +1,7 @@
 package kr.co.todaydaeng.member.model.dao;
 
+import java.util.HashMap;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -38,6 +40,26 @@ public class MemberDAO {
 	//id찾기 시 이메일 인증 정보 저장
 	public int insertAuthNo(EmailAuthHist emailAuthHist) {
 		return sqlSession.insert("member.insertAuthNo",emailAuthHist);
+	}
+	
+	//이메일 인증 번호 확인하여 id알려주기
+	public HashMap<String, Object> checkIdCode(HashMap<String, String> map) {
+		return sqlSession.selectOne("member.checkIdCode", map);
+	}
+	
+	//pwd찾기 전 회원 여부 확인
+	public Member memberIdEmailCheck(HashMap<String, String> map) {
+		return sqlSession.selectOne("member.selectIdEmail", map);
+	}
+
+	//pwd찾기 인증번호 체크
+	public String checkPwdCode(HashMap<String, String> map) {
+		return sqlSession.selectOne("member.checkPwdCode",map);
+	}
+
+	//pwd인증번호 확인 후 비번 재설정
+	public int changeMemberPwd(HashMap<String, String> map) {
+		return sqlSession.update("member.updateMemberPwd",map);
 	}
 	
 	//기존 소셜 회원인지 id값 확인

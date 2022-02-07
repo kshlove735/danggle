@@ -8,9 +8,6 @@
 .login-form{
 	width: 260px;
 }
-a{
-  text-decoration:none;
-}
 
 h2 {
   margin: 0 0 10px 0;
@@ -23,11 +20,6 @@ hr{
   align:center;
   width:200px;
 }
-
-#showId{
-  padding:10px;	
-}
-
 
 .footer{
 	background-color: black;
@@ -50,7 +42,7 @@ input::placeholder{
   filter:drop-shadow(4px 4px 4px rgba(0,0,0,0.1));
   
 }
-.form input[type="email"] {
+.form input {
   font-family: 'Noto Sans KR', sans-serif;
   outline: 0;
   background: #ffffff;
@@ -62,20 +54,6 @@ input::placeholder{
   font-size: 14px;
   border-radius: 5px;
 }
-
-.form input[type="text"] {
-  font-family: 'Noto Sans KR', sans-serif;
-  outline: 0;
-  background: #ffffff;
-  width: 185px;
-  border: 1px solid #b3b3b3;
-  margin: 0 0 5px;
-  padding: 8px;
-  box-sizing: border-box;
-  font-size: 12px;
-  border-radius: 5px;
-}
-
 
 .longBtn {
   font-family: 'Noto Sans KR', sans-serif;
