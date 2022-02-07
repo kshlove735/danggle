@@ -4,6 +4,6 @@ import kr.co.todaydaeng.admin.model.vo.AdminVO;
 
 public interface AdminService {
 
-	AdminVO adminLogin(String adminID, String adminPWD);
+	AdminVO selectAdminLogin(String adminID, String adminPWD);
 
 }

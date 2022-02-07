@@ -31,7 +31,7 @@ public class AdminController {
 	
 	
 	@RequestMapping(value="/admin/adminLogin.do", method = RequestMethod.POST)
-	public void adminLogin(HttpSession session, HttpServletResponse response,
+	public void selectAdminLogin(HttpSession session, HttpServletResponse response,
 							@RequestParam String adminID, @RequestParam String adminPWD) throws IOException {
 						
 				//Request Param 인자의 유효성 검사 
@@ -40,7 +40,7 @@ public class AdminController {
 					
 				}else {		
 				//form에서 온 request 정보로 관리자 필드와 일치하면 true 반환, ajax가 관리자 메인으로 리다이렉트
-				AdminVO adm = aService.adminLogin(adminID, adminPWD);
+				AdminVO adm = aService.selectAdminLogin(adminID, adminPWD);
 				
 				//return된 관리자 VO에서 임시조치된 관리자로 확인된 경우? → adminGrade 값이 C인 경우 처리??
 				

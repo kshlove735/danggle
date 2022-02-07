@@ -14,8 +14,8 @@ public class AdminServiceImpl implements AdminService {
 	private AdminDAO aDAO;
 
 	@Override
-	public AdminVO adminLogin(String adminID, String adminPWD) {
+	public AdminVO selectAdminLogin(String adminID, String adminPWD) {
 		
-		return aDAO.adminLogin(adminID, adminPWD);
+		return aDAO.selectAdminLogin(adminID, adminPWD);
 	}
 }
