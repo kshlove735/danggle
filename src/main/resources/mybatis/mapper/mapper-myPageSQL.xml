@@ -25,12 +25,13 @@
 	<!-- 회원 정보 수정 SQL -->
 	<update id="updateMemberInfo" parameterType="member">
 		update member set 
-			NICKNAME=#{memberNickname}, 
+			NICKNAME=#{nickname}, 
 			GENDER=#{gender},
 			BIRTHDATE=#{birthdate},
 			EMAIL=#{email},
 			ADDRESS=#{address},
-			ADDRESS_DETAIL=#{addressDetail} 
+			ADDRESS_DETAIL=#{addressDetail},
+			MEMBER_PROFILE=#{memberProfile} 
 		where MEMBER_ID=#{memberId}
 	</update>
 	

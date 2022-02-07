@@ -84,24 +84,78 @@ public class MyPageController {
 
 	/* 회원 정보 수정 로직 */
 	@RequestMapping(value = "/myPage/updateMemberInfo.do", method = RequestMethod.POST)
-	public ModelAndView updateMemberInfo(Member m, @SessionAttribute Member member, @RequestParam String yy,
-			@RequestParam String mm, @RequestParam String dd, ModelAndView mav) {
+	public ModelAndView updateMemberInfo(HttpServletRequest request, @SessionAttribute Member member, ModelAndView mav) throws IOException {
 
-		String memberId = member.getMemberId();
-		String birthdate = yy + mm + dd;
+		// 파일 업로드 되는 경로
+		String uploadPath="/resources/upload/memberProfile/";
+		String uploadFilePath=context.getRealPath(uploadPath);
+		
+		// 파일 사이즈 설정(50MB)
+		int uploadFileSizeLimit = 50 * 1024 * 1024;
+		
+		// 파일 이름 인코딩 설정
+		String encType = "UTF-8";		
+				
+		// MultipartRequest 객체 생성
+		MultipartRequest multi = new MultipartRequest(request, uploadFilePath, uploadFileSizeLimit, encType,
+				new DefaultFileRenamePolicy());
 
+		// 첨부한 파일 이름
+		String originalFileName = multi.getFilesystemName("profileFile");
+
+		System.out.println(originalFileName);
+		
+		// 넘어온 이미지 파일 있으면 DB에 저장된 이미지 파일 삭제
+		if(originalFileName !=null) {
+			File beforeMemberProfile= new File(uploadFilePath+"\\"+member.getMemberProfile());
+			beforeMemberProfile.delete();
+		}
+		
+		String nickname = multi.getParameter("nickname");
+		String gender = multi.getParameter("gender");
+		
+		String yy = multi.getParameter("yy");
+		String mm = multi.getParameter("mm");
+		String dd = multi.getParameter("dd");
+		String birthdate = yy+mm+dd;
+		
+		String email = multi.getParameter("email");
+		String address = multi.getParameter("address");
+		String addressDetail = multi.getParameter("addressDetail");
+		
+		// 테스트 출력
+		System.out.println("nickname : " + nickname);
+		System.out.println("gender : " + gender);
+		System.out.println("birthdate : " + birthdate);
+		System.out.println("email : " + email);
+		System.out.println("address : " + address);
+		System.out.println("addressDetail : " + addressDetail);
+		
+		String memberId=member.getMemberId();
+
+		// 폴더에 저장 및 파일 이름 변경 (아이디_파일명)		
+		File file = new File(uploadFilePath+"\\"+originalFileName);
+		file.renameTo(new File(uploadFilePath+"\\"+memberId+"_"+originalFileName));
+		
+		// DB에 insert할 이름
+		String memberProfile=memberId+"_"+originalFileName;
+		
+		Member m = new Member();
 		m.setMemberId(memberId);
+		m.setEmail(email);
+		m.setNickname(nickname);
+		m.setGender(gender);
 		m.setBirthdate(birthdate);
-
-		System.out.println(m.getMemberId());
-		System.out.println(m.getNickname());
-		System.out.println(m.getGender());
-		System.out.println(m.getBirthdate());
-		System.out.println(m.getEmail());
-		System.out.println(m.getAddress());
-		System.out.println(m.getAddressDetail());
-
-		int result = mpService.updateMemberInfo(m);
+		m.setAddress(address);
+		m.setAddressDetail(addressDetail);
+		
+		if(originalFileName !=null) {
+			m.setMemberProfile(memberProfile);
+		}else {
+			m.setMemberProfile(member.getMemberProfile());
+		}
+		
+		int result =mpService.updateMemberInfo(m);
 
 		if (result > 0) {
 			/* 세션 갱신 */
@@ -111,14 +165,16 @@ public class MyPageController {
 			member.setEmail(m.getEmail());
 			member.setAddress(m.getAddress());
 			member.setAddressDetail(m.getAddress());
-
+			member.setMemberProfile(m.getMemberProfile());
+			
+			mav.addObject("result", true);
 			mav.addObject("msg", "회원 정보 수정 성공");
 			mav.addObject("location", "/myPage/memberInfoPage.do");
 		} else {
+			mav.addObject("result", false);
 			mav.addObject("msg", "회원 정보 수정 실패 - 지속적인 문제 발생시 관리자에게 문의해주세요.");
-			mav.addObject("location", "/myPage/memberInfoPage.do");
 		}
-		mav.setViewName("common/msg_test");
+		mav.setViewName("common/msgOrHistoryBack");
 
 		return mav;
 	}
@@ -331,12 +387,12 @@ public class MyPageController {
 
 		// 첨부한 파일 이름
 		String originalFileName = multi.getFilesystemName("profileFile");
-		
+
 		System.out.println(originalFileName);
-		
+
 		int dogNo = Integer.parseInt(multi.getParameter("dogNo"));
 		Dog dog = mpService.selectOneDogInfo(dogNo);
-		// 넘어온 이미지 파일 있으면 DB에 저장된 이미지 파일 삭제	
+		// 넘어온 이미지 파일 있으면 DB에 저장된 이미지 파일 삭제
 		if (originalFileName != null) {
 			File beforeDogProfile = new File(uploadFilePath + "\\" + dog.getDogProfile());
 			beforeDogProfile.delete();
@@ -384,13 +440,13 @@ public class MyPageController {
 		dog.setDogSize(dogSize);
 		dog.setVaccinationYN(vaccinationYN);
 		dog.setNeutralizationYN(neutralizationYN);
-		
-		if(originalFileName != null) {
+
+		if (originalFileName != null) {
 			dog.setDogProfile(dogProfile);
 		}
-		
+
 		int result = mpService.updateDogInfo(dog);
-		
+
 		if (result > 0) {
 			mav.addObject("result", true);
 			mav.addObject("msg", "반려견 정보가 수정되었습니다.");
@@ -403,18 +459,18 @@ public class MyPageController {
 		mav.setViewName("common/msgOrHistoryBack");
 		return mav;
 	}
-	
+
 	/* 반려견 정보 삭제 */
 	@RequestMapping(value = "/myPage/deleteDogInfo.do", method = RequestMethod.POST)
 	public void deleteDogInfo(@RequestParam int dogNo, HttpServletResponse response) throws IOException {
 		int result = mpService.deleteDogInfo(dogNo);
-		
-		if(result>0) {
+
+		if (result > 0) {
 			response.getWriter().print(true);
-		}else {
+		} else {
 			response.getWriter().print(false);
 		}
-		
+
 	}
 
 }

@@ -379,7 +379,7 @@
 	          				 <!-- 사진 클릭 시 파일 업로드창 생성 -->
 	          				 <script>
 	          				 	function profileUpload() {
-	          				 	 document.all.profileFile.click();
+	          				 		document.all.profileFile.click();
 								}
 	          				 </script>
 	          				 
@@ -394,8 +394,6 @@
 	          				 		}else{
 	          				 			document.getElementById('user_icon').src="";
 	          				 		}
-	          		
-	          				 		
 	          				 	}
 	          				 </script>
 	          				 
