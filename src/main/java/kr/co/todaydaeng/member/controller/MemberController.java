@@ -41,7 +41,7 @@ public class MemberController {
 	@RequestMapping(value = "/member/joinMember.do", method = RequestMethod.POST)
 	public String joinMember(HttpServletRequest request) throws IOException {
 		// 파일이 업로드되는 경로
-		String uploadPath = "/WEB-INF/upload/memberProfile/";	
+		String uploadPath = "/resources/upload/memberProfile/";	
 		String uploadFilePath = context.getRealPath(uploadPath);
 		System.out.println("파일 경로 확인 : " + uploadFilePath);
 		
@@ -73,9 +73,8 @@ public class MemberController {
 		File file = new File(uploadFilePath + "\\" + originalFileName);
 		file.renameTo(new File(uploadFilePath + "\\" + memberId + "_" + originalFileName));
 
-		// DB에 insert할 최종 경로 값
-		File reNameFile = new File(uploadFilePath + "\\" + memberId + "\\" + originalFileName);
-		String memberProfile = reNameFile.getPath();
+		// DB에 insert할 이름
+		String memberProfile = memberId+"_"+originalFileName;
 
 		Member member = new Member();
 		member.setMemberId(memberId);
