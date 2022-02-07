@@ -1,14 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!-- JQuery 라이브러리 -->
-<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    
+<!-- JSTL 라이브러리 -->
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>    
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>반려견 정보 등록</title>
-
+	<!-- JQuery 라이브러리 -->
+	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
@@ -299,6 +301,12 @@
                 var dd = i > 9 ? i : "0" + i;
                 $('#day').append('<option value="' + dd + '">' + dd + '</option>');
             }
+            
+         	// 기존 정보 가져와서 기본 값으로 설정
+            var birthdate= $('input[name=b_birthdate]').val();
+            var year =birthdate.substring(0,4);
+            var mon =birthdate.substring(4,6);
+            var day =birthdate.substring(6,8);
 
             $("#year  > option[value=" + year + "]").attr("selected", "true");
             $("#month  > option[value=" + mon + "]").attr("selected", "true");
@@ -308,6 +316,13 @@
         })
     </script>
 
+
+	<script>
+		$(document).ready(function(){
+		var dogSize=$('#dogSizeBefore').val();
+		$("#dogSize  > option[value=" + dogSize + "]").attr("selected", "true");
+		});
+	</script>
 
 </head>
 <body>
@@ -346,9 +361,17 @@
 
                         <!--등록-->
                         <div class='dogInfo'>
-                        <form action="/myPage/insertDogInfo.do" method="post" enctype="multipart/form-data" onsubmit="return checkForm();">
+                        <form action="/myPage/updateDogInfo.do" method="post" enctype="multipart/form-data" onsubmit="return checkForm();">
                             <div class='dogImg'>
-                            	<img id="user_icon" src="/resources/upload/dogProfile/dog_default.jpg" onclick="profileUpload()"></img>
+                            	<c:set var="dogProfile" value="${requestScope.dog.dogProfile }"/>
+								<c:choose>
+									<c:when test="${fn:contains(dogProfile,'null') }">
+										<img id="user_icon" src="/resources/upload/dogProfile/dog_default.jpg" onclick="profileUpload()"></img>
+									</c:when>
+									<c:otherwise>
+										<img id="user_icon" src="/resources/upload/dogProfile/${requestScope.dog.dogProfile }" onclick="profileUpload()"></img>
+									</c:otherwise>
+								</c:choose>
                             </div>
           
 	          				<input type=file name='profileFile' style='display: none;' onchange="readURL(this);">
@@ -380,11 +403,24 @@
                                 <table>
                                     <tr>
                                         <td>이름</td>
-                                        <td><input type="text" name="dogName"></td>
+                                        <td>
+                                        	<input type="text" name="dogName" value="${requestScope.dog.dogName }">
+                                        	<input type="text" name="dogNo" value="${requestScope.dog.dogNo }" style="display:none;">
+                                        	<input type="text" name="currentPage" value="${requestScope.currentPage }" style="display:none;">
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>성별</td>
-                                        <td><label><input type="radio" name="gender" value="M" checked>남</label> <label><input type="radio" name="gender" value="F">여</label></td>
+                                        <td>
+                                        	<c:choose>
+                                        		<c:when test="${requestScope.dog.gender=='M'.charAt(0) }">
+                                        			<label><input type="radio" name="gender" value="M" checked>남</label> <label><input type="radio" name="gender" value="F">여</label>	
+                                        		</c:when>
+                                        		<c:otherwise>
+                                        			<label><input type="radio" name="gender" value="M">남</label> <label><input type="radio" name="gender" value="F" checked>여</label>
+                                        		</c:otherwise>
+                                        	</c:choose>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>생일</td>
@@ -393,30 +429,53 @@
                                             <select name="mm" id="month" class="birthdate"></select>월 &nbsp;
                                             <select name="dd" id="day" class="birthdate"></select>일 &nbsp;
                                             <!-- <input type="text" id="birthdate" name="birthdate" value="" style="display:none;"> -->
+                                            <input type="text" id="birthdate" name="b_birthdate" value="${requestScope.dog.birthdate }" style="display:none;">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>품종</td>
-                                        <td><input type="text" name="breed" ></td>
+                                        <td><input type="text" name="breed" value="${requestScope.dog.breed }"></td>
                                     </tr>
                                     <tr>
                                         <td>사이즈</td>
                                         <td>
-                                            <select name="dogSize">
+                                            <select name="dogSize" id="dogSize">
                                                 <option value="소형견">소형견 (10kg 이하)</option>
                                                 <option value="중형견">중형견 (11kg ~ 25kg)</option>
                                                 <option value="대형견">대형견 (26kg 이상)</option>
                                             </select>
+                                            <input type="text" value="${requestScope.dog.dogSize }" id="dogSizeBefore" style="display:none;">
                                         </td>
                                     </tr>
-
+									
                                     <tr>
                                         <td>접종 유무</td>
-                                        <td><label><input type="radio" name="vaccinationYN" value="Y">완료</label> <label><input type="radio" name="vaccinationYN" value="ING">진행중</label> <label><input type="radio" name="vaccinationYN" value="N" checked>미완료</label></td>
+                                        <td>
+                                        	<c:choose>
+                                        		<c:when test="${requestScope.dog.vaccinationYN=='Y' }">
+			                                    	<label><input type="radio" name="vaccinationYN" value="Y" checked>완료</label> <label><input type="radio" name="vaccinationYN" value="ING">진행중</label> <label><input type="radio" name="vaccinationYN" value="N">미완료</label>    		
+                                        		</c:when>
+                                        		<c:when test="${requestScope.dog.vaccinationYN=='N' }">
+                                        			<label><input type="radio" name="vaccinationYN" value="Y">완료</label> <label><input type="radio" name="vaccinationYN" value="ING">진행중</label> <label><input type="radio" name="vaccinationYN" value="N" checked>미완료</label>
+                                        		</c:when>
+                                        		<c:otherwise>
+                                        			<label><input type="radio" name="vaccinationYN" value="Y">완료</label> <label><input type="radio" name="vaccinationYN" value="ING" checked>진행중</label> <label><input type="radio" name="vaccinationYN" value="N">미완료</label>
+                                        		</c:otherwise>
+                                        	</c:choose>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>중성화 유무</td>
-                                        <td><label><input type="radio" name="neutralizationYN" value="Y">완료</label> <label><input type="radio" name="neutralizationYN" value="N" checked>미완료</label></td>
+                                        <td>
+                                        	<c:choose>
+                                        		<c:when test="${requestScope.dog.neutralizationYN=='Y'.charAt(0) }">
+                                        			<label><input type="radio" name="neutralizationYN" value="Y" checked>완료</label> <label><input type="radio" name="neutralizationYN" value="N">미완료</label>
+                                        		</c:when>
+                                        		<c:otherwise>
+                                        			<label><input type="radio" name="neutralizationYN" value="Y">완료</label> <label><input type="radio" name="neutralizationYN" value="N" checked>미완료</label>	
+                                        		</c:otherwise>
+                                        	</c:choose>
+                                        </td>
                                     </tr>
 
                                 </table>
@@ -452,17 +511,17 @@
                     		}
                     		
                     		$('input[name=dogName]').click(function(){
-                    			$(this).css('border','2px solid #919CA7');
+                    			$(this).css('border','1px solid #919CA7');
                     		});
                     		$('input[name=breed]').click(function(){
-                    			$(this).css('border','2px solid #919CA7');
+                    			$(this).css('border','1px solid #919CA7');
                     		});
                     	</script>
                     
                     	<!-- 취소 버튼 클릭시 반려견 정보 페이지 호출 -->
 						<script>
 							$('.cancelBtn').click(function(){
-								location.replace("/myPage/dogInfoPage.do");
+								location.replace("/myPage/dogInfoPage.do?currentPage=${requestScope.currentPage}");
 							});
 						</script>
 

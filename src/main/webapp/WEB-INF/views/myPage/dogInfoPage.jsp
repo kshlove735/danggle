@@ -332,7 +332,7 @@ a{
 											<c:set var="dogProfile" value="${d.dogProfile }"/>
 											<c:choose>
 												<c:when test="${fn:contains(dogProfile,'null') }">
-													<img src="/resources/upload/dogProfile/dog_default.jpg "></img>
+													<img src="/resources/upload/dogProfile/dog_default.jpg"></img>
 												</c:when>
 												<c:otherwise>
 													<img src="/resources/upload/dogProfile/${d.dogProfile }"></img>
@@ -349,11 +349,23 @@ a{
 												</tr>
 												<tr>
 													<td>성별</td>
-													<td>${d.gender }</td>
+													<td>
+														<c:choose>
+															<c:when test="${d.gender=='M'.charAt(0) }">
+																남아			
+															</c:when>
+															<c:otherwise>
+																여아
+															</c:otherwise>
+														</c:choose>
+													</td>
 												</tr>
 												<tr>
 													<td>생일</td>
-													<td>${d.birthdate }</td>
+													<td>
+														<c:set value="${d.birthdate }" var="birthdate"/>
+														${fn:substring(birthdate,0,4) }/${fn:substring(birthdate,4,6) }/${fn:substring(birthdate,6,8) }
+													</td>
 												</tr>
 												<tr>
 													<td>품종</td>
@@ -365,16 +377,65 @@ a{
 												</tr>
 												<tr>
 													<td>접종 유무</td>
-													<td>${d.neutralizationYN }</td>
+													<td>
+														<c:choose>
+															<c:when test="${d.vaccinationYN =='Y'}">
+																완료
+															</c:when>
+															<c:when test="${d.vaccinationYN =='N'}">
+																미완료
+															</c:when>
+															<c:otherwise>
+																진행중
+															</c:otherwise>
+														</c:choose>
+													</td>
 												</tr>
 												<tr>
 													<td>중성화 유무</td>
-													<td>${d.vaccinationYN }</td>
+													<td>
+														<c:choose>
+															<c:when test="${d.neutralizationYN =='Y'.charAt(0)}">
+																완료
+															</c:when>
+															<c:otherwise>
+																미완료
+															</c:otherwise>
+														</c:choose>
+													</td>
 												</tr>
 											</table>
 											<div class="btn">
-												<button class="modify_btn">수정</button>
-												<button class="withdraw_btn">삭제</button>
+												<button class="modify_btn"><a href="/myPage/updateDogInfoPage.do?dogNo=${d.dogNo }&currentPage=${requestScope.currentPage}">수정</a></button>
+												<button type="button" class="withdraw_btn" id="${d.dogNo }">삭제</button>
+												
+												<script>
+													$('.withdraw_btn').click(function(){
+														var dogNo = $(this).attr('id');
+														
+														if(window.confirm('정말 삭제하시겠습니까?\n- 삭제시 복구 절대 불가 -')){
+															
+															$.ajax({
+																url:"/myPage/deleteDogInfo.do",
+																data:{"dogNo":dogNo},
+																type:"post",
+																success:function(result){
+																	if(result=='true'){
+																		alert("반려견 정보가 삭제 되었습니다");
+																		window.location.reload();
+																	}else{
+																		alert("반려견 정보 삭제에 실패하였습니다.\n- 지속적인 문제 발생시 관리자에게 문의해주세요 -");
+																		window.location.reload();
+																	}
+																},
+																error:function(){
+																	console.log('ajax 통신 실패');
+																}
+															});
+														}
+													})
+												</script>
+												
 											</div>
 										</div>
 									</div>

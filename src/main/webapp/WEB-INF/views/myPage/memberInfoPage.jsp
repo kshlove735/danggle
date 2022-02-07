@@ -302,7 +302,7 @@
                             <td>성별</td>
                             <td>
                             	<c:choose>
-                            		<c:when test="${sessionScope.member.gender='M' }">
+                            		<c:when test="${sessionScope.member.gender=='M' }">
                             			남성
                             		</c:when>
                             		<c:otherwise>
