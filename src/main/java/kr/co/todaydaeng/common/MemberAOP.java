@@ -1,5 +1,7 @@
 package kr.co.todaydaeng.common;
 
+import java.util.HashMap;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -46,5 +48,20 @@ public class MemberAOP {
 		String encryptPwd = enc.encryptionData(userPwd, userId);
 		System.out.println(encryptPwd);
 		m.setMemberPwd(encryptPwd);
+	}
+	
+
+	@Pointcut("execution(int kr.co.todaydaeng.member.model.service.MemberServiceImpl.changeMemberPwd(..))")
+	public void changeMemberPwdPointCut() {
+	}
+	
+	@Before("changeMemberPwdPointCut()")
+	public void changeMemberPwdEncryption(JoinPoint jp) throws Exception{
+		HashMap<String, String> map = (HashMap<String, String>)jp.getArgs()[0];
+		String memberPwd = map.get("memberPwd").toString();
+		String memberId = map.get("memberId").toString();
+		
+		String encryptPwd = enc.encryptionData(memberPwd, memberId);
+		map.put("memberPwd", encryptPwd);		
 	}
 }

@@ -2,6 +2,7 @@ package kr.co.todaydaeng.member.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Random;
 
 import javax.mail.internet.MimeMessage;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.google.gson.Gson;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
@@ -130,7 +132,7 @@ public class MemberController {
 	}
 	
 	
-	@RequestMapping(value = "/findId/sendEmailCode.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/findId/sendEmailIdCode.do", method = RequestMethod.POST)
 	public void sendEmailCode(String email, HttpServletResponse response) throws IOException {
 		Member m = mService.memberEmailCheck(email);
 		if (m != null) {
@@ -167,6 +169,112 @@ public class MemberController {
 		} else {
 			response.getWriter().print(false);
 		}
+	}
+	
+	@RequestMapping(value = "/findId/checkIdCode.do", produces = "application/text; charset=UTF-8", method = RequestMethod.POST)
+	public void checkIdCode(String findIdCode, String email, HttpServletResponse response) throws IOException {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("email", email);
+		map.put("findIdCode", findIdCode);
+
+		// 결과
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		result = mService.checkIdCode(map);
+
+		String resultCode = "success";
+		//인증번호 일치
+		if (result != null) {
+			int timegap = Integer.parseInt(String.valueOf(result.get("TIMEGAP")));
+			switch (timegap) {
+			case 0: // 시간 초과
+				resultCode = "fail_timeover";
+				result.put("resultCode", resultCode);
+				response.setCharacterEncoding("UTF-8");
+				new Gson().toJson(result,response.getWriter());
+				break;
+				 
+			case 1: // 성공;
+				result.put("resultCode", resultCode);
+				new Gson().toJson(result, response.getWriter());
+				break;
+			}
+		//인증번호 불일치 (row 0개)
+		} else {
+			resultCode = "fail_key";
+			HashMap<String, Object> failResult = new HashMap<String, Object>();
+			failResult.put("resultCode", resultCode);
+			new Gson().toJson(failResult,response.getWriter());	 
+		}
+	}
+	
+	@RequestMapping(value = "/findPwd/sendEmailPwdCode.do", method = RequestMethod.POST)
+	public void sendEmailPwdCode(String memberId,String email,HttpServletResponse response) throws IOException{
+		//존재하는 회원인지부터 확인
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("memberId",memberId);
+		map.put("email",email);
+		
+		Member m = mService.memberIdEmailCheck(map);
+		System.out.println(m);
+		
+		if (m != null) {
+			Random rd = new Random();
+			String key = Integer.toString(rd.nextInt(888888) + 111111);
+
+			String setfrom = "admin@todaydaeng.co.kr";
+			String tomail = email; // 받는 사람
+			String title = "[오늘의 댕댕] 비밀번호 찾기 인증번호를 알려드립니다.";
+			String content = "비밀번호 찾기를 위한 인증번호 입니다." + "[인증번호 : " + key + "]";
+
+			EmailAuthHist emailAuthHist = new EmailAuthHist();
+			emailAuthHist.setMemberNo(m.getMemberNo());
+			emailAuthHist.setEmail(m.getEmail());
+			emailAuthHist.setRandomNo(key);
+			mService.insertAuthNo(emailAuthHist);
+
+			try {
+				MimeMessage message = mailSender.createMimeMessage();
+				MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+				messageHelper.setFrom(setfrom); // 보내는사람 생략하면 정상작동을 안함
+				messageHelper.setTo(tomail); // 받는사람 이메일
+				messageHelper.setSubject(title); // 메일제목은 생략이 가능하다
+				messageHelper.setText(content); // 메일 내용
+
+				mailSender.send(message);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+			response.getWriter().print(true);
+		} else {
+			response.getWriter().print(false);
+		}
+	}
+	
+	@RequestMapping(value = "/findPwd/checkPwdCode.do", method = RequestMethod.POST)
+	public void checkPwdCode(String memberId,String email,String findPwdCode,HttpServletResponse response) throws IOException {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("memberId", memberId);
+		map.put("email", email);
+		map.put("findPwdCode", findPwdCode);
+		
+		String result = mService.checkPwdCode(map);
+		if(result != null) {
+			response.getWriter().print(result);
+		//인증번호 오입력
+		}else {
+			response.getWriter().print("null");
+		}
+	}
+	
+	@RequestMapping(value = "/findPwd/changeMemberPwd.do",method = RequestMethod.POST)
+	public void changeMemberPwd(String memberId, String memberPwd,HttpServletResponse response) throws IOException {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("memberId", memberId);
+		map.put("memberPwd", memberPwd);
+		
+		int result = mService.changeMemberPwd(map);
+		if(result>0) response.getWriter().print(true);
+		else response.getWriter().print(false);
 	}
 	
 }

@@ -1,5 +1,7 @@
 package kr.co.todaydaeng.member.model.service;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,5 +38,32 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public int insertAuthNo(EmailAuthHist emailAuthHist) {
 		return mDAO.insertAuthNo(emailAuthHist);
+	}
+	
+	@Override
+	public HashMap<String, Object> checkIdCode(HashMap<String, String> map) {
+		return mDAO.checkIdCode(map);
+	}
+	
+	@Override
+	public Member memberIdEmailCheck(HashMap<String, String> map) {
+		return mDAO.memberIdEmailCheck(map);
+	}
+
+	@Override
+	public String checkPwdCode(HashMap<String, String> map) {
+		//동적인 쿼리 결과 처리
+		String result="";
+		if(mDAO.checkPwdCode(map)==null) {
+			result = null;
+		}else {
+			result = mDAO.checkPwdCode(map);
+		}
+		return result;
+	}
+
+	@Override
+	public int changeMemberPwd(HashMap<String, String> map) {
+		return mDAO.changeMemberPwd(map);
 	}
 }
