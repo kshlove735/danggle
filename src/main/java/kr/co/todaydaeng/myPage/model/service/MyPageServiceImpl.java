@@ -60,4 +60,19 @@ public class MyPageServiceImpl implements MyPageService {
 	public int insertDogInfo(Dog dog) {
 		return mpDAO.insertDogInfo(dog);
 	}
+
+	@Override
+	public Dog selectOneDogInfo(int dogNo) {
+		return mpDAO.selectOneDogInfo(dogNo);
+	}
+
+	@Override
+	public int updateDogInfo(Dog dog) {
+		return mpDAO.updateDogInfo(dog);
+	}
+
+	@Override
+	public int deleteDogInfo(int dogNo) {
+		return mpDAO.deleteDogInfo(dogNo);
+	}
 }

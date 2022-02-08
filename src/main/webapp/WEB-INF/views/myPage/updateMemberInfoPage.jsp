@@ -5,6 +5,7 @@
 
 <!-- JSTL 라이브러리 -->
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <!DOCTYPE html>
 <html>
@@ -133,7 +134,7 @@
 
         .img {
             border: 1px solid #eef2f7;
-            background-color: cornflowerblue;
+            background-color: #FD6F22;
             width: 121px;
             height: 116px;
             border-radius: 100%;
@@ -141,6 +142,13 @@
             top: 130px;
             left: 515px;
         }
+        
+        img {
+			width: 100%;
+			height: 100%;
+			object-fit: fill;
+	
+			}
 
         table tr td {
             height: 50px;
@@ -248,9 +256,41 @@
             </div>
             <div class="content">
                 <p>회원 정보 수정</p>
-                <form action="/myPage/updateMemberInfo.do" method="post">
+                <form action="/myPage/updateMemberInfo.do" method="post" enctype="multipart/form-data"  >
                 
-	                <div class="img"></div>
+	                <div class="img">
+	                	<c:set var="memberProfile" value="${sessionScope.member.memberProfile }" />
+						<c:choose>
+							<c:when test="${fn:contains(memberProfile,'null') }">
+								<img id="user_icon" src="/resources/images/user_icon.png" onclick="profileUpload()"></img>
+							</c:when>
+							<c:otherwise>
+								<img id="user_icon" src="/resources/upload/memberProfile/${sessionScope.member.memberProfile }" onclick="profileUpload()"></img>
+							</c:otherwise>
+						</c:choose>
+	                </div>
+	                <input type=file name='profileFile' style='display: none;' onchange="readURL(this);">
+	          				 
+	          		 <!-- 사진 클릭 시 파일 업로드창 생성 -->
+	          		<script>
+	          			function profileUpload() {
+	          				document.all.profileFile.click();
+						}
+	          		</script>
+	          				 
+	          		<script>
+	          			function readURL(input){
+	          				if(input.files && input.files[0]){
+	          					var reader=new FileReader();
+		          				reader.onload=function(e){
+		          				document.getElementById('user_icon').src=e.target.result;
+		          				};
+		          				reader.readAsDataURL(input.files[0]);	
+	          				 }else{
+	          				 	document.getElementById('user_icon').src="";
+	          				 }
+	          			}
+	          		</script>
 	
 	                <!--수정 폼-->
 	                <div class="user_info_modify_table">
