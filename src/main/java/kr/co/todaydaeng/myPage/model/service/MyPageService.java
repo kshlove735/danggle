@@ -20,4 +20,12 @@ public interface MyPageService {
 
 	int insertDogInfo(Dog dog);
 
+	Dog selectOneDogInfo(int dogNo);
+
+	int updateDogInfo(Dog dog);
+
+	int deleteDogInfo(int dogNo);
+
+	
+
 }

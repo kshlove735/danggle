@@ -3,6 +3,7 @@ package kr.co.todaydaeng.myPage.model.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -43,15 +44,23 @@ public class MyPageDAO {
 	
 	public ArrayList<Dog> selectAllDogInfoList(int currentPage, int recordCountPerPage, int memberNo) {
 
-		int start=currentPage*recordCountPerPage-(recordCountPerPage-1);
-		int end= currentPage*recordCountPerPage;
+		// 방법 1
+//		int start=currentPage*recordCountPerPage-(recordCountPerPage-1);
+//		int end= currentPage*recordCountPerPage;
+//		
+//		HashMap<String, Object>map = new HashMap<>();
+//		map.put("memberNo", memberNo);
+//		map.put("start", start);
+//		map.put("end", end);
+//		
+//		return new ArrayList<Dog>(sqlSession.selectList("myPage.selectAllDogInfoList_1", map));
 		
-		HashMap<String, Object>map = new HashMap<String, Object>();
-		map.put("memberNo", memberNo);
-		map.put("start", start);
-		map.put("end", end);
+		// 방법2
+		int offset=((currentPage-1)*recordCountPerPage);
+		int limit= recordCountPerPage;
+		RowBounds rb = new RowBounds(offset, limit);
 		
-		return new ArrayList<Dog>(sqlSession.selectList("myPage.selectAllDogInfoList", map));
+		return new ArrayList<Dog>(sqlSession.selectList("myPage.selectAllDogInfoList",memberNo,rb));
 		
 	}
 
@@ -101,5 +110,19 @@ public class MyPageDAO {
 	public int insertDogInfo(Dog dog) {
 		return sqlSession.insert("myPage.insertDogInfo", dog);
 	}
+
+	public Dog selectOneDogInfo(int dogNo) {
+		return sqlSession.selectOne("myPage.selectOneDogInfo", dogNo);
+	}
+
+	public int updateDogInfo(Dog dog) {
+		return sqlSession.update("myPage.updateDogInfo", dog);
+	}
+
+	public int deleteDogInfo(int dogNo) {
+		return sqlSession.update("myPage.deleteDogInfo", dogNo);
+	}
+	
+	
 
 }
