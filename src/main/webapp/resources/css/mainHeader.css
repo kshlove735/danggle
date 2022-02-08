@@ -54,21 +54,22 @@
     
     #menuBox {
         width: 652px;
-        height: 31px;
+        height: 50px;
+        font-family: 'Noto Sans KR';
         
         position: absolute;
         top: 20px;
         left: 598px;        
     }
     
-    #menuBox>span>span {
-        font-family: 'Black Han Sans';
-        font-size: 25px;
+    #menuBox>span>span {        
+        font-size: 23px;
+        font-weight: bold;
         cursor:pointer;
     }
     
     #menuBox>span>span:hover{
-        transform: scale(1.2);
+        transform: scale(1.4);
         transition-property: transform;
         transition-duration: 0.3s;
     }
@@ -96,39 +97,56 @@
     
     
     #loginBox {
-        width: 117px;
+        width: auto;
         height: 47px;
         background-color: #FD6F22;
         border-radius: 25px 25px; 
         text-align:center;
-        
+        padding-right: 10px;
+        padding-left: 10px;
         position: absolute;
-        right: 186px;
+        right: 15%;
         top: 12px;
     }
     
     #logoutBox {
-        width: 127px;
+        width: auto;
         height: 47px;
         background-color: #FD6F22;
         border-radius: 25px 25px; 
         text-align:center;
-        
+		padding-right: 10px;
+        padding-left: 10px;
         position: absolute;
-        right: 186px;
+        right: 15%;
         top: 12px;
     }
     
     #joinBox {
-        width: 127px;
+        width: auto;
         height: 47px;
         border-radius: 25px 25px; 
         border: 1px solid #FD6F22;
         box-sizing: border-box;   
         text-align:center;
-        
+		padding-right: 10px;
+        padding-left: 10px;
         position: absolute;
-        right: 33px;
+        right: 5%;
+        top: 12px;
+    }
+    
+     #infoBox {
+        width: auto;
+        height: 47px;
+        border-radius: 25px 25px; 
+        border: 1px solid #FD6F22;
+        box-sizing: border-box;   
+        text-align:center;
+		padding-right: 10px;
+        padding-left: 10px;
+        position: absolute;
+        right: 5%;
         top: 12px;
     }
     
@@ -150,7 +168,6 @@
         line-height: 47px;
         vertical-align: middle;
         font-size: 25px;
-        color: #ffffff;
     }
     
     #logoutBox:hover{        

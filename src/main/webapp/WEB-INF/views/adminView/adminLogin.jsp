@@ -128,6 +128,7 @@
 			      location.replace("/admin/adminMain.do");
 			    }else{
 			 	  alert('로그인 실패');
+			 	  location.replace("/admin/adminIndex.do");
 			    }			        
 			},
 			 error : function(data) {
