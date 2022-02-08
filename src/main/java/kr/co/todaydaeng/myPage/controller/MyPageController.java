@@ -59,7 +59,7 @@ public class MyPageController {
 
 		System.out.println(memberPwd);
 
-		HashMap<String, String> map = new HashMap<>();
+		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("memberId", memberId);
 		map.put("memberPwd", memberPwd);
 
@@ -166,7 +166,7 @@ public class MyPageController {
 
 		System.out.println(memberPwd);
 
-		HashMap<String, String> map = new HashMap<>();
+		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("memberId", memberId);
 		map.put("memberPwd", memberPwd);
 

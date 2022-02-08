@@ -46,7 +46,7 @@ public class MyPageDAO {
 		int start=currentPage*recordCountPerPage-(recordCountPerPage-1);
 		int end= currentPage*recordCountPerPage;
 		
-		HashMap<String, Object>map = new HashMap<>();
+		HashMap<String, Object>map = new HashMap<String, Object>();
 		map.put("memberNo", memberNo);
 		map.put("start", start);
 		map.put("end", end);
