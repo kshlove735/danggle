@@ -41,6 +41,7 @@ public class AuthController {
 		Member m = authService.selectSocialId(socialId);
 		if(m != null) {
 			HttpSession session = request.getSession();
+			session.setAttribute("userInfo", userInfo);
 			session.setAttribute("member", m);
 			return "redirect:/";
 		// 없다면 추가 입력 사항 페이지로 이동하여 DB에 저장
@@ -68,6 +69,7 @@ public class AuthController {
 		Member m = authService.selectSocialId(socialId);
 		if(m != null) {
 			HttpSession session = request.getSession();
+			session.setAttribute("userInfo", userInfo);
 			session.setAttribute("member", m);
 			return "redirect:/";
 		}else {

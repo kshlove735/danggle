@@ -113,7 +113,17 @@
     <p id="commutitle">커뮤니티 게시판</p>
 
     <div id="searchdiv">
-        <form action="/board/community.do">
+    
+            <script>
+ 
+			//글쓰기 폼으로 이동
+			$(function(){    
+			        $("#writeBtn").click(function(){
+			            location.href="/board/post.do";
+			        });
+			});
+			 
+			</script>
             <button id="writeBtn">글쓰기</button>
             <select id="select">
                 <option style="text-align: left;" value="subject" selected>제목</option>
@@ -122,7 +132,7 @@
 
             <input type="text" id="search"/>
             <button id="btn">검색</button>
-        </form>
+        
     </div>
 
     <table id="commutable" class="table">
@@ -141,7 +151,7 @@
             <td class="table-user">
                 ${n.noticeNo }
             </td>
-            <td><a href="">${n.subject }</a></td>
+            <td><a href="/board/selectContent.do?noticeNo=${n.noticeNo }">${n.subject }</a></td>
             <td>관리자</td>
             <td>${n.regDateString }</td> 
             <td>
@@ -156,10 +166,11 @@
             <td class="table-user">
                 ${b.boardNo }
             </td>
-            <td><a href="">${b.subject }</a></td>
+            <td><a href="/board/selectContent.do?boardNo=${b.boardNo }">${b.subject }</a></td>
             <td>${b.memberId }</td>
             <td>${b.regDateString }</td>
             <td>
+            
                 <a href="" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
                 <a href="" class="action-icon"> <i class="mdi mdi-delete"></i></a>
             </td>

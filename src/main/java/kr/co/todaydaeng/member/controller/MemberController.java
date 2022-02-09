@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.oreilly.servlet.MultipartRequest;
@@ -275,6 +276,15 @@ public class MemberController {
 		int result = mService.changeMemberPwd(map);
 		if(result>0) response.getWriter().print(true);
 		else response.getWriter().print(false);
+	}
+	
+	@RequestMapping(value = "/member/logout.do")
+	public ModelAndView logoutMember(HttpSession session, ModelAndView mav) {
+		session.invalidate();
+		mav.addObject("msg", "로그아웃 되었습니다.");
+		mav.addObject("location", "/");
+		mav.setViewName("common/msg");
+		return mav;
 	}
 	
 }

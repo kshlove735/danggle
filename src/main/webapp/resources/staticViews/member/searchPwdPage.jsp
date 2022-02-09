@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>  
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +10,7 @@
 integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 </head>
 <body>
-<div class="header"></div>
+<div class="header"><%@ include file="/WEB-INF/views/mainPageView/mainHeader.jsp" %></div>
 	  <div class="form">
 	      <h2 id="title">비밀번호 찾기</h2>
 	      <hr>
@@ -29,7 +29,7 @@ integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="ano
 	      <button class="longBtn" id="changePwdBtn" style="display:none;">비밀번호 변경</button>
 	      
 	  </div>
-<div class="footer"></div>
+<div class="footer"><%@ include file="/WEB-INF/views/mainPageView/mainFooter.jsp" %></div>
 
 <script>
 let x; // 전역 timer 변수
