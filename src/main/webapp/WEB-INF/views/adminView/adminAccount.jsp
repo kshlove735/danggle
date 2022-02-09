@@ -265,10 +265,8 @@
 			        	alert('유효하지 않은 값 입력');
 			        }else{
 			        	alert('추가 실패');
-			        }
-			      
+			        }			      
 			        },
-
 			        error : function(data) {
 			            alert("ajax error");
 			        }
