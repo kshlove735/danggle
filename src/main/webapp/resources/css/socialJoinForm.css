@@ -10,17 +10,17 @@ body {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 15px;
   color: #919CA7;
-  background: #fafbfe;
+  background: #919CA7;
 }
 
 .header{
-  background-color: black;
   height:240px;
+  background-color:white;
 }
 
 .footer{
-	background-color: black;
-	height: 235px
+	height: 235px;
+	background-color:white;
 }
 
 #logo{
@@ -105,7 +105,7 @@ select {
 button {
   padding: 19px 39px 18px 39px;
   color: #3c1e00;
-  background-color: #ffc488;
+  background-color: #ff8000;
   font-size: 15px;
   font-weight: bold;
   text-align: center;

@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>  
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +12,7 @@
 integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 </head>
 <body>
-<div class="header"></div>
+<div class="header"><%@ include file="/WEB-INF/views/mainPageView/mainHeader.jsp" %></div>
 
 	<form action="/member/joinMember.do" method="post" enctype="multipart/form-data">
         <h2>회원가입</h2>
@@ -71,7 +72,7 @@ integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="ano
 	        <button type="submit" onClick="return checkForm();">가입하기</button>
         </fieldset>
       </form>
-<div class="footer"></div>
+<div class="footer"><%@ include file="/WEB-INF/views/mainPageView/mainFooter.jsp" %></div>
 
       <script>
       //아이디 중복 체크

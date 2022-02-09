@@ -9,7 +9,7 @@
 <link rel="stylesheet" type="text/css" href="/resources/css/welcomeJoin.css">
 </head>
 <body>
-	<div class="header"></div>
+	<div class="header"><%@ include file="/WEB-INF/views/mainPageView/mainHeader.jsp" %></div>
 
 	  <div class="form">
 	    <form class="login-form">
@@ -22,6 +22,6 @@
 	    </form>
 	  </div>
 	  
-<div class="footer"></div>
+<%@ include file="/WEB-INF/views/mainPageView/mainFooter.jsp" %>
 </body>
 </html>
