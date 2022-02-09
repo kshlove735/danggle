@@ -1,8 +1,9 @@
 package kr.co.todaydaeng.board.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-import kr.co.todaydaeng.board.model.vo.Board;
 import kr.co.todaydaeng.board.model.vo.BoardEx;
 import kr.co.todaydaeng.board.model.vo.Notice;
 
@@ -11,5 +12,9 @@ public interface BoardService {
 	ArrayList<BoardEx> communityList();
 	
 	ArrayList<Notice> noticeList();
+
+	public BoardEx view(int boardNo) throws Exception;
+
+	int insertPost(Map<String, Object> map) throws Exception;
 
 }

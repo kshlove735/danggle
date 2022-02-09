@@ -17,6 +17,7 @@
               BOARD  
     </select>
     
+    <!-- community 목록 -->
     <select id="communityListEx" resultType="boardEx">
          SELECT
             board_no as boardNo,
@@ -33,6 +34,7 @@
               LEFT JOIN MEMBER USING (member_no)
     </select>
     
+    <!-- 공지사항 목록 -->
     <select id="noticeList" resultType="notice">
          SELECT
             notice_no as noticeNo,
@@ -45,4 +47,37 @@
           FROM
               NOTICE
     </select>
+    
+    <!-- 게시글 보기 -->
+    <select id="view" resultType="boardEx" parameterType="int">
+         SELECT
+            board_no as boardNo,
+            member_no as memberNo,
+            subject as subject,
+            content as content,
+            regdate as regDate,
+            view_count as viewCount,
+            del_yn as delYN,
+            board_photo as boardPhoto,
+            member_id as memberId
+          FROM
+            BOARD  
+              LEFT JOIN MEMBER USING (member_no)
+          WHERE board_no = #{_parameter}
+    </select>
+    
+    <!-- 게시글 작성 -->
+    <insert id="insertPost" parameterType="hashmap">
+		INSERT INTO BOARD VALUES(
+			BOARD_SQ.nextval,
+			1010,
+			#{subject},
+			#{content},
+			SYSDATE,
+			0,
+			'N',
+			null
+		)
+	</insert>
+    
 </mapper>

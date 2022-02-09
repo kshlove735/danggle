@@ -67,8 +67,9 @@
             width: 1000px;
             height: 700px;
             border: 1px solid #D8D3D0;
-            text-align: center;
+            text-align: left;
             margin: 0 auto;
+            margin-top:10px;
             color: #919CA7;
             background-color: white;
             font-size: 15px;
@@ -169,28 +170,36 @@
     </div>
     <div style="height: 105px;"></div>
     <div class="wrap">
+    
         <div class="div">
-            <p id="subject">제목</p>
+
+            <p id="subject">${view.subject }</p>
 
             <hr id="line">
 
             <div style="width: 1000px; margin: 0 auto;">
                 <div class="box" style="background: #BDBDBD;">
-                    <img class="profile" src="/WebContent/assets/image/jellybear.jpg">
+                    <img class="profile" src="/resources/images/jellybear.jpg">
                 </div>
-                <p style="float: left;">작성자</p><br>
-            </div> <br><br>
+                <p style="float: left;">${view.memberId }</p><br>
+            </div> 
+            
+            <br><br>
+            
             <div style="width: 1000px; margin: 0 auto; text-align: right;">
 
                 <a href="" style="text-decoration: none">신고하기</a>
             </div>
             <div id="post">
+            ${view.content }
             </div>
-            <button id="btn" style="margin-top :8px;">목록으로</button>
-
+            <button id="btn" style="margin-top :8px; cursor:pointer;" onclick="location.href='/board/community.do';">목록으로</button>
+            
+            
+            <!-- 댓글 -->
             <div style="width: 100%; ">
                 <div class="commentbox" style="background: #BDBDBD; clear: both;">
-                    <img class="commentprofile" src="/WebContent/assets/image/hairpin.jpg">
+                    <img class="commentprofile" src="/resources/images/hairpin.jpg">
                 </div>
                 <p style="float: left; margin-left: 5px;">작성자</p>
 
