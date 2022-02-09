@@ -28,7 +28,7 @@ public class MyPageController {
 
 	@Autowired
 	private MyPageService mpService;
-	
+
 	@Autowired
 	private ServletContext context;
 
@@ -59,7 +59,7 @@ public class MyPageController {
 
 		System.out.println(memberPwd);
 
-		HashMap<String, String> map = new HashMap<>();
+		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("memberId", memberId);
 		map.put("memberPwd", memberPwd);
 
@@ -67,7 +67,7 @@ public class MyPageController {
 
 		if (m != null) {
 			/* 세션 갱신 */
-			member=m;
+			member = m;
 			response.getWriter().print(true);
 		} else {
 			response.getWriter().print(false);
@@ -84,24 +84,78 @@ public class MyPageController {
 
 	/* 회원 정보 수정 로직 */
 	@RequestMapping(value = "/myPage/updateMemberInfo.do", method = RequestMethod.POST)
-	public ModelAndView updateMemberInfo(Member m, @SessionAttribute Member member, @RequestParam String yy,
-			@RequestParam String mm, @RequestParam String dd, ModelAndView mav) {
+	public ModelAndView updateMemberInfo(HttpServletRequest request, @SessionAttribute Member member, ModelAndView mav) throws IOException {
 
-		String memberId = member.getMemberId();
-		String birthdate = yy + mm + dd;
+		// 파일 업로드 되는 경로
+		String uploadPath="/resources/upload/memberProfile/";
+		String uploadFilePath=context.getRealPath(uploadPath);
+		
+		// 파일 사이즈 설정(50MB)
+		int uploadFileSizeLimit = 50 * 1024 * 1024;
+		
+		// 파일 이름 인코딩 설정
+		String encType = "UTF-8";		
+				
+		// MultipartRequest 객체 생성
+		MultipartRequest multi = new MultipartRequest(request, uploadFilePath, uploadFileSizeLimit, encType,
+				new DefaultFileRenamePolicy());
 
+		// 첨부한 파일 이름
+		String originalFileName = multi.getFilesystemName("profileFile");
+
+		System.out.println(originalFileName);
+		
+		// 넘어온 이미지 파일 있으면 DB에 저장된 이미지 파일 삭제
+		if(originalFileName !=null) {
+			File beforeMemberProfile= new File(uploadFilePath+"\\"+member.getMemberProfile());
+			beforeMemberProfile.delete();
+		}
+		
+		String nickname = multi.getParameter("nickname");
+		String gender = multi.getParameter("gender");
+		
+		String yy = multi.getParameter("yy");
+		String mm = multi.getParameter("mm");
+		String dd = multi.getParameter("dd");
+		String birthdate = yy+mm+dd;
+		
+		String email = multi.getParameter("email");
+		String address = multi.getParameter("address");
+		String addressDetail = multi.getParameter("addressDetail");
+		
+		// 테스트 출력
+		System.out.println("nickname : " + nickname);
+		System.out.println("gender : " + gender);
+		System.out.println("birthdate : " + birthdate);
+		System.out.println("email : " + email);
+		System.out.println("address : " + address);
+		System.out.println("addressDetail : " + addressDetail);
+		
+		String memberId=member.getMemberId();
+
+		// 폴더에 저장 및 파일 이름 변경 (아이디_파일명)		
+		File file = new File(uploadFilePath+"\\"+originalFileName);
+		file.renameTo(new File(uploadFilePath+"\\"+memberId+"_"+originalFileName));
+		
+		// DB에 insert할 이름
+		String memberProfile=memberId+"_"+originalFileName;
+		
+		Member m = new Member();
 		m.setMemberId(memberId);
+		m.setEmail(email);
+		m.setNickname(nickname);
+		m.setGender(gender);
 		m.setBirthdate(birthdate);
-
-		System.out.println(m.getMemberId());
-		System.out.println(m.getNickname());
-		System.out.println(m.getGender());
-		System.out.println(m.getBirthdate());
-		System.out.println(m.getEmail());
-		System.out.println(m.getAddress());
-		System.out.println(m.getAddressDetail());
-
-		int result = mpService.updateMemberInfo(m);
+		m.setAddress(address);
+		m.setAddressDetail(addressDetail);
+		
+		if(originalFileName !=null) {
+			m.setMemberProfile(memberProfile);
+		}else {
+			m.setMemberProfile(member.getMemberProfile());
+		}
+		
+		int result =mpService.updateMemberInfo(m);
 
 		if (result > 0) {
 			/* 세션 갱신 */
@@ -111,14 +165,16 @@ public class MyPageController {
 			member.setEmail(m.getEmail());
 			member.setAddress(m.getAddress());
 			member.setAddressDetail(m.getAddress());
-
+			member.setMemberProfile(m.getMemberProfile());
+			
+			mav.addObject("result", true);
 			mav.addObject("msg", "회원 정보 수정 성공");
 			mav.addObject("location", "/myPage/memberInfoPage.do");
 		} else {
+			mav.addObject("result", false);
 			mav.addObject("msg", "회원 정보 수정 실패 - 지속적인 문제 발생시 관리자에게 문의해주세요.");
-			mav.addObject("location", "/myPage/memberInfoPage.do");
 		}
-		mav.setViewName("common/msg_test");
+		mav.setViewName("common/msgOrHistoryBack");
 
 		return mav;
 	}
@@ -151,124 +207,125 @@ public class MyPageController {
 			response.getWriter().print(false);
 		}
 	}
-	
-	/* 탈퇴 확인 페이지 호출 (PW 확인)*/
+
+	/* 탈퇴 확인 페이지 호출 (PW 확인) */
 	@RequestMapping(value = "/myPage/withdrawCheckPage.do", method = RequestMethod.GET)
 	public String withdrawCheckPage() {
 		return "myPage/withdrawCheckPage";
 	}
-	
+
 	/* 회원 탈퇴 로직 */
 	@RequestMapping(value = "/myPage/withdrawCheck.do", method = RequestMethod.POST)
-	public void withdrawCheck(@RequestParam String memberPwd, @SessionAttribute Member member,HttpServletRequest request , HttpServletResponse response) throws IOException {
-		
+	public void withdrawCheck(@RequestParam String memberPwd, @SessionAttribute Member member,
+			HttpServletRequest request, HttpServletResponse response) throws IOException {
+
 		String memberId = member.getMemberId();
 
 		System.out.println(memberPwd);
 
-		HashMap<String, String> map = new HashMap<>();
+		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("memberId", memberId);
 		map.put("memberPwd", memberPwd);
 
-		int result= mpService.withdrawCheck(map);
+		int result = mpService.withdrawCheck(map);
 
-		if (result>0) {
+		if (result > 0) {
 			/* 세션 파기 */
 			request.getSession().invalidate();
-			
+
 			response.getWriter().print(true);
 		} else {
 			response.getWriter().print(false);
 		}
-		
+
 	}
-	
+
 	/* 반려견 정보 페이지 호출 */
 	@RequestMapping(value = "/myPage/dogInfoPage.do", method = RequestMethod.GET)
-	public ModelAndView dogInfoPage(@SessionAttribute Member member,ModelAndView mav, HttpServletRequest request) {
-		
+	public ModelAndView dogInfoPage(@SessionAttribute Member member, ModelAndView mav, HttpServletRequest request) {
+
 		int currentPage;
-		
-		if(request.getParameter("currentPage")==null) {
-			currentPage=1;
-		}else {
-			currentPage=Integer.parseInt(request.getParameter("currentPage"));
+
+		if (request.getParameter("currentPage") == null) {
+			currentPage = 1;
+		} else {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
-		
-		int memberNo=member.getMemberNo();
-		
-		HashMap<String , Object> map = mpService.selectDogInfo(currentPage,memberNo);
-		
-		
-				
+
+		int memberNo = member.getMemberNo();
+
+		HashMap<String, Object> map = mpService.selectDogInfo(currentPage, memberNo);
+
 		mav.addObject("map", map);
+		mav.addObject("currentPage", currentPage);
 		mav.setViewName("myPage/dogInfoPage");
-		
+
 		return mav;
 	}
-	
-	
+
 	/* 반려견 정보 등록 페이지 호출 */
 	@RequestMapping(value = "/myPage/insertDogInfoPage.do", method = RequestMethod.GET)
 	public String insertDogInfoPage() {
-		
+
 		return "myPage/insertDogInfoPage";
 	}
-	
+
 	/* 반려견 정보 등록 */
 	@RequestMapping(value = "/myPage/insertDogInfo.do", method = RequestMethod.POST)
-	public ModelAndView insertDogInfo(HttpServletRequest request, @SessionAttribute Member member, ModelAndView mav ) throws IOException {
-		
+	public ModelAndView insertDogInfo(HttpServletRequest request, @SessionAttribute Member member, ModelAndView mav)
+			throws IOException {
+
 		// 파일 업로드 되는 경로
-		String uploadPath="/resources/upload/dogProfile/";
-		String uploadFilePath=context.getRealPath(uploadPath);
+		String uploadPath = "/resources/upload/dogProfile/";
+		String uploadFilePath = context.getRealPath(uploadPath);
 		System.out.println("파일 경로 확인 : " + uploadFilePath);
-		
+
 		// 파일 사이즈 설정(50MB)
-		int uploadFileSizeLimit=50*1024*1024;
-		
+		int uploadFileSizeLimit = 50 * 1024 * 1024;
+
 		// 파일 이름 인코딩 설정
-		String encType="UTF-8";
-		
+		String encType = "UTF-8";
+
 		// MultipartRequest 객체 생성
-		MultipartRequest multi = new MultipartRequest(request, uploadFilePath, uploadFileSizeLimit, encType, new DefaultFileRenamePolicy());
-		
+		MultipartRequest multi = new MultipartRequest(request, uploadFilePath, uploadFileSizeLimit, encType,
+				new DefaultFileRenamePolicy());
+
 		String dogName = multi.getParameter("dogName");
 		char gender = multi.getParameter("gender").charAt(0);
-		
+
 		String yy = multi.getParameter("yy");
 		String mm = multi.getParameter("mm");
 		String dd = multi.getParameter("dd");
-		String birthdate = yy+mm+dd;
-		
+		String birthdate = yy + mm + dd;
+
 		String breed = multi.getParameter("breed");
 		String dogSize = multi.getParameter("dogSize");
 		String vaccinationYN = multi.getParameter("vaccinationYN");
 		char neutralizationYN = multi.getParameter("neutralizationYN").charAt(0);
-		
+
 		// 첨부한 파일 이름
-		String originalFileName= multi.getFilesystemName("profileFile");
-		
-		// 테스트 출력 
-		System.out.println("dogName : "+dogName);
-		System.out.println("gender : "+gender);
-		System.out.println("birthdate : "+birthdate);
-		System.out.println("breed : "+breed);
-		System.out.println("dogSize : "+dogSize);
-		System.out.println("vaccinationYN : "+vaccinationYN);
-		System.out.println("neutralizationYN : "+neutralizationYN);
-		System.out.println("originalFileName : "+originalFileName);
-		
+		String originalFileName = multi.getFilesystemName("profileFile");
+
+		// 테스트 출력
+		System.out.println("dogName : " + dogName);
+		System.out.println("gender : " + gender);
+		System.out.println("birthdate : " + birthdate);
+		System.out.println("breed : " + breed);
+		System.out.println("dogSize : " + dogSize);
+		System.out.println("vaccinationYN : " + vaccinationYN);
+		System.out.println("neutralizationYN : " + neutralizationYN);
+		System.out.println("originalFileName : " + originalFileName);
+
 		// 폴더에 저장 및 파일 이름 변경(아이디_반려견이름_파일명)
-		String memberId=member.getMemberId();
-				
-		File file= new File(uploadFilePath+"\\"+originalFileName);
-		file.renameTo(new File(uploadFilePath+"\\"+memberId+"_"+dogName+"_"+originalFileName));
-		
-		String dogProfile=memberId+"_"+dogName+"_"+originalFileName;
-		
-		System.out.println("dogProfile : "+dogProfile);
-		
+		String memberId = member.getMemberId();
+
+		File file = new File(uploadFilePath + "\\" + originalFileName);
+		file.renameTo(new File(uploadFilePath + "\\" + memberId + "_" + dogName + "_" + originalFileName));
+
+		String dogProfile = memberId + "_" + dogName + "_" + originalFileName;
+
+		System.out.println("dogProfile : " + dogProfile);
+
 		Dog dog = new Dog();
 		dog.setDogName(dogName);
 		dog.setMemberNo(member.getMemberNo());
@@ -279,23 +336,141 @@ public class MyPageController {
 		dog.setVaccinationYN(vaccinationYN);
 		dog.setNeutralizationYN(neutralizationYN);
 		dog.setDogProfile(dogProfile);
-		
+
 		int result = mpService.insertDogInfo(dog);
-		
-		if(result>0) {
+
+		if (result > 0) {
 			mav.addObject("msg", "반려견 정보가 등록되었습니다.");
 			mav.addObject("location", "/myPage/dogInfoPage.do");
-		}else {
+		} else {
 			mav.addObject("msg", "반려견 정보 등록에 실패하였습니다.\n- 지속적인 문제 발생시 관리자에게 문의해주세요 -");
 			mav.addObject("location", "/myPage/insertDogInfoPage.do");
 		}
 		mav.setViewName("common/msg");
 		return mav;
-		
+
 	}
 
-	
-	
-	
-	
+	/* 반려견 정보 수정 페이지 호출 */
+	@RequestMapping(value = "/myPage/updateDogInfoPage.do", method = RequestMethod.GET)
+	public ModelAndView updateDogInfoPage(@RequestParam int dogNo, @RequestParam int currentPage, ModelAndView mav) {
+
+		Dog dog = mpService.selectOneDogInfo(dogNo);
+
+		mav.addObject("dog", dog);
+		mav.addObject("currentPage", currentPage);
+
+		mav.setViewName("myPage/updateDogInfoPage");
+
+		return mav;
+	}
+
+	/* 반려전 정보 수정 로직 */
+	@RequestMapping(value = "/myPage/updateDogInfo.do", method = RequestMethod.POST)
+	public ModelAndView updateDogInfo(HttpServletRequest request, @SessionAttribute Member member, ModelAndView mav)
+			throws IOException {
+
+		// 파일 업로드 되는 경로
+		String uploadPath = "/resources/upload/dogProfile/";
+		String uploadFilePath = context.getRealPath(uploadPath);
+		System.out.println("파일 경로 확인 : " + uploadFilePath);
+
+		// 파일 사이즈 설정(50MB)
+		int uploadFileSizeLimit = 50 * 1024 * 1024;
+
+		// 파일 이름 인코딩 설정
+		String encType = "UTF-8";
+
+		// MultipartRequest 객체 생성
+		MultipartRequest multi = new MultipartRequest(request, uploadFilePath, uploadFileSizeLimit, encType,
+				new DefaultFileRenamePolicy());
+
+		// 첨부한 파일 이름
+		String originalFileName = multi.getFilesystemName("profileFile");
+
+		System.out.println(originalFileName);
+
+		int dogNo = Integer.parseInt(multi.getParameter("dogNo"));
+		Dog dog = mpService.selectOneDogInfo(dogNo);
+		// 넘어온 이미지 파일 있으면 DB에 저장된 이미지 파일 삭제
+		if (originalFileName != null) {
+			File beforeDogProfile = new File(uploadFilePath + "\\" + dog.getDogProfile());
+			beforeDogProfile.delete();
+		}
+
+		String dogName = multi.getParameter("dogName");
+		char gender = multi.getParameter("gender").charAt(0);
+
+		String yy = multi.getParameter("yy");
+		String mm = multi.getParameter("mm");
+		String dd = multi.getParameter("dd");
+		String birthdate = yy + mm + dd;
+
+		String breed = multi.getParameter("breed");
+		String dogSize = multi.getParameter("dogSize");
+		String vaccinationYN = multi.getParameter("vaccinationYN");
+		char neutralizationYN = multi.getParameter("neutralizationYN").charAt(0);
+
+		// 테스트 출력
+		System.out.println("dogName : " + dogName);
+		System.out.println("gender : " + gender);
+		System.out.println("birthdate : " + birthdate);
+		System.out.println("breed : " + breed);
+		System.out.println("dogSize : " + dogSize);
+		System.out.println("vaccinationYN : " + vaccinationYN);
+		System.out.println("neutralizationYN : " + neutralizationYN);
+		System.out.println("originalFileName : " + originalFileName);
+
+		// 폴더에 저장 및 파일 이름 변경(아이디_반려견이름_파일명)
+		String memberId = member.getMemberId();
+
+		File file = new File(uploadFilePath + "\\" + originalFileName);
+		file.renameTo(new File(uploadFilePath + "\\" + memberId + "_" + dogName + "_" + originalFileName));
+
+		String dogProfile = memberId + "_" + dogName + "_" + originalFileName;
+
+		System.out.println("dogProfile : " + dogProfile);
+
+		dog.setDogNo(dogNo);
+		dog.setDogName(dogName);
+		dog.setMemberNo(member.getMemberNo());
+		dog.setGender(gender);
+		dog.setBirthdate(birthdate);
+		dog.setBreed(breed);
+		dog.setDogSize(dogSize);
+		dog.setVaccinationYN(vaccinationYN);
+		dog.setNeutralizationYN(neutralizationYN);
+
+		if (originalFileName != null) {
+			dog.setDogProfile(dogProfile);
+		}
+
+		int result = mpService.updateDogInfo(dog);
+
+		if (result > 0) {
+			mav.addObject("result", true);
+			mav.addObject("msg", "반려견 정보가 수정되었습니다.");
+			int currentPage = Integer.parseInt(multi.getParameter("currentPage"));
+			mav.addObject("location", "/myPage/dogInfoPage.do?currentPage=" + currentPage);
+		} else {
+			mav.addObject("result", false);
+			mav.addObject("msg", "반려견 정보 수정에 실패하였습니다.\n- 지속적인 문제 발생시 관리자에게 문의해주세요 -");
+		}
+		mav.setViewName("common/msgOrHistoryBack");
+		return mav;
+	}
+
+	/* 반려견 정보 삭제 */
+	@RequestMapping(value = "/myPage/deleteDogInfo.do", method = RequestMethod.POST)
+	public void deleteDogInfo(@RequestParam int dogNo, HttpServletResponse response) throws IOException {
+		int result = mpService.deleteDogInfo(dogNo);
+
+		if (result > 0) {
+			response.getWriter().print(true);
+		} else {
+			response.getWriter().print(false);
+		}
+
+	}
+
 }

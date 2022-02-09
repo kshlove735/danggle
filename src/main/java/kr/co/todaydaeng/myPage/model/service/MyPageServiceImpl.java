@@ -49,7 +49,7 @@ public class MyPageServiceImpl implements MyPageService {
 		int naviContPerPage=2;
 		String pageNavi = mpDAO.getPageNavi(naviContPerPage,currentPage,recordCountPerPage, memberNo);
 		
-		HashMap<String , Object> result=new HashMap<>();
+		HashMap<String , Object> result=new HashMap<String, Object>();
 		result.put("list", list);
 		result.put("pageNavi", pageNavi);
 		
@@ -59,5 +59,20 @@ public class MyPageServiceImpl implements MyPageService {
 	@Override
 	public int insertDogInfo(Dog dog) {
 		return mpDAO.insertDogInfo(dog);
+	}
+
+	@Override
+	public Dog selectOneDogInfo(int dogNo) {
+		return mpDAO.selectOneDogInfo(dogNo);
+	}
+
+	@Override
+	public int updateDogInfo(Dog dog) {
+		return mpDAO.updateDogInfo(dog);
+	}
+
+	@Override
+	public int deleteDogInfo(int dogNo) {
+		return mpDAO.deleteDogInfo(dogNo);
 	}
 }

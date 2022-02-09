@@ -2,14 +2,36 @@
 <!DOCTYPE mapper PUBLIC "//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="admin">
 	
-	<select id="adminLogin" parameterType="hashmap" resultType="adminVO">
+	<select id="selectAdminLogin" parameterType="hashmap" resultType="adminVO">
 		SELECT 
 			admin_no as adminNo,
 			admin_id as adminID,
 			admin_pwd as adminPWD,
 			admin_name as adminName,
 			admin_email as adminEmail,
-			admin_grade as adminGrade FROM admin WHERE (admin_id=#{adminID} AND admin_pwd=#{adminPWD} ) AND (NOT admin_grade='D')
+			admin_grade as adminGrade 
+			FROM admin 
+			WHERE (admin_id=#{adminID} AND admin_pwd=#{adminPWD} ) AND (NOT admin_grade='D')
+	</select>
+	
+	<select id="selectAdminIDCheck" parameterType="string" resultType="string">
+		SELECT
+			admin_id as adminID
+			FROM admin
+			WHERE admin_id=#{chkID}	
 	</select>	
+	
+	<insert id="insertAdminAccount" parameterType="adminVO">
+		INSERT INTO admin VALUES (
+			ADMINNO_SQ.NEXTVAL,
+			#{adminID},
+			#{adminPWD},
+			#{adminName},
+			#{adminEmail},
+			DEFAULT,
+			SYSDATE
+		)
+			
+	</insert>
 
 </mapper>
