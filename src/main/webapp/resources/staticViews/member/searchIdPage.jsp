@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>  
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +10,8 @@
 integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 </head>
 <body>
-<div class="header"></div>
+<div class="header"><%@ include file="/WEB-INF/views/mainPageView/mainHeader.jsp" %></div>
+
 	  <div class="form">
 	      <h2>아이디 찾기</h2>
 	      <hr>
@@ -27,7 +28,8 @@ integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="ano
 	      <div id="showEnrollDate" style="display:none; font-size:12px;">가입일 :  <b id="enrollDate"> </b></div>
 	      <a href="/resources/views/login.jsp" class="longBtn" id="loginBtn" style="display:none;">로그인하기</a>
 	  </div>
-<div class="footer"></div>
+	  
+<div class="footer"><%@ include file="/WEB-INF/views/mainPageView/mainFooter.jsp" %></div>
 
 <script>
 let x; // 전역 timer 변수

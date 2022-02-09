@@ -11,7 +11,7 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
 </head>
 <body>
-    <div class="header"></div>
+    <div class="header"><%@ include file="/WEB-INF/views/mainPageView/mainHeader.jsp" %></div>
 	<form action="/socialJoin.do" method="post">
         <h2>추가 입력 사항</h2>
         <fieldset>
@@ -70,7 +70,7 @@
         <button type="submit" onClick="checkForm()">가입하기</button>
         </fieldset>
       </form>
-<div class="footer"></div>
+<div class="footer"><%@ include file="/WEB-INF/views/mainPageView/mainFooter.jsp" %></div>
    
       <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 		<script>
