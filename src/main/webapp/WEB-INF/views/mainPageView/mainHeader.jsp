@@ -61,7 +61,7 @@
         });
         
         $('#diary').click(function(){
-            location.replcae("/myPage/diaryPage.do");
+            location.replace("/myPage/diaryPage.do");
         });
         
         $('#area').click(function(){
@@ -69,7 +69,7 @@
         });
         
         $('#community').click(function(){
-            location.replcae("/board/community.do");
+            location.replace("/board/community.do");
         });
         
         $('#vet').click(function(){

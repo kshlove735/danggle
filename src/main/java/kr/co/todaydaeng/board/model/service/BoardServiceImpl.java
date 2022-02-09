@@ -1,6 +1,7 @@
 package kr.co.todaydaeng.board.model.service;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,19 @@ public class BoardServiceImpl implements BoardService{
 	public ArrayList<Notice> noticeList() {
 
 		return bDAO.noticeList();
+		
+	}
+
+	@Override
+	public BoardEx view(int boardNo) throws Exception {
+		
+		return bDAO.view(boardNo);
+	}
+
+	@Override
+	public int insertPost(Map<String, Object> map) {
+
+		return bDAO.insertPost(map);
 		
 	}
 
