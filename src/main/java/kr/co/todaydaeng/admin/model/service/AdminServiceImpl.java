@@ -21,13 +21,20 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public String selectAdminIDCheck(String chkID) {
-		return aDAO.selectAdminIDCheck(chkID);
-		
+	public String selectAdminEmailCheck(String chkMail) {
+		return aDAO.selectAdminEmailCheck(chkMail);
 	}
 
 	@Override
-	public int insertAdminAccount(AdminVO avo) {
-		return aDAO.insertAdminAccount(avo);
+	public int updateAdminAccount(AdminVO avo) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
+
+	@Override
+	public int updateAdminPWD(HashMap<String, String> mapPwd) {
+		return aDAO.updateAdminPWD(mapPwd);
+	}
+
+
 }

@@ -9,7 +9,8 @@
 			admin_pwd as adminPWD,
 			admin_name as adminName,
 			admin_email as adminEmail,
-			admin_grade as adminGrade 
+			admin_grade as adminGrade,
+			admin_date as adminDate 
 			FROM admin 
 			WHERE (admin_id=#{adminID} AND admin_pwd=#{adminPWD} ) AND (NOT admin_grade='D')
 	</select>
@@ -33,5 +34,18 @@
 		)
 			
 	</insert>
+	
+	<select id="selectAdminEmailCheck" parameterType="string" resultType="string">
+		SELECT
+			admin_email as adminEmail
+			FROM admin
+			WHERE admin_email=#{chkMail}	
+	</select>
+	
+	<update id="updateAdminPWD" parameterType="map">
+		UPDATE admin
+		SET admin_pwd=#{newPWD}
+		WHERE admin_id=#{adminID}
+	</update>
 
 </mapper>

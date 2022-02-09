@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.todaydaeng.admin.model.service.AdminService;
+import kr.co.todaydaeng.admin.model.service.ManageService;
 import kr.co.todaydaeng.admin.model.vo.AdminVO;
 
 @Controller
@@ -20,6 +21,9 @@ public class AdminController {
 	
 	@Autowired
 	private AdminService aService;
+	
+	@Autowired
+	private ManageService mService;
 
 	@RequestMapping(value="/admin/adminIndex.do", method = RequestMethod.GET)
 		public String adminIndex (HttpSession session) {
@@ -45,17 +49,14 @@ public class AdminController {
 					
 					map.put("adminID",adminID);
 					map.put("adminPWD",adminPWD);
-					
-				//form에서 온 request 정보로 관리자 필드와 일치하면 true 반환, ajax가 관리자 메인으로 리다이렉트
+								
 				AdminVO adm = aService.selectAdminLogin(map);
 				
-				//return된 관리자 VO에서 임시조치된 관리자로 확인된 경우? → adminGrade 값이 C인 경우 처리??
-				
 				if (adm != null) {			
-					session.setAttribute("AdminVO", adm);
+					session.setAttribute("adminVO", adm);
 					response.getWriter().print(true);				
 				}else {
-					// session 정보가 불일치 하면 false 반환, 로그인 페이지 그대로 유지
+					// return되는 정보가 없으면 false 반환, 로그인 페이지 그대로 유지
 					response.getWriter().print(false);
 				}	
 		
@@ -76,17 +77,17 @@ public class AdminController {
 	
 	@RequestMapping(value="/admin/adminAccount.do")
 	public String adminAccount() {
-		return "adminView/adminAccount";
-		
+		return "adminView/adminAccount";		
 	}
 	
 	@RequestMapping(value="/admin/adminIDCheck.do", method = RequestMethod.POST)
-	public void SelectAdminIDCheck(@RequestParam String chkID, HttpServletResponse response) throws IOException {		
+	public void selectAdminIDCheck(@RequestParam String chkID, HttpServletResponse response) throws IOException {		
 		
+		//ID중복 확인값의 유효성 검사
 		if (chkID == null || chkID.length() > 15) {
 			response.getWriter().print("invalid");
 		}else {
-			String result = aService.selectAdminIDCheck(chkID);						
+			String result = mService.selectAdminIDCheck(chkID);						
 			
 			if (result == null) {
 				response.getWriter().print("pass");
@@ -103,17 +104,93 @@ public class AdminController {
 		String name = avo.getAdminName();
 		String email = avo.getAdminEmail();
 		
+		//유효성 검사
 		if ( id == null || pwd == null || name == null || email == null ) {
 			response.getWriter().print("invalid");
 		}else {
-			int result = aService.insertAdminAccount(avo);
+			int result = mService.insertAdminAccount(avo);
 			
 			if (result >0) {
 				response.getWriter().print("pass");
 			}else {
 				response.getWriter().print("false");
 			}
-		}
-		
+		}		
 	}
+	
+	@RequestMapping(value="/admin/adminInfo.do")
+	public String adminInfo() {
+		return "adminView/adminInfo";		
+	}
+
+	@RequestMapping(value="/admin/adminEmailCheck.do", method=RequestMethod.POST)
+	public void selectAdminEmailCheck(@RequestParam String chkMail, HttpServletResponse response) throws IOException {
+		
+		//email중복 확인값의 유효성 검사
+		if (chkMail == null || chkMail.length() > 30) {
+			response.getWriter().print("invalid");
+		}else {
+			String result = aService.selectAdminEmailCheck(chkMail);						
+			
+			if (result == null) {
+				response.getWriter().print("pass");
+			}else {
+				response.getWriter().print("false");
+			}
+		}
+	}
+	
+	@RequestMapping(value="/admin/updatePWDChange.do", method=RequestMethod.POST)
+	public void updateAdminPWD(@RequestParam String adminID, @RequestParam String oldPWD, 
+								@RequestParam String newPWD, HttpServletResponse response)  throws IOException {
+		
+		// 로그인 메소드를 호출하여 사용자 검증 후에 암호 변경 로직을 수행한다
+		HashMap<String, String> map = new HashMap<String, String>();		
+		map.put("adminID",adminID);
+		map.put("adminPWD",oldPWD);
+					
+		AdminVO adm = aService.selectAdminLogin(map);
+	
+		if (adm != null)  {
+			response.getWriter().print("invalid");
+			
+		}else {
+		//사용자 검증-로그인 메소드를 통과했다면 암호 변경 로직을 수행
+		HashMap mapPwd = new HashMap<String, String>();		
+		mapPwd.put("adminID", adminID);		
+		mapPwd.put("newPWD", newPWD);		
+			int result = aService.updateAdminPWD(mapPwd);						
+			
+			if (result >0) {
+				response.getWriter().print("true");
+			}else {
+				response.getWriter().print("false");
+			}
+		}	
+	}	
+	
+	@RequestMapping(value="/admin/updateAdminAccount.do", method=RequestMethod.POST)
+	public void updateAdminAccount(AdminVO avo, HttpServletResponse response,HttpSession session) throws IOException {						
+		String name = avo.getAdminName();
+		String email = avo.getAdminEmail();
+		
+		//유효성 검사
+		if ( name == null || email == null ) {
+			response.getWriter().print("invalid");
+		}else {
+			int result = aService.updateAdminAccount(avo);
+			
+			if (result >0) {
+				
+				//업데이트 끝나면 select query 실행해서 session을 갱신
+				//session.getAttribute("adminVO",result);
+				
+				response.getWriter().print("pass");
+			}else {
+				response.getWriter().print("false");
+			}
+		}		
+	}
+		
+
 }

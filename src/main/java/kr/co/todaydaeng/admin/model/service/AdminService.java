@@ -8,8 +8,12 @@ public interface AdminService {
 
 	AdminVO selectAdminLogin(HashMap<String, String> map);
 
-	String selectAdminIDCheck(String chkID);
+	String selectAdminEmailCheck(String chkMail);
 
-	int insertAdminAccount(AdminVO avo);
+	int updateAdminAccount(AdminVO avo);
+
+	int updateAdminPWD(HashMap<String, String> mapPwd);
+
+
 
 }
