@@ -30,11 +30,11 @@
         <c:choose>
             <c:when test="${sessionScope.member != null }" >    
                 <div id="logoutBox">
-                    <span id="logout"> ${(sessionScope.member.nickname)} </span> 
+                    <span id="info"> ${(sessionScope.member.nickname)} </span> 
                 </div>
             
                 <div id="infoBox"> 
-                    <span id="info">회원정보</span>
+                    <span id="logout">로그아웃</span>
                 </div>
              </c:when>    
         
@@ -55,13 +55,17 @@
     
     
     <script>
+   	   <!-- 로그아웃 이벤트는 여기에 걸어주시면 됩니다 -->
+    	$('#logout').click(function(){
+    		alert('로그아웃 이벤트 미설정');
+    	});    
         
         $('#head>a').click(function(){
             location.replace("/");
         });
         
         $('#diary').click(function(){
-            location.replcae("/myPage/diaryPage.do");
+            location.replace("/myPage/diaryPage.do");
         });
         
         $('#area').click(function(){
@@ -69,7 +73,7 @@
         });
         
         $('#community').click(function(){
-            location.replcae("/board/community.do");
+            location.replace("/board/community.do");
         });
         
         $('#vet').click(function(){

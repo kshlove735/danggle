@@ -17,14 +17,18 @@ public class AdminDAO {
 	@Qualifier(value="sqlSessionTemplate")
 	private SqlSessionTemplate sqlSession; 
 
-	public AdminVO adminLogin(String adminID, String adminPWD) {
-		
-		HashMap<String,Object> map = new HashMap<String,Object>();
-		
-		map.put("adminID",adminID);
-		map.put("adminPWD", adminPWD);
-		
-		return sqlSession.selectOne("admin.adminLogin",map);
+	public AdminVO selectAdminLogin(HashMap<String, String> map) {				
+		return sqlSession.selectOne("admin.selectAdminLogin",map);
+	}
+
+	public String selectAdminIDCheck(String chkID) {
+		return sqlSession.selectOne("admin.selectAdminIDCheck",chkID);
+				
+	}
+
+	public int insertAdminAccount(AdminVO avo) {
+		return sqlSession.insert("admin.insertAdminAccount",avo);
+				
 	}
 
 }

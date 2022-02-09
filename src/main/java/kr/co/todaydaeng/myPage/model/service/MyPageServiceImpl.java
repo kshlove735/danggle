@@ -49,7 +49,7 @@ public class MyPageServiceImpl implements MyPageService {
 		int naviContPerPage=2;
 		String pageNavi = mpDAO.getPageNavi(naviContPerPage,currentPage,recordCountPerPage, memberNo);
 		
-		HashMap<String , Object> result=new HashMap<>();
+		HashMap<String , Object> result=new HashMap<String, Object>();
 		result.put("list", list);
 		result.put("pageNavi", pageNavi);
 		

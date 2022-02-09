@@ -1,6 +1,7 @@
 package kr.co.todaydaeng.board.model.dao;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,16 @@ public class BoardDAO {
 		
 		return new ArrayList<Notice>(sqlSession.selectList("board.noticeList"));
 	}
-	
+
+	public BoardEx view(int boardNo) throws Exception {
+		 
+		 return sqlSession.selectOne("board.view", boardNo);
+		}
+
+	public int insertPost(Map<String, Object> map) {
+
+		return sqlSession.insert("board.insertPost",map);
+		
+	}
 
 }
