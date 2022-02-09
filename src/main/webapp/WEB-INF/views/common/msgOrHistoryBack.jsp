@@ -12,7 +12,7 @@
 	<c:when test="${requestScope.result=='true'}">
 		<script>
 			alert('${requestScope.msg }');
-			location.replace('${requestScope.location}');
+			location.href('${requestScope.location}');
 		</script>
 	</c:when>
 	<c:otherwise>
