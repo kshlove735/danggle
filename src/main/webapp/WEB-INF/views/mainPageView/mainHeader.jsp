@@ -57,7 +57,7 @@
     <script>
    	   <!-- 로그아웃 이벤트는 여기에 걸어주시면 됩니다 -->
     	$('#logout').click(function(){
-    		alert('로그아웃 이벤트 미설정');
+    		location.replace("/member/logout.do");
     	});    
         
         $('#head>a').click(function(){
