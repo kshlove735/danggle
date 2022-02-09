@@ -80,8 +80,7 @@
        
         <H2 class="category"> 회원 관리 </H2>       
         <ul>
-            <li> <span class="highlight" onclick="memberManage();">  권한 조정 </span>  </li>
-            
+            <li> <span class="highlight" onclick="memberManage();">  권한 조정 </span>  </li>            
             <li> <span class="highlight" onclick="tempManage();"> 임시조치  </span> </li>     
         </ul>
         
@@ -96,6 +95,7 @@
         <ul>
             <li> <span class="highlight" onclick="adminAccount();"> 추가  </span> </li>  
             <li> <span class="highlight" onclick="adminManage()" > 권한 조정 / 삭제 </span> </li>
+            <li> <span class="highlight" onclick="adminInfo()" > 계정정보 확인 / 변경 </span> </li>
         </ul>
        
         <H2 class="category"> 친구찾기 게시판 </H2>       
@@ -151,6 +151,10 @@
         function neighborManage(){
            location.replace("/admin/neighborManage.do");  
         }
+        
+        function adminInfo(){
+            location.replace("/admin/adminInfo.do");  
+         }
         
         function cs(){
            alert('준비중인 기능');

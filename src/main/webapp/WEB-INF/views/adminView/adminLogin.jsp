@@ -59,15 +59,13 @@
        <div id="inputBox">
            
            <div id="margin">
-              
-               <form action="/admin/adminLogin.do" method="post">                
+                              
                  <fieldset> <legend style="text-align: center;">로그인</legend>               
                  <br>
               ID: <br><input type="text" name="adminID" id="adminId" /> <br>
               PWD: <input type="password" name="adminPWD" id="adminPwd" />  <br> <br>                                 
                  <input type="submit" value="로그인" onclick="return login();">
-                  </fieldset>                 	                                                           
-               </form>                                              
+                  </fieldset>                 	                                                                                       
            
            </div> 
            

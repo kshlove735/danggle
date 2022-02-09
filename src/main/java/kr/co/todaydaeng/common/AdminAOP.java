@@ -52,5 +52,23 @@ public class AdminAOP {
 	}
 	
 	
+	@Pointcut("exevution(int kr.co.todaydaeng.admin.model.service.*ServiceImpl.updateAdminPWD(..))")
+	public void pwdChangePointcut() {}
+	
+	@Before ("pwdChangePointcut()")
+	public void pwdChangeEncrypt (JoinPoint jp) throws Exception {
+		
+		HashMap<String, String> map = (HashMap<String, String>)jp.getArgs()[0];
+		
+		//value 값이 object면 toString으로 형변환 했어야 함
+		
+		String salt = map.get("adminID");		
+		String newPWD = map.get("newPWD");
+		
+		String encrptNew = encrypt.encryptionData(newPWD, salt);		
+		
+		map.put("newPWD",encrptNew);
+	}
+	
 
 }

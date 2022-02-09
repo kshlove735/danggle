@@ -31,4 +31,12 @@ public class AdminDAO {
 				
 	}
 
+	public String selectAdminEmailCheck(String chkMail) {
+		return sqlSession.selectOne("admin.selectAdminEmailCheck",chkMail);
+	}
+
+	public int updateAdminPWD(HashMap<String, String> mapPwd) {
+		return sqlSession.update("admin.updateAdminPWD",mapPwd);
+	}
+
 }

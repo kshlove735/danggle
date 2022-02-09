@@ -74,35 +74,47 @@
                   
                    <thead>
                       <tr>
-                      <H2 > 관리자를 등록합니다 </H2>
+                      <H2 > 사용중인 계정의 정보를 변경합니다 </H2>
                       </tr>
-                      <th> <span> 등록시 안내사항: &nbsp; </span> <span style="color: red" id="msg"> </span> </th>
+                      <th> <span> 변경시 안내사항: &nbsp; </span> <span style="color: red" id="msg"> </span> </th>
                    </thead>
                    
                     <tbody>   
                         <tr>
                           <td>
-                           ID 입력: <input type="text" id="adminId" maxlength="15" />
+							관리자 번호: ${sessionScope.adminVO.adminNo}                           
                           </td>     
                         </tr>
                         <tr>   
                           <td>
-                           암호 입력: <input type="password" id="adminPwd" maxlength="20" />
+							ID: ${sessionScope.adminVO.adminID}
                           </td>     
                         </tr>                                                
                         <tr>   
                           <td>
-                           암호 재입력: <input type="password" id="adminPwdRe" maxlength="20" />
+                           암호 변경: <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#pwdChangeForm">
+  							클릭해서 변경
+					    </button>
+                          </td>     
+                        </tr>                                                
+                        <tr>   
+                          <td>
+                           이름 변경: <input type="text" id="adminName" maxlength="4" value="${sessionScope.adminVO.adminName}" />
                           </td>     
                         </tr>
                         <tr>   
                           <td>
-                           이름 입력: <input type="text" id="adminName" maxlength="4" />
+                           이메일 변경: <input type="text" id="adminEmail" maxlength="30" value="${sessionScope.adminVO.adminEmail}" />
                           </td>     
                         </tr>
                         <tr>   
                           <td>
-                           이메일 입력: <input type="text" id="adminEmail" maxlength="30" />
+							관리자등급: ${sessionScope.adminVO.adminGrade}
+                          </td>     
+                        </tr>
+                        <tr>   
+                          <td>
+							계정생성일: ${sessionScope.adminVO.adminDate}
                           </td>     
                         </tr>
                     </tbody> 
@@ -114,7 +126,7 @@
                             </td>
                             <td> 
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">              
-								  <button class="btn btn-outline-warning me-md-2" type="submit" onclick="return join();" style="float: left;">생성</button>									  	  
+								  <button class="btn btn-warning me-md-2" type="submit" onclick="return info();" style="float: left;">수정</button>									  	  
 								</div>								                      	
 				            </td>														
                         </tr>
@@ -125,111 +137,180 @@
                 
             </div>
             
- <div class="modal fade" id="idChkForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <div class="modal fade" id="emailChkForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="adminIDCheck">ID 중복을 확인하세요</h5>
+        <h5 class="modal-title" id="adminEmailCheck">Email 입력칸입니다</h5>
       </div>
       <div class="modal-body">
         <form>
           <div class="mb-3">
-            <label for="inputID" class="col-form-label">ID 중복검색:</label>
-            <input type="text" class="form-control" id="inputID" maxlength="15" placeholder="확인할 ID를 입력해주세요" >
+            <label for="inputID" class="col-form-label">Email 입력:</label>
+            <input type="text" class="form-control" id="inputEmail" maxlength="30" >
           </div>
-          
+                    
           <div class="mb-3">
-            <label for="chkResult" class="col-form-label">검색결과:</label>
+            <label for="chkResult" class="col-form-label">변경 여부:</label>
             <span id="chkResult" style="color: red"> </span>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-        <button type="button" class="btn btn-outline-danger" onclick="return idCheck();">검사</button>
+        <button type="button" class="btn btn-outline-danger" onclick="return emailCheck();">사용</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="pwdChangeForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="pwdChangeLabel">암호를 변경합니다</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       <form>
+          <div class="mb-3">
+            <label for="originalPWD" class="col-form-label">기존 암호 입력:</label>
+            <input type="password" class="form-control" id="oldPWD" maxlength="20" >
+          </div>
+          
+          <div class="mb-3">
+            <label for="newPWD" class="col-form-label">변경할 암호 입력:</label>
+            <input type="password" class="form-control" id="newPWD" maxlength="20" >
+          </div>
+          
+          <div class="mb-3">
+            <label for="newPWD_Re" class="col-form-label">변경할 암호 재입력:</label>
+            <input type="password" class="form-control" id="pwdRe" maxlength="20" >
+          </div>
+                    
+          <div class="mb-3">
+            <label for="chkResult" class="col-form-label">알림:</label>
+            <span id="chkMsg" style="color: red"> </span>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+        <button type="button" class="btn btn-outline-danger" onclick="return pwdChange();">변경</button>
       </div>
     </div>
   </div>
 </div>
                
-         </div>
-
-    
+         </div>    
  </div>        
+ 
+	<script>
+		function pwdChange(){
+			var pwdCheck =  /^(?=.*[a-z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{10,20}$/;			
+			var aID = '<c:out value="${sessionScope.adminVO.adminID}" />';
+			var oldPWD = $('#oldPWD').val();
+			var newPWD = $('#newPWD').val();
+			var pwdRe = $('#pwdRe').val();
+			var msg = $('#chkMsg');
+			
+			 if ( oldPWD.length == 0 ) {
+					msg.text("사용중인 암호를 입력하세요");			
+					return false;
+				} else if (!pwdCheck.test(newPWD) ) {
+					msg.text("10~20자의 영문 소문자와 숫자,특수문자로 구성해야 합니다");			
+					return false;	
+				} else if (newPWD.length == 0 ) {
+						msg.text("변경할 암호를 입력하세요");			
+						return false;								 
+				} else if (newPWD != pwdRe ) {
+						msg.text('입력한 암호가 불일치 합니다');			
+					return false;
+				}else{					
+					 $.ajax({
+					    	url : "/admin/updatePWDChange.do",
+					        type : "post",            
+					        data : {"adminID":aID, "oldPWD":oldPWD, "newPWD":newPWD },
+					        
+					        success : function(data) {           
+					      if (data == 'true')	{            	
+					          alert('변경완료');
+					          $('#pwdChangeForm').modal('hide');
+					      }else if (data == 'invalid') {
+					    	  msg.text('유효하지 않은 값'); 
+					      }else{
+					         msg.text('변경실패');
+					         }			        
+					        },
+					        error : function(data) {
+					            alert("ajax error");
+					        }
+					    });
+					}		
+		}	
+	</script>
+ 
    
    <script>   
-    $('#adminId').focusin(function() {
-    	var myModal = new bootstrap.Modal(document.getElementById('idChkForm'), focus);
+    $('#adminEmail').focusin(function() {
+    	var myModal = new bootstrap.Modal(document.getElementById('emailChkForm'), focus);
     	myModal.show()
 	});    
    </script>
    
    <script>
-   		function idCheck(){
-   		 var idCheck = /^[a-z]{6,15}$/;
+   		function emailCheck(){
+   	     var emailCheck=  /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
    		 var spaceCheck = /\s/g;   		 
-   		 var chkData = $('#inputID').val();
+   		 var chkData = $('#inputEmail').val();
    		 
-   		 if (!idCheck.test( chkData ) ) {
-             alert("ID는 6~15자 이내의 영문 소문자만 허용됩니다");
+   		 if (chkData.length > 30 ) {
+   			$('#chkResult').text("email은 30자 이내로 허용됩니다");
              return false;
+         } else if (!emailCheck.test( chkData ) ) {
+        	 $('#chkResult').text("유효한 형식이 아닙니다");                                      
+             return false;              
          } else if (spaceCheck.test( chkData ) ) {
-             alert("입력값에 공백이 있습니다");                                      
+        	 $('#chkResult').text("입력값에 공백이 있습니다");                                      
              return false; 
              
          } else {        	 
 			    $.ajax({
-			    	url : "/admin/adminIDCheck.do",
+			    	url : "/admin/adminEmailCheck.do",
 			        type : "post",            
-			        data : {"chkID":chkData},
+			        data : {"chkMail":chkData},
 			        
 			        success : function(data) {           
 			      if (data == 'pass') {            				          
-			    	  $('#adminId').val(chkData);
-			    	  $('#idChkForm').modal('hide');
+			    	  $('#adminEmail').val(chkData);
+			    	  $('#emailChkForm').modal('hide');
 			          
 			        }else if (data == 'false') {
-			        	$('#chkResult').text(" 중복 ID");
+			        	$('#chkResult').text(" 중복 EMAIL");
 			        
 			        }else if (data == 'invalid') {
 			        	$('#chkResult').text(" 유효하지 않은 값");		 
 			         }				      
 			        },
-
 			        error : function(data) {
 			            alert("ajax error");
 			        }
 			    })        	 
-         	} 
-
+         	}    		 
    		}   
    </script>
-   
+      
    <script>
-        function join(){
-        var idCheck = /^[a-z]{6,15}$/;
-        var pwdCheck =  /^(?=.*[a-z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{10,20}$/; 
+        function info(){        
         var nameCheck = /^[가-힣]{2,4}$/;
         var emailCheck=  /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
 		var spaceCheck = /\s/g;        
+		
+		var adminName = $('#adminName').val();
+		var adminEmail = $('#adminEmail').val();
         
-            if (!idCheck.test( $('#adminId').val() ) ) {
-                alert("ID는 6~15자 이내의 영문 소문자만 허용됩니다");
-                return false;
-            } else if (spaceCheck.test($('#adminId').val() ) ) {
-                alert("입력값에 공백이 있습니다");                                      
-                return false;   
-            
-            } else if (!pwdCheck.test($('#adminPwd').val() )) {
-                alert("암호는 10~20자의 영문 소문자와 숫자,특수문자로 구성해야 합니다");       
-                return false;
-            }else if (spaceCheck.test($('#adminPwd').val() )) {
-                alert("입력값에 공백이 있습니다");                                      
-                return false;       
-            }else if ( $('#adminPwdRe').val() != $('#adminPwd').val()  ) {
-                alert("재입력한 암호가 불일치 합니다");     
-                return false;
-            }else if ( !nameCheck.test($('#adminName').val() )) {
+			if ( !nameCheck.test($('#adminName').val() )) {
                 alert("이름은 2~4글자의 한글만 입력 바랍니다");        
                 return false;
             }else if (spaceCheck.test($('#adminName').val() )) {
@@ -243,35 +324,31 @@
                 return false;
        
             }else{               
-                var adminID = $('#adminId').val();
-				var adminPWD = $('#adminPwd').val();
-				var adminName = $('#adminName').val();
-				var adminEmail = $('#adminEmail').val();				
-				
-				var adminData = {"adminID":adminID,"adminPWD":adminPWD,"adminName":adminName,"adminEmail":adminEmail};
+                var adminID = '<c:out value="${(sessionScope.adminVO.adminID)}" />';
+				var adminData = {"adminID":adminID,"adminName":adminName,"adminEmail":adminEmail};
 				
 			    $.ajax({
-			    	url : "/admin/insertAdminAccount.do",
+			    	url : "/admin/updateAdminAccount.do",
 			        type : "post",            
 			        data : adminData,
 			        
 			        success : function(data) {           
 			      if (data == 'pass')	{            	
-			          alert('계정 추가');
+			          alert('변경 완료');
 			          location.replace("/admin/adminMain.do");
 			        }else if (data == 'invalid'){
 			        	alert('유효하지 않은 값 입력');
 			        }else{
-			        	alert('추가 실패');
+			        	alert('변경 실패');
 			        }			      
 			        },
 			        error : function(data) {
 			            alert("ajax error");
 			        }
 			    })                
-            }
-       
-        };
+            }      
+        }
+
    </script>
 
    <script>
@@ -281,43 +358,7 @@
    </script>   
 
    <script>
-    $('#adminId').on('keyup' ,function(event) { 
-        var idCheck = /^[a-z]{6,15}$/;       
-		var spaceCheck = /\s/g;
-        var $msg = $('#msg');
-        
-         if (!idCheck.test(adminId.value)) {
-                $msg.html("ID는 공백을 제외한 6~15자 이내의 영문 소문자만 허용됩니다");                                      
-            }else if (spaceCheck.test(adminId.value) ) {
-                $msg.html("입력값에 공백은 포함불가");                                      
-            }else{
-                $msg.html("");                                      
-            }    
-    }); 
-       
-    $('#adminPwd').on('keyup' ,function(event) {     
-        var pwdCheck =  /^(?=.*[a-z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{10,20}$/;
-        var spaceCheck = /\s/g;
-        var $msg = $('#msg');
-       
-           if (!pwdCheck.test(adminPwd.value)) {
-                $msg.html("암호는 공백을 제외한 10~20자 이내의 영문 소문자와 숫자,특수문자로 구성되어야합니다");    
-            }else if (spaceCheck.test(adminId.value) ) {
-                $msg.html("입력값에 공백은 포함불가입니다");  
-            }else{
-                $msg.html("");                                      
-            }  
-     }); 
-       
-    $('#adminPwdRe').on('keyup' ,function(event) {  
-        var $msg = $('#msg');
-         if ( $('#adminPwdRe').val() != $('#adminPwd').val()  ) {
-                $msg.html("재입력한 암호가 불일치 합니다");                
-            }else{
-                $msg.html("");                                      
-            }          
-    });
-          
+
     $('#adminName').on('keyup' ,function(event) { 
         var nameCheck = /^[가-힣]{2,4}$/;
         var spaceCheck = /\s/g;
