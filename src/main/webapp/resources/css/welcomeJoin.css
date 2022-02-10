@@ -39,7 +39,7 @@ input::placeholder{
   position: relative;
   z-index: 1;
   background: #FFFFFF;
-  max-width: 260px;
+  max-width: 400px;
   margin: 105px auto;
   padding: 35px 70px 55px 70px;
   text-align: center;
