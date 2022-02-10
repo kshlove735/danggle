@@ -110,7 +110,7 @@
                     <tfoot>
                             <tr>
                         	 <td> 
-                        	     <button class="btn btn-secondary" type="button" onclick="refresh();" style="float: left;">초기화</button>                                	                        	          
+                        	     <button class="btn btn-secondary" type="button" onclick="refresh();" style="float: left;">새로고침</button>                                	                        	          
                             </td>
                             <td> 
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">              
@@ -257,8 +257,8 @@
 			        
 			        success : function(data) {           
 			      if (data == 'pass')	{            	
-			          alert('계정 추가');
-			          location.replace("/admin/adminMain.do");
+			          alert('계정 추가 완료');
+			          location.reload();
 			        }else if (data == 'invalid'){
 			        	alert('유효하지 않은 값 입력');
 			        }else{

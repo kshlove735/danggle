@@ -105,7 +105,7 @@ public class AdminController {
 		String email = avo.getAdminEmail();
 		
 		//유효성 검사
-		if ( id == null || pwd == null || name == null || email == null ) {
+		if ( id == null || pwd == null || name == null || email == null || name.length() <2 || name.length() > 5 || email.length() > 31 || !(email.contains("@")) || pwd.length() > 21 ) {
 			response.getWriter().print("invalid");
 		}else {
 			int result = mService.insertAdminAccount(avo);
@@ -127,7 +127,7 @@ public class AdminController {
 	public void selectAdminEmailCheck(@RequestParam String chkMail, HttpServletResponse response) throws IOException {
 		
 		//email중복 확인값의 유효성 검사
-		if (chkMail == null || chkMail.length() > 30) {
+		if (chkMail == null || chkMail.length() > 30 ) {
 			response.getWriter().print("invalid");
 		}else {
 			String result = aService.selectAdminEmailCheck(chkMail);						
@@ -148,10 +148,10 @@ public class AdminController {
 		HashMap<String, String> map = new HashMap<String, String>();		
 		map.put("adminID",adminID);
 		map.put("adminPWD",oldPWD);
-					
+
 		AdminVO adm = aService.selectAdminLogin(map);
 	
-		if (adm != null)  {
+		if (adm == null)  {
 			response.getWriter().print("invalid");
 			
 		}else {
@@ -170,12 +170,13 @@ public class AdminController {
 	}	
 	
 	@RequestMapping(value="/admin/updateAdminAccount.do", method=RequestMethod.POST)
-	public void updateAdminAccount(AdminVO avo, HttpServletResponse response,HttpSession session) throws IOException {						
+	public void updateAdminAccount(AdminVO avo, HttpServletResponse response, HttpSession session) throws IOException {						
 		String name = avo.getAdminName();
 		String email = avo.getAdminEmail();
+		String adminID = avo.getAdminID();
 		
 		//유효성 검사
-		if ( name == null || email == null ) {
+		if ( name == null || email == null || name.length() <2 || name.length() > 5 || email.length() > 31 || !(email.contains("@")) ) {
 			response.getWriter().print("invalid");
 		}else {
 			int result = aService.updateAdminAccount(avo);
@@ -183,13 +184,19 @@ public class AdminController {
 			if (result >0) {
 				
 				//업데이트 끝나면 select query 실행해서 session을 갱신
-				//session.getAttribute("adminVO",result);
-				
+				AdminVO refresh = aService.selectAdminAccount(adminID);
+				session.setAttribute("adminVO",refresh);				
 				response.getWriter().print("pass");
 			}else {
 				response.getWriter().print("false");
 			}
 		}		
+	}
+	
+	@RequestMapping(value="/admin/adminManage.do")
+	public String adminManage() {
+		return "adminView/adminManage";
+		
 	}
 		
 

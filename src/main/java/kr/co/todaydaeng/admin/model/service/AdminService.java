@@ -14,6 +14,8 @@ public interface AdminService {
 
 	int updateAdminPWD(HashMap<String, String> mapPwd);
 
+	AdminVO selectAdminAccount(String adminID);
+
 
 
 }

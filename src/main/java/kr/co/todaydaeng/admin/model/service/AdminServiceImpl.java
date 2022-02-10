@@ -27,13 +27,17 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public int updateAdminAccount(AdminVO avo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return aDAO.updateAdminAccount(avo);
 	}
 
 	@Override
 	public int updateAdminPWD(HashMap<String, String> mapPwd) {
 		return aDAO.updateAdminPWD(mapPwd);
+	}
+
+	@Override
+	public AdminVO selectAdminAccount(String adminID) {
+		return aDAO.selectAdminAccount(adminID);
 	}
 
 

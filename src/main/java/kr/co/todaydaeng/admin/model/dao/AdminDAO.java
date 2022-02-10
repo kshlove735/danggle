@@ -39,4 +39,12 @@ public class AdminDAO {
 		return sqlSession.update("admin.updateAdminPWD",mapPwd);
 	}
 
+	public AdminVO selectAdminAccount(String adminID) {
+		return sqlSession.selectOne("admin.selectAdminAccount",adminID);
+	}
+
+	public int updateAdminAccount(AdminVO avo) {
+		return sqlSession.update("admin.updateAdminAccount", avo);
+	}
+
 }

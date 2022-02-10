@@ -52,7 +52,7 @@ public class AdminAOP {
 	}
 	
 	
-	@Pointcut("exevution(int kr.co.todaydaeng.admin.model.service.*ServiceImpl.updateAdminPWD(..))")
+	@Pointcut("execution(int kr.co.todaydaeng.admin.model.service.*ServiceImpl.updateAdminPWD(..) )")
 	public void pwdChangePointcut() {}
 	
 	@Before ("pwdChangePointcut()")

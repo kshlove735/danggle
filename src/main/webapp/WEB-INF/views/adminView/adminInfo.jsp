@@ -122,7 +122,7 @@
                     <tfoot>
                             <tr>
                         	 <td> 
-                        	     <button class="btn btn-secondary" type="button" onclick="refresh();" style="float: left;">초기화</button>                                	                        	          
+                        	     <button class="btn btn-secondary" type="button" onclick="refresh();" style="float: left;">새로고침</button>                                	                        	          
                             </td>
                             <td> 
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">              
@@ -236,9 +236,9 @@
 					        success : function(data) {           
 					      if (data == 'true')	{            	
 					          alert('변경완료');
-					          $('#pwdChangeForm').modal('hide');
+					          location.reload();
 					      }else if (data == 'invalid') {
-					    	  msg.text('유효하지 않은 값'); 
+					    	  msg.text('사용중인 암호를 확인하세요'); 
 					      }else{
 					         msg.text('변경실패');
 					         }			        
@@ -250,8 +250,7 @@
 					}		
 		}	
 	</script>
- 
-   
+    
    <script>   
     $('#adminEmail').focusin(function() {
     	var myModal = new bootstrap.Modal(document.getElementById('emailChkForm'), focus);
@@ -290,7 +289,7 @@
 			        	$('#chkResult').text(" 중복 EMAIL");
 			        
 			        }else if (data == 'invalid') {
-			        	$('#chkResult').text(" 유효하지 않은 값");		 
+			        	$('#chkResult').text(" email형식을 확인하세요");		 
 			         }				      
 			        },
 			        error : function(data) {
@@ -306,6 +305,7 @@
         var nameCheck = /^[가-힣]{2,4}$/;
         var emailCheck=  /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
 		var spaceCheck = /\s/g;        
+		var msg = $('#msg');
 		
 		var adminName = $('#adminName').val();
 		var adminEmail = $('#adminEmail').val();
@@ -335,11 +335,11 @@
 			        success : function(data) {           
 			      if (data == 'pass')	{            	
 			          alert('변경 완료');
-			          location.replace("/admin/adminMain.do");
+			          location.reload();
 			        }else if (data == 'invalid'){
-			        	alert('유효하지 않은 값 입력');
+			        	msg.text('입력한 값을 확인하세요');
 			        }else{
-			        	alert('변경 실패');
+			        	msg.text('변경 실패');
 			        }			      
 			        },
 			        error : function(data) {
