@@ -66,5 +66,25 @@
 		FROM admin 
 		WHERE admin_id=#{adminID}
 	</select>
+	
+	<select id="selectAdminList" resultType="adminVO">
+		SELECT
+			admin_no as adminNo,
+			admin_id as adminID,
+			admin_pwd as adminPWD,
+			admin_name as adminName,
+			admin_email as adminEmail,
+			admin_grade as adminGrade,
+			admin_date as adminDate 
+		FROM admin
+		WHERE NOT admin_grade='S'
+	</select>
+	
+	<select id="selectAdminNew" resultType="int">
+		SELECT
+			COUNT (*)
+		FROM admin
+		WHERE admin_grade='C'	
+	</select>
 
 </mapper>

@@ -1,5 +1,6 @@
 package kr.co.todaydaeng.admin.model.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,16 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public AdminVO selectAdminAccount(String adminID) {
 		return aDAO.selectAdminAccount(adminID);
+	}
+
+	@Override
+	public ArrayList<AdminVO> selectAdminList() {
+		return aDAO.selectAdminList();
+	}
+
+	@Override
+	public int selectAdminNew() {
+		return aDAO.selectAdminNew();
 	}
 
 

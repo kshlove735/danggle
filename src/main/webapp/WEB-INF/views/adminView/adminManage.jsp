@@ -37,13 +37,13 @@
     }
     
     #aside{
-        width: 20%;
+        width: 15%;
         height: 100%;
         float: left;
     }
     
     .contents{
-        width: 80%;
+        width: 85%;
         height: 100%;
         float: left;
         text-align: center;
@@ -55,6 +55,9 @@
         margin:5px;
     }  
 
+	.badge{
+		cursor:pointer;
+	}
         
 </style>
           
@@ -70,14 +73,16 @@
          <div class="contents">
             
             <div class="search">
-                <select> 
+              <form action="/admin/manageSearch.do" method="get">	
+                <select name="tag"> 
                     <option disabled selected>검색</option>
-                    <option value="memberNo">관리자 번호</option>
-                    <option value="memberId">관리자 ID</option>
-                    <option value="memberNickname">관리자 이름</option>
+                    <option value="adminNo">관리자 번호</option>
+                    <option value="adminID">관리자 ID</option>
+                    <option value="adminName">관리자 이름</option>
                 </select>
-                <input type="text">
+                <input type="text" name="keyword">
                 <input type="button" value="검색">                
+              </form> 
             </div>
             
         	<div class="table">
@@ -88,64 +93,85 @@
                             <th>관리자 ID</th>
                             <th>관리자 이름</th>
                             <th>관리자 이메일</th>
-                            <th>관리자 등급</th>
+                            <th>계정 생성일</th>
+                            <th>관리자 등급 
+                            	 	<c:if test="${requestScope.map.count != 0}"> 
+                            			<span class="badge bg-danger"> ${requestScope.map.count} </span>
+                            	 	</c:if>
+                            </th>
                             <th>선택</th>                            
                         </tr>
                     </thead>
                     <tbody>
+                   <c:choose>
+                   
+                   	<c:when test="${requestScope.map.admin != null}">
+                   		
+                      <c:forEach items="${requestScope.map.admin}" var="a">	
                         <tr>
-                            <td> request.scope.data  </td>
-                            <td> request.scope.data </td>
-                            <td> request.scope.data  </td>
-                            <td> request.scope.data </td>
-                            <td> request.scope.data </td>
-                            <td> <input type="checkbox"> </td>
-                        </tr>                                                                                  
+                            <td> ${a.adminNo} </td>
+                            <td> ${a.adminID} </td>
+                            <td> ${a.adminName} </td>
+                            <td> ${a.adminEmail} </td>
+                            <td> ${a.adminDate} </td>
+                            <td> ${a.adminGrade} </td>
+                            <td> <input type="checkbox" value="${a.adminNo}"> </td>
+                        </tr>                                                                 
+                      </c:forEach>
+                      
+                    </c:when>
+                    
+                    	<c:otherwise>
+                    		<tr> <td> 추가된 관리자 계정이 없습니다 </td>  </tr>
+                    	</c:otherwise>
+                    	
+                   </c:choose>                                              
                     </tbody>
-                    <tfoot>                            
+                    <tfoot style="text-align: center;">                            
                         <tr>
-                           <td colspan="2"></td>
-                           <td colspan="2">
+                           <td colspan="3"></td>
+                           <td colspan="3">
                             <nav aria-label="...">
 								  <ul class="pagination">
-								  		<li class="page-item"><a class="page-link" href="/board/boardMain.do?currentPage=${requestScope.start}">처음</a></li>
+								  		<li class="page-item"><a class="page-link" href="">처음</a></li>
     									  									
     									<li class="page-item">
-      										페이징 없음
+      										<a class="page-link" href=""> 페이징 없음 </a>
 									    </li>
 									    
-									    <li class="page-item"><a class="page-link" href="/board/boardMain.do?currentPage=${requestScope.end}">끝</a> </li>									    
+									    <li class="page-item"><a class="page-link" href="">끝</a> </li>									    
  								  </ul>
 							</nav>
                            </td>
-                           <td colspan="2"></td>
+                           <td colspan="3"></td>
                         </tr>                                                        
                                                        
                         <tr>
                             <td colspan="5"></td>
                             <td>    
                                 
-                                <button type="button"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#gradeForm" onclick="printData();">
                                  	 변경
                                 </button>
                                 
-                                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal fade" id="gradeForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                   <div class="modal-dialog modal-sm">
                                     <div class="modal-content">                                     
                                           <div class="modal-body">
                                             <br>
-                                            	변경할 사항: 
-                                              <select> 
-                                                <option disabled selected> 조정 </option>
+                                            	변경할 대상: <span id="selectMsg"> </span> 
+                                            <br>	
+                                              <select id="gradeValue"> 
+                                                <option disabled selected> 권한 조정 </option>
                                                                                                                                         
-                                                <option value="B">등급B</option>
-                                                <option value="C">등급C</option>
-                                                <option value="D">삭제</option>
+                                                <option value="B">등급B(일반관리자)</option>
+                                                <option value="C">등급C(임시조치)</option>
+                                                <option value="D">등급D(탈퇴))</option>
                                               </select>                                                                                            
                                               
                                           </div>
                                       <div class="modal-footer">
-                                      <button type="button" class="btn btn-outline-danger">실행</button>
+                                      <button type="button" class="btn btn-outline-danger" onclick="gradeChange();">실행</button>
                                       <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
                                       </div>
                                     </div>
@@ -162,6 +188,79 @@
            
        </div>        
    </div>
+
+	<script>
+		function printData(){		
+			var dataArray = new Array();
+			var $chkBox = $('input[name=userNo]:checked');			
+			$('input:checked').each(function(){
+				dataArray.push( this.value );
+			});
+			if (dataArray != 0){
+				$('#selectMsg').text(dataArray);
+			}else{
+				$('#selectMsg').text('선택된 대상이 없음');	
+			}
+	}	
+	</script>
+	
+   <script>
+		function gradeChange(){
+			var dataArray = new Array();
+			var $chkBox = $('input[name=userNo]:checked');	
+			var grade = $('#gradeValue>option:selected').val();
+			
+			$('input:checked').each(function(){
+				dataArray.push( this.value );
+			})
+			
+			if( dataArray == 0 ){
+				return false;
+			}else{	
+				$.ajax({
+			    	url : "/admin/adminGradeChange.do",
+			        type : "post",            
+			        data : {"dataArray":dataArray,"grade":grade},			        
+			        success : function(data) {           
+			      if (data == 'pass') {            				          
+			    	 alert('변경 성공');
+			    	  $('#gradeForm').modal('hide');
+			          location.reload();
+			        }else{
+			          $('#selectMsg').text('변경 실패');			        				     
+			         }
+			        },
+			        error : function(data) {
+			            alert("ajax error");
+			        }			        
+			    })
+			}
+		};   	
+   </script>
+   
+   <script>
+   		$(".badge").click(function(){
+   		alert('등급조정 이벤트 추가예정');
+   		});
+   </script>
+   
+   <script>  
+   		
+        $("tbody>tr").click(function(){        	           
+        	// 1단계 행을 선택하면, 그 행이 속한 체크박스를 체크
+        	var $test = $(this).children().eq(6);        	        	
+
+        	// 2단계 다시 누르면 체크 해제           	
+        	console.log($test.children().prop('checked'));
+        	if ($test.children().prop('checked') == true) {
+        		$test.children().prop('checked',false);
+        		$test.parent().removeAttr("style");
+        	}else{
+        		$test.children().prop('checked',true);        		
+        		$test.parent().css('background','grey');
+        	}
+        });       
+   </script> 
     
 </body>
 </html>

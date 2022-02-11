@@ -1,6 +1,7 @@
 package kr.co.todaydaeng.admin.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.todaydaeng.admin.model.service.AdminService;
 import kr.co.todaydaeng.admin.model.service.ManageService;
@@ -194,9 +196,25 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="/admin/adminManage.do")
-	public String adminManage() {
-		return "adminView/adminManage";
+	public ModelAndView adminManage(ModelAndView mav) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		ArrayList<AdminVO> list = aService.selectAdminList();
+		map.put("admin", list);
 		
+		int newbie = aService.selectAdminNew();
+		map.put("count", newbie);
+
+		mav.addObject("map",map);		
+		mav.setViewName("adminView/adminManage");
+		
+		return mav;		
+	}
+	
+	@RequestMapping(value="/admin/adminGradeChange.do", method=RequestMethod.POST)
+	public void updateAdminGrade() {
+		//파라미터 유효성 검사, null 확인 후 false리턴
+		// mService로 전달
+		// int 0은 false 1은 pass
 	}
 		
 

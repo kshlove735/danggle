@@ -1,6 +1,8 @@
 package kr.co.todaydaeng.admin.model.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,20 @@ public class AdminDAO {
 
 	public int updateAdminAccount(AdminVO avo) {
 		return sqlSession.update("admin.updateAdminAccount", avo);
+	}
+
+	public ArrayList<AdminVO> selectAdminList() {
+		
+		//arrayList로 바로 casting이 되질 않아서 List객체에 저장했다가 형변환해서 리턴
+		List<AdminVO> adm = new ArrayList<AdminVO>();		
+		adm = sqlSession.selectList("admin.selectAdminList");
+		
+		return (ArrayList<AdminVO>) adm;	
+		
+	}
+
+	public int selectAdminNew() {
+		return sqlSession.selectOne("admin.selectAdminNew");
 	}
 
 }

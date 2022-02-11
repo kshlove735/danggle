@@ -38,13 +38,13 @@
     }
     
     #aside{
-        width: 20%;
+        width: 15%;
         height: 100%;
         float: left;
     }
     
     #contents{
-        width: 80%;
+        width: 85%;
         height: 100%;
         float: left;
         text-align: center;        
