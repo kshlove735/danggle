@@ -266,8 +266,12 @@ public class AdminController {
 	@RequestMapping(value="/admin/memberManage.do")
 	public ModelAndView memberManage(ModelAndView mav) {
 		
+		// 1.사용자 목록 페이징
+		
+		// 2. 페이징 처리 된 목록을 model 객체에 저장
 		
 		
+		// 3. VIEW로 전송
 		mav.setViewName("adminView/memberManage");		
 		return mav;				
 	}
