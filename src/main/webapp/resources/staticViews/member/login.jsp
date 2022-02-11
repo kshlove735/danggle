@@ -13,7 +13,7 @@
 
 	  <div class="form">
 	    <form class="login-form" action="/member/loginMember.do" method="post">
-	      <h2 style="margin-top:0px;">로그인</h2>
+	      <h2>로그인</h2>
 	      <input type="text" name="memberId" placeholder="아이디"/>
 	      <input type="password" style="margin-bottom:1px;" name="memberPwd" placeholder="비밀번호"/>
 	      <a href="/resources/staticViews/member/searchIdPage.jsp" class="message">아이디 찾기</a><a class="message"> │</a>

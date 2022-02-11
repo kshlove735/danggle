@@ -18,7 +18,6 @@
 		   </div>
 		   <br>
 			 ${sessionScope.member.nickname}님 가입을 환영합니다!<br>
-			  <a href="/">메인으로 가기</a>
 	    </form>
 	  </div>
 	  

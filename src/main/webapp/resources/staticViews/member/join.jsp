@@ -53,14 +53,17 @@ integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="ano
 	          <br><br>
 			  
 	          <label>생년월일</label><br>
-		        <select name="yy" id="year" style="width:90px;">
-		        	<option value="" selected disabled hidden>--</option>
+		        <select name="yy" id="year" style="width:90px;" onchange="changeBirthdate();">
+		        	<option value="" selected hidden>--</option>
+		        	<option value="">--</option>
 		        </select>년
-				<select name="mm" id="month" style="width:90px;">
-					<option value="" selected disabled hidden>--</option>
+				<select name="mm" id="month" style="width:90px;" onchange="changeBirthdate();">
+					<option value="" selected hidden>--</option>
+					<option value="">--</option>
 				</select>월
-				<select name="dd" id="day" style="width:90px;">
-					<option value="" selected disabled hidden>--</option>
+				<select name="dd" id="day" style="width:90px;" onchange="changeBirthdate();">
+					<option value="" selected hidden>--</option>
+					<option value="">--</option>
 				</select>일
 				<input type="text" id="birthdate" name="birthdate" value="" style="display:none;">
 	          <br>
@@ -210,10 +213,22 @@ integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="ano
 		        $('#day').append('<option value="' + dd + '">' + dd+ '</option>');    
 		    }
 		    
-		    if ($('#year').val() != null && $('#month').val() != null && $('#day').val() != null) {
+		    if (($('#year').val() != null && $('#year').val() != '') && 
+		    		($('#month').val() != null && $('#month').val() != '') && 
+		    			($('#day').val() != null && $('#day').val() != '')) {
 		    	$('#birthdate').attr('value',year+mon+day);	
 		    }
 		})
+		
+		 function changeBirthdate() {
+			 var year = $('#year').val();
+			 var mon  = $('#month').val();
+		     var day  = $('#day').val();
+			 
+			 if ((year != null && year != '') && (mon != null && mon != '') && (day != null && day != '')) {
+			   $('#birthdate').attr('value', year + mon + day);	
+			 }
+		 }
 	</script>
 	
 	<!-- 가입 전 최종점검 -->
