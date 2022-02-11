@@ -87,4 +87,39 @@
 		WHERE admin_grade='C'	
 	</select>
 
+	<update id="updateAdminGrade" parameterType="map">
+		UPDATE admin
+		SET admin_grade=#{newGrade}			
+		WHERE admin_no IN
+		<foreach collection="adminNo" item="num" open="(" separator="," close=")">
+			#{num}
+		</foreach>	
+	</update>
+	
+	<select id="selectAdminSearch" parameterType="map" resultType="adminVO">
+		SELECT
+			admin_no as adminNo,
+			admin_id as adminID,
+			admin_pwd as adminPWD,
+			admin_name as adminName,
+			admin_email as adminEmail,
+			admin_grade as adminGrade,
+			admin_date as adminDate 
+		FROM admin
+		WHERE
+		<choose>
+			<when test="tag.equals('adminID')">
+				admin_id LIKE '%' || #{keyword} || '%'
+			</when>
+			
+			<when test="tag.equals('adminName')">
+				admin_name LIKE '%' || #{keyword} || '%'
+			</when>
+			
+			<otherwise>
+				(admin_id LIKE '%' || #{keyword} || '%') OR (admin_name LIKE '%' || #{keyword} || '%')
+			</otherwise>
+		</choose>
+	</select>
+
 </mapper>

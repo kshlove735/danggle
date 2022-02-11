@@ -51,5 +51,10 @@ public class AdminServiceImpl implements AdminService {
 		return aDAO.selectAdminNew();
 	}
 
+	@Override
+	public ArrayList<AdminVO> selectAdminSearch(HashMap<String, String> findMap) {
+		return aDAO.selectAdminSearch(findMap);
+	}
+
 
 }

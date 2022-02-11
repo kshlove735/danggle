@@ -3,6 +3,7 @@ package kr.co.todaydaeng.admin.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -180,7 +181,14 @@ public class AdminController {
 		//유효성 검사
 		if ( name == null || email == null || name.length() <2 || name.length() > 5 || email.length() > 31 || !(email.contains("@")) ) {
 			response.getWriter().print("invalid");
-		}else {
+
+		}else {	
+			String chkMail = email;
+			String chk = aService.selectAdminEmailCheck(chkMail);
+			if (chk != null) {
+				response.getWriter().print("invalid");
+			}else {
+			
 			int result = aService.updateAdminAccount(avo);
 			
 			if (result >0) {
@@ -192,7 +200,8 @@ public class AdminController {
 			}else {
 				response.getWriter().print("false");
 			}
-		}		
+		  }
+		}	
 	}
 	
 	@RequestMapping(value="/admin/adminManage.do")
@@ -211,11 +220,56 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="/admin/adminGradeChange.do", method=RequestMethod.POST)
-	public void updateAdminGrade() {
-		//파라미터 유효성 검사, null 확인 후 false리턴
-		// mService로 전달
-		// int 0은 false 1은 pass
+	public void updateAdminGrade(@RequestParam(value="dataArray[]")ArrayList<Integer> dataArray, @RequestParam String newGrade, 
+								HttpServletResponse response ) throws IOException {
+
+		if(dataArray == null || newGrade == null) {
+			response.getWriter().print(false);
+		}else {
+			HashMap<String, Object> map = new HashMap<String, Object>();		
+			map.put("newGrade",newGrade);
+			map.put("adminNo",dataArray);
+			int result = mService.updateAdminGrade(map);
+
+		if(result == dataArray.size()) {
+			response.getWriter().print("pass");
+		}else {
+			response.getWriter().print("false");
+		}
+	   }
 	}
 		
 
+	@RequestMapping(value="/admin/manageSearch.do", method=RequestMethod.GET)
+	public ModelAndView selectAdminSearch(@RequestParam String tag, @RequestParam String keyword,
+								  ModelAndView mav) {
+
+		System.out.println("검색분류: "+tag);
+		System.out.println("검색대상: "+keyword);		
+		
+		HashMap<String, String> findMap = new HashMap<String, String>();		
+		findMap.put("keyword",keyword);
+		findMap.put("tag",tag);		
+		ArrayList<AdminVO> list = aService.selectAdminSearch(findMap);
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();		
+		map.put("admin", list);		
+		int newbie = aService.selectAdminNew();
+		map.put("count", newbie);
+
+		mav.addObject("map",map);		
+		mav.setViewName("adminView/adminManage");	
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="/admin/memberManage.do")
+	public ModelAndView memberManage(ModelAndView mav) {
+		
+		
+		
+		mav.setViewName("adminView/memberManage");		
+		return mav;				
+	}
+	
 }

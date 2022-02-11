@@ -60,6 +60,9 @@
 <body>
    
 <div class="wrap"> 
+
+	<c:choose>
+		<c:when test="${sessionScope.adminVO != null }">
       
        <div id="header">  <%@ include file="/WEB-INF/views/adminView/adminHeader.jsp" %> </div>
        
@@ -74,7 +77,7 @@
                   
                    <thead>
                       <tr>
-                      <H2 > 관리자를 등록합니다 </H2>
+                      <H2> 관리자를 등록합니다 </H2>
                       </tr>
                       <th> <span> 등록시 안내사항: &nbsp; </span> <span style="color: red" id="msg"> </span> </th>
                    </thead>
@@ -153,10 +156,17 @@
 </div>
                
          </div>
-
-    
+      </c:when>
+      
+          <c:otherwise>
+      	<H2>관리자 계정 로그인이 필요합니다</H2>
+      		<a href="/admin/adminIndex.do"> 로그인으로 이동 </a>
+      </c:otherwise>
+      
+	</c:choose>
+	          
  </div>        
-   
+<c:if test="${sessionScope.adminVO != null }">      
    <script>   
     $('#adminId').focusin(function() {
     	var myModal = new bootstrap.Modal(document.getElementById('idChkForm'), focus);
@@ -352,6 +362,8 @@
 		location.reload();
 	}
     </script>
+    
+</c:if>
         
 </body>
 </html>

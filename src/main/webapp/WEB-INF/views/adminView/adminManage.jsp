@@ -64,6 +64,7 @@
 <body>
    
    <div class="wrap"> 
+   	
       <div id="header">  <%@ include file="/WEB-INF/views/adminView/adminHeader.jsp" %> </div>
        
        <div id="body">
@@ -76,12 +77,12 @@
               <form action="/admin/manageSearch.do" method="get">	
                 <select name="tag"> 
                     <option disabled selected>검색</option>
-                    <option value="adminNo">관리자 번호</option>
                     <option value="adminID">관리자 ID</option>
                     <option value="adminName">관리자 이름</option>
+                    <option value="all">ID+이름</option>
                 </select>
                 <input type="text" name="keyword">
-                <input type="button" value="검색">                
+                <input type="submit" value="검색">                
               </form> 
             </div>
             
@@ -147,9 +148,13 @@
                         </tr>                                                        
                                                        
                         <tr>
-                            <td colspan="5"></td>
-                            <td>    
-                                
+                            <td colspan="5"> 
+                            	<button type="button" class="btn btn-success" onclick="pageRefresh();" style="float:left;">
+                            		새로고침	
+                            	</button>
+                            </td>
+                            
+                            <td>                                    
                                 <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#gradeForm" onclick="printData();">
                                  	 변경
                                 </button>
@@ -186,8 +191,22 @@
                
            </div>
            
-       </div>        
+       </div>
+              
    </div>
+<c:if test="${sessionScope.adminVO != null }">   
+    <script>
+   		$(".badge").click(function(){
+   		// 1. 배지를 클릭하면 등급조정 모달을 활성화 하고 C등급 사용자를 변수에 저장 후 출력
+   	    $('td:contains(C)').next().children().prop('checked',true);	
+   		var myModal = new bootstrap.Modal(document.getElementById('gradeForm'), focus);
+   	    myModal.show()	   	    	    	   	    	
+ 		var count = '<c:out value="${(requestScope.map.count)}" />';   		   			   			   					
+		$('#selectMsg').text("총( "+count+" )건");   		
+   		// 2. 등급 조정 ajax 함수 실행				
+   		// 변경 버튼 클릭 이벤트   		
+   		});
+   </script>
 
 	<script>
 		function printData(){		
@@ -216,11 +235,11 @@
 			
 			if( dataArray == 0 ){
 				return false;
-			}else{	
+			}else{					
 				$.ajax({
 			    	url : "/admin/adminGradeChange.do",
 			        type : "post",            
-			        data : {"dataArray":dataArray,"grade":grade},			        
+			        data : {"dataArray":dataArray,"newGrade":grade},			        
 			        success : function(data) {           
 			      if (data == 'pass') {            				          
 			    	 alert('변경 성공');
@@ -237,13 +256,7 @@
 			}
 		};   	
    </script>
-   
-   <script>
-   		$(".badge").click(function(){
-   		alert('등급조정 이벤트 추가예정');
-   		});
-   </script>
-   
+      
    <script>  
    		
         $("tbody>tr").click(function(){        	           
@@ -261,6 +274,13 @@
         	}
         });       
    </script> 
-    
+   
+   <script>
+   		function pageRefresh(){
+   			location.replace("/admin/adminManage.do");
+   		};
+   </script>
+   
+</c:if>  
 </body>
 </html>

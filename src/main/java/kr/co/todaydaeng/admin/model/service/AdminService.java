@@ -21,6 +21,8 @@ public interface AdminService {
 
 	int selectAdminNew();
 
+	ArrayList<AdminVO> selectAdminSearch(HashMap<String, String> findMap);
+
 
 
 }

@@ -63,4 +63,14 @@ public class AdminDAO {
 		return sqlSession.selectOne("admin.selectAdminNew");
 	}
 
+	public int updateAdminGrade(HashMap<String, Object> map) {
+		return sqlSession.update("admin.updateAdminGrade", map);
+	}
+
+	public ArrayList<AdminVO> selectAdminSearch(HashMap<String, String> findMap) {
+		List<AdminVO> adm = new ArrayList<AdminVO>();
+		adm = sqlSession.selectList("admin.selectAdminSearch", findMap);
+		return (ArrayList<AdminVO>) adm;
+	}
+
 }
