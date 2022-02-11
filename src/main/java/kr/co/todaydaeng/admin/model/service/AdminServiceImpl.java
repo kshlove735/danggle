@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import kr.co.todaydaeng.admin.model.dao.AdminDAO;
 import kr.co.todaydaeng.admin.model.vo.AdminVO;
 import kr.co.todaydaeng.member.model.dao.MemberDAO;
+import kr.co.todaydaeng.member.model.vo.Member;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -54,6 +55,16 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public ArrayList<AdminVO> selectAdminSearch(HashMap<String, String> findMap) {
 		return aDAO.selectAdminSearch(findMap);
+	}
+
+	@Override
+	public ArrayList<Member> selectMemberList(HashMap<String, Integer> pageNum) {
+		return aDAO.selectAdminList(pageNum);
+	}
+
+	@Override
+	public int selectMemberCount() {
+		return aDAO.selectMemberCount();
 	}
 
 

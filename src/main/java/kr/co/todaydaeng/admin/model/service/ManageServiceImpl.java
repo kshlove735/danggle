@@ -29,6 +29,6 @@ public class ManageServiceImpl implements ManageService {
 	public int updateAdminGrade(HashMap<String, Object> map) {
 		return aDAO.updateAdminGrade(map);
 	}
-	
+
 	
 }

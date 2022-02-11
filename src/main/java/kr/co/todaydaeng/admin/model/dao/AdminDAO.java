@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import kr.co.todaydaeng.admin.model.vo.AdminVO;
+import kr.co.todaydaeng.member.model.vo.Member;
 
 @Repository
 public class AdminDAO {
@@ -71,6 +72,19 @@ public class AdminDAO {
 		List<AdminVO> adm = new ArrayList<AdminVO>();
 		adm = sqlSession.selectList("admin.selectAdminSearch", findMap);
 		return (ArrayList<AdminVO>) adm;
+	}
+
+
+	public ArrayList<Member> selectAdminList(HashMap<String, Integer> pageNum) {
+		
+		
+		List<Member> mvo = new ArrayList<Member>();
+		mvo = sqlSession.selectList("admin.selectMemberList", pageNum);
+		return (ArrayList<Member>) mvo;
+	}
+
+	public int selectMemberCount() {
+		return sqlSession.selectOne("admin.selectMemberCount");
 	}
 
 }

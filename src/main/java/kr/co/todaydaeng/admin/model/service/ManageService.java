@@ -11,4 +11,5 @@ public interface ManageService {
 	int insertAdminAccount(AdminVO avo);
 
 	int updateAdminGrade(HashMap<String, Object> map);
+
 }

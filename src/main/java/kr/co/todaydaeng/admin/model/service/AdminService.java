@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import kr.co.todaydaeng.admin.model.vo.AdminVO;
+import kr.co.todaydaeng.member.model.vo.Member;
 
 public interface AdminService {
 
@@ -22,6 +23,10 @@ public interface AdminService {
 	int selectAdminNew();
 
 	ArrayList<AdminVO> selectAdminSearch(HashMap<String, String> findMap);
+
+	ArrayList<Member> selectMemberList(HashMap<String, Integer> pageNum);
+
+	int selectMemberCount();
 
 
 
