@@ -147,6 +147,7 @@ img {
 	width: 100%;
 	height: 100%;
 	object-fit: fill;
+	border-radius: 100%;
 	
 }
 
@@ -284,7 +285,7 @@ table tr td:last-child {
 			</div>
 			<div class="content">
 				<p>회원 정보</p>
-				<div class="img">
+				<div class="img" id="${sessionScope.member.memberProfile }">
 					<c:set var="memberProfile"
 						value="${sessionScope.member.memberProfile }" />
 					<c:choose>
