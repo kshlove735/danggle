@@ -1,5 +1,7 @@
 package kr.co.todaydaeng.admin.model.service;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,11 @@ public class ManageServiceImpl implements ManageService {
 	public int insertAdminAccount(AdminVO avo) {
 		return aDAO.insertAdminAccount(avo);
 	}
-	
+
+	@Override
+	public int updateAdminGrade(HashMap<String, Object> map) {
+		return aDAO.updateAdminGrade(map);
+	}
+
 	
 }

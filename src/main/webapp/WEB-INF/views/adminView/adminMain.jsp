@@ -38,13 +38,13 @@
     }
     
     #aside{
-        width: 20%;
+        width: 15%;
         height: 100%;
         float: left;
     }
     
     #contents{
-        width: 80%;
+        width: 85%;
         height: 100%;
         float: left;
         text-align: center;        
@@ -61,6 +61,10 @@
 <body>
    
    <div class="wrap"> 
+   
+	<c:choose>
+		<c:when test="${sessionScope.adminVO != null }">
+		
        <div id="header">  <%@ include file="/WEB-INF/views/adminView/adminHeader.jsp" %> </div>
        
        <div id="body">
@@ -70,7 +74,15 @@
                <h1> 관리자 페이지 입니다</h1>
                <h1>좌측의 메뉴에서 필요한 기능을 선택해 주세요</h1>
            </div>
-       </div>        
+       </div> 
+       </c:when>
+       
+      <c:otherwise>
+      	<H2>관리자 계정 로그인이 필요합니다</H2>
+      		<a href="/admin/adminIndex.do"> 로그인으로 이동 </a>
+      </c:otherwise>      
+	</c:choose>
+	       
    </div>
     
 </body>

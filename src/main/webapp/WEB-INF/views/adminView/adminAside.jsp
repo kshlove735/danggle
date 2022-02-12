@@ -80,8 +80,8 @@
        
         <H2 class="category"> 회원 관리 </H2>       
         <ul>
-            <li> <span class="highlight" onclick="memberManage();">  권한 조정 </span>  </li>            
-            <li> <span class="highlight" onclick="tempManage();"> 임시조치  </span> </li>     
+            <li> <span class="highlight" onclick="memberManage();">  사용자 상태 변경 </span>  </li>            
+            <%-- <li> <span class="highlight" onclick="tempManage();"> 임시조치  </span> </li> --%>     
         </ul>
         
        <H2 class="category"> 커뮤니티 게시판 </H2>       
