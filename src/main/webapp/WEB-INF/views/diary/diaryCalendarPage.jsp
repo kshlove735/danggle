@@ -1,4 +1,8 @@
+<%@page import="java.awt.print.Printable"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="kr.co.todaydaeng.diary.model.vo.Diary"%>
 <%@page import="java.util.Calendar"%>
+<%@page import="kr.co.todaydaeng.common.Util" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <!-- JSTL 라이브러리 -->
@@ -146,17 +150,32 @@
             width: 100%;
             height: 6%;
         }
-
+		
+		.today{
+			border: 1px solid #FD6F22;
+            background-color: #FD6F22;
+            width: 50px;
+            height: 100%;
+            border-radius: 3px;
+            float: left;
+            text-align: center;
+            line-height: 38px;
+            color: #ffffff;
+            cursor: pointer;
+		}
+	
         .eventBtnDiv {
             border: 1px solid #FD6F22;
             background-color: #FD6F22;
             width: 38px;
             height: 100%;
             border-radius: 3px;
+            float: right;
         }
         .eventBtn{
         	width: 37.094px;
             height: 100%;
+            
         
         }
 
@@ -284,10 +303,38 @@
 		}
 
     </style>
+    
+    <script>
+    	function today(){
+    		var yearNow=${requestScope.cal.yearNow};
+    		var monthNow=${requestScope.cal.monthNow};
+    		var dateNow=${requestScope.cal.dateNow};
+    		var dogNo=${requestScope.dog.dogNo};
+    		
+    		location.replace("/diary/diaryCalendarPage.do?dogNo="+dogNo);
+    		
+    	}
+    </script>
 
 	<!-- 달력 크기 조절 이벤트 -->
     <script>
         $(document).ready(function() {
+        	
+        	// 오늘 날짜에 표시
+        	var yearNow=${requestScope.cal.yearNow};
+    		var monthNow=${requestScope.cal.monthNow};
+    		var dateNow=${requestScope.cal.dateNow};
+    		
+    		var year=${requestScope.cal.year};
+    		var month=${requestScope.cal.month};
+    		var dogNo=${requestScope.dog.dogNo};
+        	
+        	if(yearNow==year&&monthNow==month){
+        		select(document.getElementById('${requestScope.cal.dateNow}'));
+        	}
+        	
+        	
+        	
             $('.eventBtn').click(function() {
                 if ($(this).attr('name') == 'open') {
                     $('.calendar').css("width", "100%");
@@ -350,6 +397,7 @@
 						$('#submit').html('수정');
 						$('#delete').css('display','inline');
 						
+						
 					}else{	// 작성한 일기가 없을때
 						$('input[name=weight]').val('');
 						$('input[name=feedName]').val('');
@@ -411,9 +459,11 @@
 				success:function(result){
 					if(result=='true'){
 						alert('일기 수정 완료');
+						window.location.reload();
 					}else{
 						alert('일기 수정 실패\n- 지속적인 문제 발생시 관리자에게 문의해주세요 -');
 					}
+					
 				},
 				error:function(){
 					console.log('ajax 통신 실패');
@@ -462,6 +512,7 @@
 				success:function(result){
 					if(result=='true'){
 						alert('일기 등록 완료');
+						window.location.reload();
 					}else{
 						alert('일기 등록 실패\n- 지속적인 문제 발생시 관리자에게 문의해주세요 -');
 					} 
@@ -508,7 +559,7 @@
 			};
 		}
 	</script>
-    
+    <jsp:useBean id="util" class="kr.co.todaydaeng.common.Util"/>
 </head>
 <body>
    <div class="wrap">
@@ -594,6 +645,7 @@
             <div class="diary">
                 <div class="calendar">
                     <div class="btn">
+                    	<div class="today" onclick="today()">Today</div>
                         <div class="eventBtnDiv" name="open">
                             <img src="/resources/images/menu.png" class="eventBtn">
                         </div>
@@ -618,21 +670,32 @@
 								<th>토</th>
 							</tr>
 							<tr>
-								<!-- 달력에 시작하는 공백 출력 -->
-								<!-- 공백 출력하는 for 문 -->
+								<%-- 달력에 시작하는 공백 출력 --%>
+								<%-- 공백 출력하는 for 문 --%>
 								<c:forEach var="i" begin="1" end="${requestScope.cal.dayOfWeek-1 }">
 									<td>&nbsp;</td>
 								</c:forEach>
 								
-								<!-- 날짜 출력하는 for 문 -->
+								<%-- 날짜 출력하는 for 문 --%>
 								<c:forEach var="i" begin="1" end="${requestScope.cal.lastDay }">
 									<td>
-										<div class="date" onclick="select(this)" >
+										<div class="date" onclick="select(this)" id="${i }">
 											${i }
+											
+											<%-- 일기 있는 날짜에 표시 --%>
+											<c:set var="list" value="${requestScope.list }"/>
+											<%
+											ArrayList<Diary> list=(ArrayList<Diary>)request.getAttribute("list");
+											int i=(int)pageContext.getAttribute("i");
+											
+											
+											out.print(util.getCalViewList(i, list));
+											%>
+											
 										</div>
 									</td>
 									
-									<!-- 행을 바꿔주기 -> 현재일(i)이 토요일인지 확인 : (공백수+현재날짜)의 값이 7로 나눠 떨어지면 7의 배수 -->
+									<%-- 행을 바꿔주기 -> 현재일(i)이 토요일인지 확인 : (공백수+현재날짜)의 값이 7로 나눠 떨어지면 7의 배수 --%>
 									<c:if test="${((requestScope.cal.dayOfWeek-1+i)%7)==0 }">
 										</tr><tr>
 									</c:if> 
@@ -641,7 +704,7 @@
 								</c:forEach>
 								
 								
-								<!-- 나머지 공백 출력하는 for문 -->
+								<%-- 나머지 공백 출력하는 for문  --%>
 								<c:set var="countNbsp" value="${(7-(requestScope.cal.dayOfWeek-1+requestScope.cal.lastDay)%7)%7 }"/>
 								
 								<c:forEach begin="0" end="${countNbsp }">
@@ -650,7 +713,6 @@
 								</c:forEach> 
 							</tr>
 						</table>
-
                     </div>
                 </div>
                 <div class="content">

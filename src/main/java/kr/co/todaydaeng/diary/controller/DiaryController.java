@@ -81,12 +81,11 @@ public class DiaryController {
 		HashMap<String, Integer> cal =Util.calendar(year, month);
 		
 		// 월별 일정에 대해 일별 표시하기 구현
-		String yyyyMM = year + Util.isTwo(String.valueOf(cal.get("month")));
+		String yyyyMM = String.valueOf(cal.get("year")) + Util.isTwo(String.valueOf(cal.get("month")));
 		HashMap<String, Object> map2 = new HashMap<>();
 		map2.put("memberNo", memberNo);
 		map2.put("yyyyMM", yyyyMM);
 		ArrayList<Diary> list= dService.calViewList(map2);
-		
 		model.addAttribute("cal", cal);
 		model.addAttribute("dog", dog);
 		model.addAttribute("list", list);
