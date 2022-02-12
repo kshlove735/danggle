@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import kr.co.todaydaeng.board.model.dao.BoardDAO;
@@ -24,13 +25,20 @@ public class BoardServiceImpl implements BoardService{
 	private BoardDAO bDAO;
 	
 	@Override
-	public ArrayList<BoardEx> communityList(String searchOption, String keyword) {
+	public ArrayList<BoardEx> communityList(int currentPage, int pageSize) {
 		
-		return bDAO.communityList();
+		return bDAO.communityList(currentPage, pageSize);
 	}
 
 	@Override
 	public ArrayList<Notice> noticeList(String searchOption, String keyword) {
+
+		return bDAO.noticeList();
+		
+	}
+	
+	@Override
+	public ArrayList<Notice> noticeList() {
 
 		return bDAO.noticeList();
 		
@@ -60,6 +68,11 @@ public class BoardServiceImpl implements BoardService{
 	public int deleteBoardPost(int boardNo) {
 
 		return bDAO.deleteBoardPost(boardNo);
+	}
+
+	@Override
+	public int getTotalCount() {
+		return bDAO.totalCount();
 	}
 
 //	@Override
