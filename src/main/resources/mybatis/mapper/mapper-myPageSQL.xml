@@ -50,7 +50,7 @@
 	</update>
 	
 	<!-- 반려경 정보 출력  SQL 방법 1-->
-	<select id="selectAllDogInfoList_1" parameterType="hashmap" resultType="kr.co.todaydaeng.myPage.model.vo.Dog">
+	<select id="selectAllDogInfoList_1" parameterType="hashmap" resultType="dog">
 		select  
 			DOG_NO as dogNo, 
 			MEMBER_NO as memberNo, 
@@ -67,7 +67,7 @@
 	</select>
 	
 	<!-- 반려경 정보 출력  SQL 방법 2 -->
-		<select id="selectAllDogInfoList" resultType="kr.co.todaydaeng.myPage.model.vo.Dog">
+		<select id="selectAllDogInfoList" resultType="dog">
 		select  
 			DOG_NO as dogNo, 
 			MEMBER_NO as memberNo, 
@@ -89,7 +89,7 @@
 		select count(*) as count from dog where member_no=#{member_no} and DEL_YN='N'
 	</select>
 	
-	<insert id="insertDogInfo" parameterType="kr.co.todaydaeng.myPage.model.vo.Dog">
+	<insert id="insertDogInfo" parameterType="dog">
 		insert into dog values(
 			DOG_SQ.nextval, 
 			#{memberNo},
@@ -105,7 +105,7 @@
 		)
 	</insert>
 	
-	<select id="selectOneDogInfo" resultType="kr.co.todaydaeng.myPage.model.vo.Dog">
+	<select id="selectOneDogInfo" resultType="dog">
 		select 
 			DOG_NO as dogNo, 
 			MEMBER_NO as memberNo, 
@@ -121,7 +121,7 @@
 		from dog where DOG_NO=#{dogNo} and DEL_YN='N'
 	</select>
 	
-	<update id="updateDogInfo" parameterType="kr.co.todaydaeng.myPage.model.vo.Dog">
+	<update id="updateDogInfo" parameterType="dog">
 		update dog set 
 			DOG_NAME =#{dogName},
 			GENDER =#{gender},
