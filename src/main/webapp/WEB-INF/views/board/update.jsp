@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<!-- JQuery 라이브러리 -->
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+  
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,7 +47,7 @@
         background-color: white;
     }
 
-    #cancleBtn {
+    #cancelBtn {
         background: #FD6F22;
         color: white;
         border-radius: 5px;
@@ -68,29 +72,33 @@
 
     #footer {
         height: 235px;
-        clear:both;
+        clear: both;
+    }
+    .ck-editor__editable {
+       height: 550px;
+       width: 979px;
     }
 </style>
 
 <!--에디터 api-->
-<script type="text/javascript" src="/resources/ckeditor/ckeditor.js"></script>
+<!-- <script type="text/javascript" src="/resources/ckeditor/ckeditor.js"></script> -->
 
 <body>
+
     <div id="header">
     </div>
     <div style="height: 105px;"></div>
     <div class="wrap">
         <p id="writetitle">글 수정하기</p>
-        <form>
-        제목 <input type="text" id="subject" />
 
-        <textarea class="form-control" id="p_content"></textarea>
-        <script type="text/javascript">
-            CKEDITOR.replace('p_content', {
-                height: 500,
-                width: 1000 px
-            });
-        </script>
+	<form id="form" action="/board/update.do" method="get" enctype="multipart/form-data">
+
+        제목 <input type="text" id="subject" name="subject" value="${view.subject }"/>
+
+        <textarea class="form-control" id="content" name="content">
+        ${view.content }
+
+        </textarea>
 
         <div class="container">
             <div class="content" style="width: 70%">
@@ -98,41 +106,51 @@
                 <div class="row justify-content-md-center">
                     <div class="col_c" style="margin-bottom: 30px">
                         <div class="input-group">
-                            <script type="text/javascript">
-                                CKEDITOR.replace('p_content', {
-                                    height: 500
-                                });
-                            </script>
                         </div>
                     </div>
                 </div>
 
 
-                <!--
-      <div class="row justify-content-md-center">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-              </div>
-              <div class="custom-file">
-                  &nbsp;<input type="file" class="form-control-file" id="exampleFormControlFile1">
-              </div>
             </div>
-      </div>
-      
-      <div class="row justify-content-md-center">
-        <button type="submit" class="btn btn-outline-secondary" style="width: 20%; font-weight: bold">
-             등 록          
-            </button>
-        </div>
-        -->
+            
+            <button type="submit" id="writeBtn">수정하기</button>
+			
+            <input type = "button" value="취소" id="cancelBtn"/>
 
-            </div>
-            <button id="writeBtn" type="submit">수정하기</button>
-            <button id="cancleBtn">취소</button>
+            
         </div>
-        </form>
+	</form>
     </div>
+    
     <div id="footer"></div> 
-
+    
+    <script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
+    
+    <script>        
+    const boardNo = ${requestScope.boardNo };
+		        $(document).ready(function(){
+		        	ClassicEditor
+		            .create( document.querySelector( '#content' ), {
+		                ckfinder: {
+		                uploadUrl: '/board/communityFile.do'
+		                }
+		            })
+		            .catch( error => {
+		                console.error( error );
+		            });
+		        	
+		        	$('#writeBtn').on("click",function(){
+						update(be);            
+					});
+            
+					$('#cancelBtn').on("click",function(){
+						location.replace("/board/community.do");
+					});
+					
+					function insertPost(){
+						$("#form").submit();
+					}
+		        });
+			</script>
 </body>
 </html>

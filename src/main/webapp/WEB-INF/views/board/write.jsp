@@ -77,6 +77,7 @@
        height: 550px;
        width: 979px;
     }
+    
 </style>
 
 <!--에디터 api-->
@@ -109,28 +110,30 @@
             <input type = "button" value="작성하기" id="writeBtn"/>
 			
             <input type = "button" value="취소" id="cancelBtn"/>
-
-            
         </div>
 	</form>
     </div>
     
+    
+    
     <div id="footer"></div> 
     
     <script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
-    
+
     <script>        
+
     
 		        $(document).ready(function(){
 		        	ClassicEditor
 		            .create( document.querySelector( '#content' ), {
 		                ckfinder: {
-		                uploadUrl: '/ajax/imageUpload.do'
+		                uploadUrl: '/board/communityFile.do'
 		                }
 		            })
 		            .catch( error => {
 		                console.error( error );
 		            });
+		        	
 		        	
 		        	$('#writeBtn').on("click",function(){
 						insertPost();
@@ -143,6 +146,7 @@
 					function insertPost(){
 						$("#form").submit();
 					}
+					
 		        });
 			</script>
 </body>
