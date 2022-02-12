@@ -32,4 +32,5 @@ public interface MemberService {
 
 	//pwd인증번호 확인 후 비밀번호 재설정
 	int changeMemberPwd(HashMap<String, String> map);
+
 }

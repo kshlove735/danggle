@@ -1,6 +1,7 @@
 package kr.co.todaydaeng.board.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -11,6 +12,7 @@ import kr.co.todaydaeng.board.model.dao.BoardDAO;
 import kr.co.todaydaeng.board.model.vo.Board;
 import kr.co.todaydaeng.board.model.vo.BoardEx;
 import kr.co.todaydaeng.board.model.vo.Notice;
+import kr.co.todaydaeng.myPage.model.vo.Dog;
 
 @Service
 public class BoardServiceImpl implements BoardService{
@@ -22,13 +24,13 @@ public class BoardServiceImpl implements BoardService{
 	private BoardDAO bDAO;
 	
 	@Override
-	public ArrayList<BoardEx> communityList() {
+	public ArrayList<BoardEx> communityList(String searchOption, String keyword) {
 		
 		return bDAO.communityList();
 	}
 
 	@Override
-	public ArrayList<Notice> noticeList() {
+	public ArrayList<Notice> noticeList(String searchOption, String keyword) {
 
 		return bDAO.noticeList();
 		
@@ -47,4 +49,36 @@ public class BoardServiceImpl implements BoardService{
 		
 	}
 
+	@Override
+	public int update(BoardEx be)  {
+		
+		return bDAO.update(be);
+		
+	}
+
+	@Override
+	public int deleteBoardPost(int boardNo) {
+
+		return bDAO.deleteBoardPost(boardNo);
+	}
+
+//	@Override
+//	public HashMap<String, Object> communityPaging(int currentPage, int boardNo) {
+//		
+//		// 하나의 Page에 보여줄 게시글 갯수 설정
+//		int recordCountPerPage=15;
+//		ArrayList<BoardEx> list = bDAO.communityAllList(currentPage,recordCountPerPage, boardNo);
+//				
+//		// 하나의 PageNavi Bar 에 보여질 Navi 개수 설정
+//		int naviContPerPage=5;
+//		String pageNavi = bDAO.getPageNavi(naviContPerPage,currentPage,recordCountPerPage, boardNo);
+//				
+//		HashMap<String , Object> result=new HashMap<String, Object>();
+//		result.put("list", list);
+//		result.put("pageNavi", pageNavi);
+//				
+//		return result;
+//	}
+
+	
 }

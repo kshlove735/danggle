@@ -32,6 +32,8 @@
           FROM
               BOARD  
               LEFT JOIN MEMBER USING (member_no)
+              WHERE DEL_YN='N'
+              ORDER BY BOARD_NO DESC
     </select>
     
     <!-- 공지사항 목록 -->
@@ -46,6 +48,7 @@
             notice_photo as noticePhoto
           FROM
               NOTICE
+              ORDER BY NOTICE_NO DESC
     </select>
     
     <!-- 게시글 보기 -->
@@ -64,13 +67,14 @@
             BOARD  
               LEFT JOIN MEMBER USING (member_no)
           WHERE board_no = #{_parameter}
+          
     </select>
     
     <!-- 게시글 작성 -->
     <insert id="insertPost" parameterType="hashmap">
 		INSERT INTO BOARD VALUES(
 			BOARD_SQ.nextval,
-			1010,
+			#{memberNo},
 			#{subject},
 			#{content},
 			SYSDATE,
@@ -79,5 +83,48 @@
 			null
 		)
 	</insert>
+	
+	<!-- 게시글 수정 -->
+	<update id="update">
+	    UPDATE BOARD
+            SET
+               SUBJECT = #{subject},
+               CONTENT = #{content}
+            WHERE
+                board_No = #{boardNo}
+	</update>
     
+    <!-- 페이징 처리 -->
+    <select id="selectTotalCount" resultType="string">
+		select count(*) as count from board where board_no=#{board_no} and DEL_YN='N'
+	</select>
+	
+	<!-- 게시글 삭제 -->
+	<update id="deleteBoardPost">
+		update board set 
+			DEL_YN = 'Y' 
+		where BOARD_NO=#{BoardNo} and DEL_YN='N'
+	</update>
+	
+	<!--
+	<select id="communityAllList" parameterType="hashmap" resultType="boardEx">
+	    SELECT
+	       board_no as boardNo,
+            member_no as memberNo,
+            subject as subject,
+            content as content,
+            regdate as regDate,
+            view_count as viewCount,
+            del_yn as delYN,
+            board_photo as boardPhoto,
+            member_id as memberId
+          FROM
+            BOARD  
+              LEFT JOIN MEMBER USING (member_no)
+         (select row_number() over(order by BOARD_NO asc) as num , board.*  from board) 
+         where BOARD_NO=#{boardNo} and num between #{start} and #{end} and DEL_YN='N'     
+	
+	</select>
+	 -->
+ 
 </mapper>

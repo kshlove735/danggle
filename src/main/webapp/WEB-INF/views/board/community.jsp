@@ -15,6 +15,7 @@
     <!-- App css -->
     <link href="/resources/css/icons.min.css" rel="stylesheet" type="text/css"/>
     <link href="/resources/css/app-creative.min.css" rel="stylesheet" type="text/css" id="light-style"/>
+
 </head>
 
 <style>
@@ -126,12 +127,19 @@
 			</script>
             <button id="writeBtn">글쓰기</button>
             <select id="select">
-                <option style="text-align: left;" value="subject" selected>제목</option>
-                <option style="text-align: left;" value="writer">작성자</option>
+                <option style="text-align: left;" value="subject">
+               		<c:if test="${map.searchOption=='subject'}">selected</c:if>
+               		 제목</option>
+                <option style="text-align: left;" value="writer">
+					<c:if test="${map.searchOption=='writer'}">selected</c:if>
+               		 작성자</option>
+               	<option style="text-align: left;" value="all">
+					<c:if test="${map.searchOption=='all'}">selected</c:if>
+               		 제목+작성자</option>	 
             </select>
 
-            <input type="text" id="search"/>
-            <button id="btn">검색</button>
+            <input type="text" id="search" name="keyword" value="${map.search }"/>
+            <button id="btn" type="submit">검색</button>
         
     </div>
 
@@ -155,8 +163,7 @@
             <td>관리자</td>
             <td>${n.regDateString }</td> 
             <td>
-                <a href="" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
-                <a href="" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                
             </td>
         </tr>
         </c:forEach>
@@ -170,12 +177,20 @@
             <td>${b.memberId }</td>
             <td>${b.regDateString }</td>
             <td>
-            
-                <a href="" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
-                <a href="" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+
+                <button onclick='go(this)'  class="action-icon" id="${b.boardNo }" style="border:0;"> <i class="mdi mdi-pencil"></i></button> 
+                <a href="" class="action-icon"><button class="deleteBtn" id="${b.boardNo }"  style="border:0;"> <i class="mdi mdi-delete"></i></button></a>
             </td>
         </tr>
         </c:forEach>
+
+		<script>
+			function go(val){
+				var boardNo=val.getAttribute("id");
+				window.open("/board/updateCheckPage.do?boardNo="+boardNo,"비밀번호 확인" );
+			}
+		</script>
+
 
         </tbody>
     </table>
@@ -192,6 +207,35 @@
 
 </div>
 <div id="footer"></div>
+
+<script>
+		$('.deleteBtn').click(function(){
+			var boardNo = $(this).attr('id');
+			if(window.confirm('정말 삭제하시겠습니까?\n- 삭제시 복구가 불가능 합니다. -')){
+															
+			$.ajax({
+					url:"/board/deleteBoardPost.do",
+					data:{"boardNo":boardNo},
+					type:"get",
+					success:function(result){
+				if(result=='true'){
+					alert("게시글이 삭제 되었습니다");
+					window.location.reload();
+				}else{
+					alert("게시글 삭제에 실패하였습니다.\n- 지속적인 문제 발생시 관리자에게 문의해주세요 -");
+					window.location.reload();
+				}
+			},
+				error:function(){
+				console.log('ajax 통신 실패');
+				}
+		});
+			}
+		});
+		
+			
+</script>
+												
 
 </body>
 </html>
