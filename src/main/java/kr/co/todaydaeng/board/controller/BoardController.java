@@ -54,30 +54,30 @@ public class BoardController {
     //커뮤니티 게시판 목록
 	@RequestMapping(value="/board/community.do",method=RequestMethod.GET)
 	public ModelAndView community(ModelAndView mav,
-									@RequestParam(defaultValue="MemberId") String searchOption, 
-						            @RequestParam(defaultValue="") String keyword 	
-									)throws Exception
-	{	
-//		int currentPage;
-//
-//		if (request.getParameter("currentPage") == null) {
-//			currentPage = 1;
-//		} else {
-//			currentPage = Integer.parseInt(request.getParameter("currentPage"));
-//		}
-//
-//		int boardNo = board.getMemberNo();
-//		
-//		HashMap<String, Object> map = bService.communityPaging(currentPage, boardNo);
-//		mav.addObject("map", map);
-//		mav.addObject("currentPage", currentPage);
+								  @RequestParam(defaultValue="1") int currentPage	
+							)throws Exception
+	{			
+		int pageSize = 10; // 한페이지당 보낼 게시글
+		int naviSize = 5; // navi 개수
+		int maxPage = (int) Math.ceil(bService.getTotalCount() / (double)pageSize);
+		
+		int startNavi = currentPage - (currentPage - 1) % naviSize;
+		int endNavi = startNavi + naviSize - 1;
+		endNavi = endNavi > maxPage ? maxPage : endNavi;
+		
+		ArrayList<Integer> navi = new ArrayList<>();
+		for (int i = startNavi; i<= endNavi; i++) {
+			navi.add(i);
+		}
 		
 		//memberId 있는 board
-		ArrayList<BoardEx> boardList = bService.communityList(searchOption,keyword);
-		ArrayList<Notice> noticeList = bService.noticeList(searchOption,keyword);
+		ArrayList<BoardEx> boardList = bService.communityList(currentPage,pageSize);
+		ArrayList<Notice> noticeList = bService.noticeList();
 		mav.addObject("boardlist", boardList);
 		mav.addObject("noticelist", noticeList);
-		
+		mav.addObject("navi", navi);
+		mav.addObject("preNavi", startNavi > 1 ? startNavi - 1 : 0);
+		mav.addObject("nextNavi", maxPage > endNavi ? endNavi + 1 : 0);
 		mav.setViewName("board/community");
 		return mav;
 	}
@@ -164,26 +164,18 @@ public class BoardController {
 			               HttpSession session,
 			               @RequestParam("subject") String subject,
 						   @RequestParam("content") String content,
+						   @SessionAttribute Member member,
 						   ModelAndView mav
 			               ) throws Exception
 	{
-		System.out.println(subject);
-		System.out.println(content);
-	      Map<String,Object> map = new HashMap<String,Object>();   
-	      
-	     Member member = (Member)session.getAttribute("member");
-	      if(member==null)
-	      {
-	    	  
-	      }
 
+	      Map<String,Object> map = new HashMap<String,Object>();   
 	      map.put("memberNo", member.getMemberNo());
 	      map.put("subject", subject);
 	      map.put("content", content);
-	     
-	      mav.setViewName("board/community");
-	      
 	      bService.insertPost(map);
+	      
+	      mav.setViewName("redirect:/board/community.do");
           return mav;	
 	}
 	
@@ -285,6 +277,7 @@ public class BoardController {
 			 
 		}
 		
+		
     //게시글 삭제
 	@RequestMapping(value = "/board/deleteBoardPost.do", method = RequestMethod.GET)
 	public void deleteBoardPost(@RequestParam int boardNo, HttpServletResponse response) throws IOException {
@@ -299,11 +292,22 @@ public class BoardController {
 
 	}
 	
-	@RequestMapping(value="/board/communitySearch.do",method=RequestMethod.GET)
-	public void getCommunitySearch(Model model,@RequestParam("boardNo") int boardNo) throws Exception
-	{
-				
-	}
+//	@RequestMapping(value="/board/communitySearch.do",method=RequestMethod.GET)
+//	public ModelAndView getCommunitySearch(Model model,@RequestParam("boardNo") int boardNo,
+//									ModelAndView mav,
+//									@RequestParam(defaultValue="MemberId") String searchOption, 
+//							        @RequestParam(defaultValue="") String keyword
+//									) throws Exception
+//	{			
+//		//memberId 있는 board
+//		ArrayList<BoardEx> boardList = bService.communityList(searchOption,keyword);
+//		ArrayList<Notice> noticeList = bService.noticeList(searchOption,keyword);
+//		mav.addObject("boardlist", boardList);
+//		mav.addObject("noticelist", noticeList);
+//		
+//		mav.setViewName("board/community");
+//		return mav;		
+//	}
 
 	
 	@RequestMapping(value="/hospital/hospitalInfo.do",method=RequestMethod.GET)

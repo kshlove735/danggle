@@ -154,7 +154,7 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${requestScope.noticelist }" begin="1" end="5" var="n">
+        <c:forEach items="${requestScope.noticelist }" var="n">
         <tr>
             <td class="table-user">
                 ${n.noticeNo }
@@ -168,7 +168,7 @@
         </tr>
         </c:forEach>
         
-        <c:forEach items="${requestScope.boardlist }" begin="1" end="10" var="b">
+        <c:forEach items="${requestScope.boardlist }" var="b">
         <tr>
             <td class="table-user">
                 ${b.boardNo }
@@ -196,13 +196,15 @@
     </table>
 
     <div id="paging">
-        <a style="color: #FD6F22;" href="">Prev</a>
-        <a style="color: #919CA7;" href="">1</a>
-        <a style="color: #919CA7;" href="">2</a>
-        <a style="color: #919CA7;" href="">3</a>
-        <a style="color: #919CA7;" href="">4</a>
-        <a style="color: #919CA7;" href="">5</a>
-        <a style="color: #FD6F22;" href="">Next</a>
+    	<c:if test="${ preNavi > 0 }">
+        	<a style="color: #FD6F22;" href="/board/community.do?currentPage=${preNavi}">Prev</a>
+        </c:if>
+        <c:forEach items="${navi }" var="n">
+        <a style="color: #919CA7;" href="/board/community.do?currentPage=${n }">${n }</a>
+        </c:forEach>
+        <c:if test="${ nextNavi >0 }">
+        	<a style="color: #FD6F22;" href="/board/community.do?currentPage=${nextNavi}">Next</a>
+        </c:if>
     </div>
 
 </div>
