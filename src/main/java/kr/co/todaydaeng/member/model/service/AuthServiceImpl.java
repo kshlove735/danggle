@@ -268,4 +268,9 @@ public class AuthServiceImpl implements AuthService {
 	public int socialJoin(Member member) {
 		return mDAO.joinMember(member);
 	}
+	
+	@Override
+	public int updateLoginDate(Member m) {
+		return mDAO.updateLoginDate(m);
+	}
 }

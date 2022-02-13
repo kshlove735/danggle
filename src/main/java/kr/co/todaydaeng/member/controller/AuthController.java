@@ -40,6 +40,7 @@ public class AuthController {
 		// 카카오 고유 id값으로 해당 사용자가 이미 DB에 있는지 조회
 		Member m = authService.selectSocialId(socialId);
 		if(m != null) {
+			authService.updateLoginDate(m);
 			HttpSession session = request.getSession();
 			session.setAttribute("userInfo", userInfo);
 			session.setAttribute("member", m);
@@ -68,6 +69,7 @@ public class AuthController {
 		//고유 id값으로 기존 회원인지 확인
 		Member m = authService.selectSocialId(socialId);
 		if(m != null) {
+			authService.updateLoginDate(m);
 			HttpSession session = request.getSession();
 			session.setAttribute("userInfo", userInfo);
 			session.setAttribute("member", m);

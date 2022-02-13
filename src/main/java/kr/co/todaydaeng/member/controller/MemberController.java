@@ -114,6 +114,7 @@ public class MemberController {
 	public String loginMember(Member member, HttpServletRequest request, Model model) {
 		Member m = mService.loginMember(member);
 		if (m != null) {
+			mService.updateLoginDate(m);
 			switch (m.getMemberStatus()) {
 			case '0':
 				HttpSession session = request.getSession();

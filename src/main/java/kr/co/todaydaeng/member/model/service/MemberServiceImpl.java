@@ -66,4 +66,9 @@ public class MemberServiceImpl implements MemberService{
 	public int changeMemberPwd(HashMap<String, String> map) {
 		return mDAO.changeMemberPwd(map);
 	}
+
+	@Override
+	public int updateLoginDate(Member m) {
+		return mDAO.updateLoginDate(m);
+	}
 }
