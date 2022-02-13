@@ -71,4 +71,9 @@ public class MemberServiceImpl implements MemberService{
 	public int updateLoginDate(Member m) {
 		return mDAO.updateLoginDate(m);
 	}
+	
+	@Override
+	public int wakeUpDormantMember(Member member) {
+		return mDAO.wakeUpDormantMember(member);
+	}
 }

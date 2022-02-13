@@ -235,8 +235,11 @@ public class AuthServiceImpl implements AuthService {
 			JsonObject response = element.getAsJsonObject().get("response").getAsJsonObject();
 			
 			// response중 동의 항목
-			String id = response.getAsJsonObject().get("id").getAsString(); //식별값
-			String nickname = response.getAsJsonObject().get("nickname").getAsString(); //필수동의
+			//식별값
+			String id = response.getAsJsonObject().get("id").getAsString(); 
+			
+			//필수동의
+			String nickname = response.getAsJsonObject().get("nickname").getAsString(); 
 			userInfo.put("socialId", id);
 			userInfo.put("nickname", nickname);
 			

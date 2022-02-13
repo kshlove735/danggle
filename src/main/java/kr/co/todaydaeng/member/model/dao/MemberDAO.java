@@ -71,4 +71,9 @@ public class MemberDAO {
 	public int updateLoginDate(Member m) {
 		return sqlSession.update("member.updateLoginDate",m);
 	}
+	
+	//휴면 해제
+	public int wakeUpDormantMember(Member member) {
+		return sqlSession.update("member.updateDormantMember",member);
+	}
 }

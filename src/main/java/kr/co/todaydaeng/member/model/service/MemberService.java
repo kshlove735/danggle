@@ -35,5 +35,8 @@ public interface MemberService {
 
 	//로그인한 날짜 업데이트
 	int updateLoginDate(Member m);
+	
+	//휴면 해제
+	int wakeUpDormantMember(Member member);
 
 }
