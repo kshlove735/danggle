@@ -39,6 +39,7 @@ public class MyPageController {
 		if (member == null) {
 			return "/resources/views/member/login.jsp";
 		} else {
+			System.out.println(member.getMemberProfile());
 			return "myPage/memberInfoPage";
 		}
 	}
@@ -164,7 +165,7 @@ public class MyPageController {
 			member.setBirthdate(m.getBirthdate());
 			member.setEmail(m.getEmail());
 			member.setAddress(m.getAddress());
-			member.setAddressDetail(m.getAddress());
+			member.setAddressDetail(m.getAddressDetail());
 			member.setMemberProfile(m.getMemberProfile());
 			
 			mav.addObject("result", true);
@@ -174,7 +175,7 @@ public class MyPageController {
 			mav.addObject("result", false);
 			mav.addObject("msg", "회원 정보 수정 실패 - 지속적인 문제 발생시 관리자에게 문의해주세요.");
 		}
-		mav.setViewName("common/msgOrHistoryBack");
+		mav.setViewName("common/msg");
 
 		return mav;
 	}

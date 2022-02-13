@@ -2,6 +2,7 @@ package kr.co.todaydaeng.member.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -114,6 +115,7 @@ public class MemberController {
 	public String loginMember(Member member, HttpServletRequest request, Model model) {
 		Member m = mService.loginMember(member);
 		if (m != null) {
+			mService.updateLoginDate(m);
 			switch (m.getMemberStatus()) {
 			case '0':
 				HttpSession session = request.getSession();
@@ -285,6 +287,20 @@ public class MemberController {
 		mav.addObject("location", "/");
 		mav.setViewName("common/msg");
 		return mav;
+	}
+	
+	@RequestMapping(value = "/wakeUpDormantMember.do",method = RequestMethod.POST)
+	public String wakeUpDormantMember(Member member, Model model) {
+		int result = mService.wakeUpDormantMember(member);
+		if(result>0) {
+			//로그인 처리하려했더니 암호화때문에 암호화한 비번을 또 암호화해버림
+			model.addAttribute("msg","휴면 상태가 해제되었습니다. 다시 로그인 해주세요.");
+			model.addAttribute("location","/resources/views/login.jsp");
+		}else {
+			model.addAttribute("msg","실행 중 문제가 발생했습니다. 다시 시도해 주세요");
+			model.addAttribute("location","/resources/staticViews/member/login.jsp");
+		}
+		return "common/msg";
 	}
 	
 }

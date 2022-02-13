@@ -42,7 +42,7 @@
           <label>닉네임<a style="color:red">*</a></label>
           <input type="text" id="nickname" name="nickname" placeholder="${requestScope.userInfo.nickname}" value="${requestScope.userInfo.nickname}"readonly>
           
-          <label>성별<a style="color:red">*</a></label>
+          <label>성별<a style="color:red">*</a></label><br>
           <input type="radio" value="M" name="gender" checked>
           <label for="gender" class="light">남자</label>&emsp;
           
@@ -50,23 +50,23 @@
           <label for="gender" class="light">여자</label>
           <br><br>
           
-          <label>생년월일</label>
-	        <select name="yy" id="year" style="width:90px;" onchange="changeBirthdate();">
-	        	<option value="" selected hidden>--</option>
-	        	<option value="">--</option>
-	        </select>년
-			<select name="mm" id="month" style="width:90px;" onchange="changeBirthdate();">
-				<option value="" selected hidden>--</option>
-				<option value="">--</option>
-			</select>월
-			<select name="dd" id="day" style="width:90px;" onchange="changeBirthdate();">
-				<option value="" selected hidden>--</option>
-				<option value="">--</option>
-			</select>일
-			<input type="text" id="birthdate" name="birthdate" value="" style="display:none;">
-          <br>
+          <label>생년월일</label><br>
+		        <select name="yy" id="year" style="width:90px;" onchange="changeBirthdate();">
+		        	<option value="" selected hidden>--</option>
+		        	<option value="">--</option>
+		        </select>년
+				<select name="mm" id="month" style="width:90px;" onchange="changeBirthdate();">
+					<option value="" selected hidden>--</option>
+					<option value="">--</option>
+				</select>월
+				<select name="dd" id="day" style="width:90px;" onchange="changeBirthdate();">
+					<option value="" selected hidden>--</option>
+					<option value="">--</option>
+				</select>일
+				<input type="text" id="birthdate" name="birthdate" value="" style="display:none;">
+	          <br>
           
-          <label for="address">주소</label>
+          <label for="address">주소</label><br>
 	      <input type="text" name="address" style="margin-bottom: 3px;"placeholder="주소">
 	      <input type="text" name="detailAddress" placeholder="상세 주소">
        
@@ -106,8 +106,8 @@
 	      })
        </script>
 
-		<!-- 생년월일 -->
-      	<script>
+	  <!-- 생년월일 -->
+      <script>
 		 $(document).ready(function(){            
 		    var now = new Date();
 		    var year = now.getFullYear();
@@ -130,16 +130,23 @@
 		        $('#day').append('<option value="' + dd + '">' + dd+ '</option>');    
 		    }
 		    
-		    function changeBirthdate() {
-				 var year = $('#year').val();
-				 var mon  = $('#month').val();
-			     var day  = $('#day').val();
-				 
-				 if ((year != null && year != '') && (mon != null && mon != '') && (day != null && day != '')) {
-				   $('#birthdate').attr('value', year + mon + day);	
-				 }
+		    if (($('#year').val() != null && $('#year').val() != '') && 
+		    		($('#month').val() != null && $('#month').val() != '') && 
+		    			($('#day').val() != null && $('#day').val() != '')) {
+		    	$('#birthdate').attr('value',year+mon+day);	
+		    }
+		})
+		
+		 function changeBirthdate() {
+			 var year = $('#year').val();
+			 var mon  = $('#month').val();
+		     var day  = $('#day').val();
+			 
+			 if ((year != null && year != '') && (mon != null && mon != '') && (day != null && day != '')) {
+			   $('#birthdate').attr('value', year + mon + day);	
 			 }
-		</script>
+		 }
+	</script>
 	
 	<script>
 		function checkForm() {
