@@ -9,7 +9,7 @@
 </head>
 <body>
  <style>
-        * {
+       * {
             font-family: 'Noto Sans KR', sans-serif;
             background-color: #FAFBFE;
             font-weight: bold;
@@ -65,11 +65,10 @@
 
         #post {
             width: 1000px;
-            height: 700px;
+            height: 100%;
             border: 1px solid #D8D3D0;
-            text-align: left;
+            text-align: center;
             margin: 0 auto;
-            margin-top:10px;
             color: #919CA7;
             background-color: white;
             font-size: 15px;
@@ -88,7 +87,7 @@
 
         #comments {
             margin: 0 auto;
-            width: 800px;
+            width: 840px;
             height: 20px;
             border: 1px solid #C4C4C4;
             border-radius: 5px;
@@ -141,18 +140,20 @@
 
         #commentarea {
             margin: 0 auto;
-            margin-top: 40px;
+            margin-top: 10px;
             width: 880px;
+            height: 30px;
             border-color: #D8D3D0;
             background-color: white;
+            resize: none;
         }
 
         #enter {
             background: #FD6F22;
             color: white;
             width: 100px;
-            height: 33px;
-            margin-top: 43px;
+            height: 30px;
+            margin-top: 13px;
             float: right;
             border-radius: 5px;
             border: 0px;
@@ -164,6 +165,11 @@
             height: 235px;
             clear: both;
         }
+        
+       .image img{
+        width: 300px;
+        height: 300px;
+    }
     </style>
    
 <div id="header">
@@ -181,7 +187,8 @@
                 <div class="box" style="background: #BDBDBD;">
                     <img class="profile" src="/resources/images/jellybear.jpg">
                 </div>
-                <p style="float: left;">${view.memberId }</p><br>
+                
+                <p style="float: left;">${view.memberId }</p><br> 
             </div> 
             
             <br><br>
@@ -198,22 +205,30 @@
             
             <!-- 댓글 -->
             <div style="width: 100%; ">
-                <div class="commentbox" style="background: #BDBDBD; clear: both;">
-                    <img class="commentprofile" src="/resources/images/hairpin.jpg">
-                </div>
-                <p style="float: left; margin-left: 5px;">작성자</p>
+            <c:forEach items="${comment }" var="c">
+                <p style="float: left; margin-left: 5px;">${c.memberId }</p>
 
                 <span id="comments">
+                ${c.bComment }
                 </span>
-
+                 
                 <button id="updateBtn">수정</button>
                 <button id="deleteBtn">삭제</button>
+                 </c:forEach>
+                 
+
+              <form action="/comment/insertComment.do" method="post">
 
                 <div id="commentbox">
-                    <textarea id="commentarea">
-            </textarea>
-                    <button type="submit" id="enter">답글달기</button>
+                <input style="border:none" type="text" name="memberId" readonly/>
+                <textarea id="commentarea" name="bComment"> 
+                </textarea>
+                <input type="hidden" name="boardNo" value="${view.boardNo}">
+                    <button type="submit" id="enter">댓글달기</button>
                 </div>
+
+               </form> 
+
             </div>
         </div>
         <div id="footer"></div>

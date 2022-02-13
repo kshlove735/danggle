@@ -2,6 +2,7 @@ package kr.co.todaydaeng.board.model.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.todaydaeng.board.model.vo.Board;
 import kr.co.todaydaeng.board.model.vo.BoardEx;
+import kr.co.todaydaeng.board.model.vo.Comment;
 import kr.co.todaydaeng.board.model.vo.Notice;
 import kr.co.todaydaeng.myPage.model.vo.Dog;
 
@@ -43,9 +45,9 @@ public class BoardDAO {
 		
 	}
  
-	public int update(BoardEx be) {
+	public int update(HashMap<String,Object> map) {
 
-		return sqlSession.update("board.update", be);
+		return sqlSession.update("board.update", map);
 	}
 	
 	public int totalCount() {
@@ -58,6 +60,14 @@ public class BoardDAO {
 		return sqlSession.update("board.deleteBoardPost", boardNo);
 	}
 	
+	public List<Comment> commentList(int boardNo) throws Exception {
+		return sqlSession.selectList("comment.commentList", boardNo);
+	}
+
+	public int insertComment(Map<String, Object> map) {
+
+		return sqlSession.insert("comment.insertComment",map);
+	}
 
 		
 
