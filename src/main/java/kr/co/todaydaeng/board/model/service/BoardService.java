@@ -2,9 +2,11 @@ package kr.co.todaydaeng.board.model.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import kr.co.todaydaeng.board.model.vo.BoardEx;
+import kr.co.todaydaeng.board.model.vo.Comment;
 import kr.co.todaydaeng.board.model.vo.Notice;
 
 public interface BoardService {
@@ -18,11 +20,15 @@ public interface BoardService {
 
 	int insertPost(Map<String, Object> map) throws Exception;
 
-	int update(BoardEx be) throws Exception;
+	int update(HashMap<String,Object> map);
 
 	int deleteBoardPost(int boardNo);
 
 	int getTotalCount();
+
+	List<Comment> commentList(int boardNo) throws Exception;
+
+	int insertComment(Map<String, Object> map);
 
 	//HashMap<String, Object> communityPaging(int currentPage, int boardNo);
 
