@@ -450,7 +450,6 @@
 				"diaryNo":diaryNo
 			};
 			
-			console.log(data);
 			
 			$.ajax({
 				url:"/diary/updateDiary.do",
@@ -488,6 +487,18 @@
 			var memo=$('textarea').val();
 			var dogNo=${requestScope.dog.dogNo};
 			
+			
+			var feedTypeCheck=$('input[name=feedType]:checked').length;
+			var snackYNCheck=$('input[name=snackYN]:checked').length;
+			var healthFoodYNCheck=$('input[name=healthFoodYN]:checked').length;
+			
+			
+			
+			if(weight==''&&feedName==''&&feedTypeCheck==0&&feedAmount==''&&waterAmount==''&&snackYNCheck==0&&healthFoodYNCheck==0&&walk==''&&memo==''){
+				alert('하나는 입력해주셔야 합니다.');
+				return false;
+			}
+			
 			var data={
 				"year":year,
 				"month":month,
@@ -503,7 +514,6 @@
 				"memo":memo,
 				"dogNo":dogNo
 			};
-			console.log(data);
 			
 			$.ajax({
 				url:"/diary/insertDiary.do",
@@ -537,7 +547,6 @@
 				"diaryNo":diaryNo
 			};
 			
-			console.log(data);
 			
 			if(confirm('정말로 삭제 하시겠습니까?\n- 삭제시 절대 복구 불가 -')){
 				$.ajax({

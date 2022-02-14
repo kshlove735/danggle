@@ -31,31 +31,7 @@ public class DiaryController {
 	@Autowired
 	private DiaryService dService;
 
-	@Autowired
-	private MyPageService mpService;
 
-	/* 일기 작성을 위한 반려견 선택 페이지 호출 */
-	@RequestMapping(value = "/myPage/diaryPage.do", method = RequestMethod.GET)
-	public ModelAndView name(@SessionAttribute Member member, ModelAndView mav, HttpServletRequest request) {
-		int currentPage;
-
-		if (request.getParameter("currentPage") == null) {
-			currentPage = 1;
-		} else {
-			currentPage = Integer.parseInt(request.getParameter("currentPage"));
-		}
-
-		int memberNo = member.getMemberNo();
-
-		HashMap<String, Object> map = mpService.selectDogInfo(currentPage, memberNo);
-
-		mav.addObject("map", map);
-		mav.addObject("currentPage", currentPage);
-		mav.setViewName("diary/dogSelectPage");
-
-		return mav;
-
-	}
 
 	/* 달력 페이지 호출 */
 	@RequestMapping(value = "/diary/diaryCalendarPage.do", method = RequestMethod.GET)
@@ -75,7 +51,6 @@ public class DiaryController {
 		map.put("dogNo", dogNo);
 
 		Dog dog = dService.selectDogInfo(map);
-		System.out.println(dog.getDogName());
 		
 		// 달력에 출력될 정보 가져오기
 		HashMap<String, Integer> cal =Util.calendar(year, month);
@@ -85,6 +60,7 @@ public class DiaryController {
 		HashMap<String, Object> map2 = new HashMap<>();
 		map2.put("memberNo", memberNo);
 		map2.put("yyyyMM", yyyyMM);
+		map2.put("dogNo", dogNo);
 		ArrayList<Diary> list= dService.calViewList(map2);
 		model.addAttribute("cal", cal);
 		model.addAttribute("dog", dog);
@@ -100,15 +76,12 @@ public class DiaryController {
 
 		String scheduleDate = year + Util.isTwo(month) + Util.isTwo(date);
 
-		System.out.println(scheduleDate);
-		System.out.println(dogNo);
 
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("scheduleDate", scheduleDate);
 		map.put("dogNo", dogNo);
 
 		Diary diary = dService.selectDiary(map);
-		System.out.println(diary);
 		if(diary!=null) {
 			return diary;
 		}else {
@@ -121,7 +94,6 @@ public class DiaryController {
 	/* 일기 수정 로직  */
 	@RequestMapping(value = "/diary/updateDiary.do",method = RequestMethod.POST)
 	public void updateDiary(Diary diary, HttpServletResponse response) throws IOException {
-		System.out.println(diary);
 		int result = dService.updateDiary(diary);
 		if(result>0) {
 			response.getWriter().print(true);
@@ -143,7 +115,6 @@ public class DiaryController {
 		diary.setMemberNo(memberNo);
 		diary.setScheduleDate(scheduleDate);
 		
-		System.out.println(diary);
 		
 		int result =dService.insertDiary(diary);
 		if(result>0) {
@@ -162,8 +133,6 @@ public class DiaryController {
 		
 		String scheduleDate=year+month+date;
 		
-		System.out.println(scheduleDate);
-		System.out.println(diary.getDiaryNo()); 
 		
 		diary.setScheduleDate(scheduleDate);
 		
