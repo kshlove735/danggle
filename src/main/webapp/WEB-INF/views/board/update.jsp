@@ -78,6 +78,11 @@
        height: 550px;
        width: 979px;
     }
+    
+    .image img{
+        width: 300px;
+        height: 300px;
+    }
 </style>
 
 <!--에디터 api-->
@@ -91,10 +96,10 @@
     <div class="wrap">
         <p id="writetitle">글 수정하기</p>
 
-	<form id="form" action="/board/update.do" method="get" enctype="multipart/form-data">
+	<form id="form" action="/board/update.do" method="post" enctype="multipart/form-data">
 
         제목 <input type="text" id="subject" name="subject" value="${view.subject }"/>
-
+        <input type="hidden" name="boardNo" value="${view.boardNo }"/>
         <textarea class="form-control" id="content" name="content">
         ${view.content }
 
@@ -127,7 +132,7 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
     
     <script>        
-    const boardNo = ${requestScope.boardNo };
+
 		        $(document).ready(function(){
 		        	ClassicEditor
 		            .create( document.querySelector( '#content' ), {

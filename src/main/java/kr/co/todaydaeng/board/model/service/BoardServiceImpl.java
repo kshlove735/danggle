@@ -2,6 +2,7 @@ package kr.co.todaydaeng.board.model.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import kr.co.todaydaeng.board.model.dao.BoardDAO;
 import kr.co.todaydaeng.board.model.vo.Board;
 import kr.co.todaydaeng.board.model.vo.BoardEx;
+import kr.co.todaydaeng.board.model.vo.Comment;
 import kr.co.todaydaeng.board.model.vo.Notice;
 import kr.co.todaydaeng.myPage.model.vo.Dog;
 
@@ -58,9 +60,9 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public int update(BoardEx be)  {
+	public int update(HashMap<String,Object> map)  {
 		
-		return bDAO.update(be);
+		return bDAO.update(map);
 		
 	}
 
@@ -73,6 +75,19 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public int getTotalCount() {
 		return bDAO.totalCount();
+	}
+
+	@Override
+	public List<Comment> commentList(int boardNo) throws Exception {
+		
+		return bDAO.commentList(boardNo);
+	}
+
+	@Override
+	public int insertComment(Map<String, Object> map){
+		
+		return bDAO.insertComment(map);
+		
 	}
 
 //	@Override

@@ -138,7 +138,7 @@
 		 
 		 order by boardNo desc
 		</select> 
-	
+			
 	<!--
 	<select id="communityAllList" parameterType="hashmap" resultType="boardEx">
 	    SELECT
@@ -159,5 +159,4 @@
 	
 	</select>
 	 -->
- 
-</mapper>
+</mapper> 

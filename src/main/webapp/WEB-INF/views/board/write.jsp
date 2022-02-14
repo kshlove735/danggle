@@ -78,6 +78,11 @@
        width: 979px;
     }
     
+     .image img{
+        width: 300px;
+        height: 300px;
+    }
+    
 </style>
 
 <!--에디터 api-->
