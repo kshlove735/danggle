@@ -40,10 +40,19 @@ public class AuthController {
 		// 카카오 고유 id값으로 해당 사용자가 이미 DB에 있는지 조회
 		Member m = authService.selectSocialId(socialId);
 		if(m != null) {
-			HttpSession session = request.getSession();
-			session.setAttribute("userInfo", userInfo);
-			session.setAttribute("member", m);
-			return "redirect:/";
+			authService.updateLoginDate(m);
+			switch (m.getMemberStatus()) {
+			case '0':
+				HttpSession session = request.getSession();
+				session.setAttribute("userInfo", userInfo);
+				session.setAttribute("member", m);
+				return "redirect:/";
+			case '1':
+				model.addAttribute("member", m);
+				return "dormantMember";
+			default:
+				return "common/errorPage";
+			}
 		// 없다면 추가 입력 사항 페이지로 이동하여 DB에 저장
 		}else {
 			model.addAttribute("userInfo",userInfo);
@@ -68,10 +77,19 @@ public class AuthController {
 		//고유 id값으로 기존 회원인지 확인
 		Member m = authService.selectSocialId(socialId);
 		if(m != null) {
-			HttpSession session = request.getSession();
-			session.setAttribute("userInfo", userInfo);
-			session.setAttribute("member", m);
-			return "redirect:/";
+			authService.updateLoginDate(m);
+			switch (m.getMemberStatus()) {
+			case '0':
+				HttpSession session = request.getSession();
+				session.setAttribute("userInfo", userInfo);
+				session.setAttribute("member", m);
+				return "redirect:/";
+			case '1':
+				model.addAttribute("member", m);
+				return "dormantMember";
+			default:
+				return "common/errorPage";
+			}
 		}else {
 			model.addAttribute("userInfo",userInfo);
 			return "socialJoin";

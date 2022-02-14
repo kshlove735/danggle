@@ -95,8 +95,8 @@
 	</update>
     
     <!-- 페이징 처리 -->
-    <select id="selectTotalCount" resultType="string">
-		select count(*) as count from board where board_no=#{board_no} and DEL_YN='N'
+    <select id="selectTotalCount" resultType="int">
+		select count(*) as count from board where DEL_YN='N'
 	</select>
 	
 	<!-- 게시글 삭제 -->
@@ -105,6 +105,39 @@
 			DEL_YN = 'Y' 
 		where BOARD_NO=#{BoardNo} and DEL_YN='N'
 	</update>
+	
+	<!-- 게시글 검색 -->
+	
+	<select id="listPageSearch" parameterType="hashMap" resultType="board">
+		
+		SELECT
+            board_no as boardNo,
+            member_no as memberNo,
+            subject as subject,
+            content as content,
+            regdate as regDate,
+            view_count as viewCount,
+            del_yn as delYN,
+            board_photo as boardPhoto,
+            member_id as memberId
+          FROM
+              BOARD
+		 
+		 <if test='searchType.equals("subject")'>
+		  WHERE subject LIKE concat('%', #{keyword}, '%')
+		 </if>
+		 
+		 <if test='searchType.equals("writer")'>
+		  WHERE writer LIKE concat('%', #{keyword}, '%')
+		 </if>
+		 
+		 <if test='searchType.equals("subject_memberId")'>
+		  WHERE subject LIKE concat('%', #{keyword}, '%') 
+		   or memberId LIKE concat('%', #{keyword}, '%')
+		 </if>
+		 
+		 order by boardNo desc
+		</select> 
 	
 	<!--
 	<select id="communityAllList" parameterType="hashmap" resultType="boardEx">

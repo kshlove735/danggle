@@ -66,4 +66,14 @@ public class MemberDAO {
 	public Member selectSocialId(String socialId) {
 		return sqlSession.selectOne("member.selectId",socialId);
 	}
+
+	//로그인한 날짜 업데이트
+	public int updateLoginDate(Member m) {
+		return sqlSession.update("member.updateLoginDate",m);
+	}
+	
+	//휴면 해제
+	public int wakeUpDormantMember(Member member) {
+		return sqlSession.update("member.updateDormantMember",member);
+	}
 }

@@ -22,4 +22,7 @@ public interface AuthService {
 
 	//소셜 가입 (첫 사용자)
 	public int socialJoin(Member member);
+
+	////로그인한 날짜 업데이트
+	public int updateLoginDate(Member m);
 }

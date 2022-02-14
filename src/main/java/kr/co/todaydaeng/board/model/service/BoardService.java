@@ -9,9 +9,10 @@ import kr.co.todaydaeng.board.model.vo.Notice;
 
 public interface BoardService {
 
-	ArrayList<BoardEx> communityList(String searchOption, String keyword);
+	ArrayList<BoardEx> communityList(int currentPage, int pageSize);
 	
 	ArrayList<Notice> noticeList(String searchOption, String keyword);
+	ArrayList<Notice> noticeList();
 
 	public BoardEx view(int boardNo) throws Exception;
 
@@ -20,6 +21,8 @@ public interface BoardService {
 	int update(BoardEx be) throws Exception;
 
 	int deleteBoardPost(int boardNo);
+
+	int getTotalCount();
 
 	//HashMap<String, Object> communityPaging(int currentPage, int boardNo);
 

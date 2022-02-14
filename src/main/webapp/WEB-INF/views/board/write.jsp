@@ -107,7 +107,7 @@
 
 
             </div>
-            <input type = "button" value="작성하기" id="writeBtn"/>
+            <input type = "submit" value="작성하기" id="writeBtn"/>
 			
             <input type = "button" value="취소" id="cancelBtn"/>
         </div>
@@ -134,18 +134,12 @@
 		                console.error( error );
 		            });
 		        	
-		        	
-		        	$('#writeBtn').on("click",function(){
-						insertPost();
-					});
+
             
 					$('#cancelBtn').on("click",function(){
 						location.replace("/board/community.do");
 					});
-					
-					function insertPost(){
-						$("#form").submit();
-					}
+
 					
 		        });
 			</script>

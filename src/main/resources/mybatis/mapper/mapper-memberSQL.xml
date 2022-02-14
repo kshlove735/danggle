@@ -19,7 +19,8 @@
 	                        SYSDATE,
 							'0',
 							'N',
-							#{memberProfile}
+							#{memberProfile},
+							SYSDATE
 							)
 	</insert>
 
@@ -144,5 +145,17 @@
 		UPDATE MEMBER SET
 			   MEMBER_PWD=#{memberPwd}
 			   WHERE MEMBER_ID=#{memberId}
+	</update>
+	
+	<update id="updateLoginDate" parameterType="member">
+		UPDATE MEMBER SET
+			   LOGIN_DATE=SYSDATE
+		 WHERE MEMBER_ID=#{memberId}
+	</update>
+	
+	<update id="updateDormantMember" parameterType="member">
+		UPDATE MEMBER SET
+			   MEMBER_STATUS='0'
+		 WHERE MEMBER_ID=#{memberId} AND MEMBER_PWD=#{memberPwd}
 	</update>
 </mapper>
