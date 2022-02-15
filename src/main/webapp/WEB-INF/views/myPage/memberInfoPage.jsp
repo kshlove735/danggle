@@ -153,7 +153,7 @@ img {
 
 /*출력 폼*/
 .user_info_table {
-	/* border: 1px solid red;*/
+	/* border: 1px solid red; */
 	width: 400px;
 	height: 420px;
 	position: relative;
@@ -161,6 +161,8 @@ img {
 	text-align: left;
 	margin: 0 auto;
 }
+
+
 
 table tr td {
 	height: 50px;
@@ -288,7 +290,7 @@ table tr td:last-child {
 					<c:set var="memberProfile"
 						value="${sessionScope.member.memberProfile }" />
 					<c:choose>
-						<c:when test="${fn:contains(memberProfile,'null') }">
+						<c:when test="${memberProfile==null ||fn:contains(memberProfile,'null') }">
 							<img src="/resources/images/user_icon.png"></img>
 						</c:when>
 						<c:otherwise>
@@ -327,15 +329,23 @@ table tr td:last-child {
 							</td>
 						</tr>
 						<tr>
+							<td>이메일</td>
+							<td>${sessionScope.member.email }</td>
+						</tr>
+						<tr>
 							<td>생년월일</td>
 							<td>
 								<c:set value="${sessionScope.member.birthdate }" var="birthdate"/>
-								${fn:substring(birthdate,0,4) }/${fn:substring(birthdate,4,6) }/${fn:substring(birthdate,6,8) }
+								<c:choose>
+									<c:when test="${birthdate==null or birthdate==''}">
+										<c:out value="${birthdate }"/>
+									</c:when>
+									<c:otherwise>
+										${fn:substring(birthdate,0,4) }/${fn:substring(birthdate,4,6) }/${fn:substring(birthdate,6,8) }
+									</c:otherwise>
+								</c:choose>
+								
 							</td>
-						</tr>
-						<tr>
-							<td>이메일</td>
-							<td>${sessionScope.member.email }</td>
 						</tr>
 						<tr>
 							<td>주소</td>

@@ -70,6 +70,10 @@
         table{
             margin: 0 auto;
         }
+        td{
+        	vertical-align: top;
+        	line-height: 40px;
+        }
         
         tr>td:first-child{
             width: 150px;
@@ -82,12 +86,34 @@
             margin-top: 30px;
         }
         
+        .txt_guide{
+        	margin: 0 0 10px 0;
+        	display: none;
+        
+        }
+        .txt_guide>span{
+        	color:red;
+        	font-size: 13px;
+        }
+        
+        #newMemberPwdCheck{
+        	margin: 0;
+        }
+        
     </style>
     
     <script>
         function cancel(){
             window.close();
         }
+    </script>
+    
+    <script>
+	    /* 필수 값 유효성 검사 가이드 텍스트 보여주기 */
+		function input_txt(val) {
+			$(val).next().css("display", "block");
+		}
+	
     </script>
 </head>
 <body>
@@ -102,11 +128,22 @@
                 </tr>
                 <tr>
                     <td>새 비밀번호</td>
-                    <td><input type='password' name='newMemberPwd' placeholder='새 비밀번호를 입력해주세요.'></td>
+                    <td>
+                    	<input type='password' onfocus="input_txt(this)" name='newMemberPwd' placeholder='새 비밀번호를 입력해주세요.'>
+                    	<p class="txt_guide">
+	                    	<span id="newMemberPwdCheck">* 영문자로 시작하는 6~20자의 </span><br>
+	                    	<span>영문자 또는 숫자로 입력하세요.</span>
+						</p>
+                    </td>
                 </tr>
                 <tr>
                     <td>새 비밀번호 확인</td>
-                    <td><input type='password' name='newMemberPwd_re' placeholder='새 비밀번호를 한 번 더 입력해주세요.'></td>
+                    <td>
+                    	<input type='password' onfocus="input_txt(this)" name='newMemberPwd_re' placeholder='새 비밀번호를 한 번 더 입력해주세요.'>
+                    	<p class="txt_guide">
+	                    	<span id="newMemberPwd_reCheck">* 새 비밀번호와 동일하게 입력해 주세요.</span><br>
+						</p>
+                    </td>
                 </tr>
             </table>
 

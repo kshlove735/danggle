@@ -29,7 +29,7 @@
         .wrap {
             border: 1px solid black;
             width: 100%;
-            height: 1517px;
+            height: 1600px;
             background: #FAFBFE;
         }
 
@@ -43,9 +43,9 @@
 
         /*container(컨테이너)*/
         .container {
-            /*border: 1px solid black;*/
+            border: 1px solid black;
             width: 1440px;
-            height: 1042px;
+            height: 1125px;
             margin: 0 auto;
         }
 
@@ -53,7 +53,7 @@
         .navi {
             border: 1px solid #eef2f7;
             width: 268px;
-            height: 825px;
+            height: 908px;
             position: relative;
             top: 105px;
             border-radius: 5px;
@@ -113,7 +113,7 @@
         .content {
             border: 1px solid #eef2f7;
             width: 1152px;
-            height: 825px;
+            height: 908px;
             position: relative;
             top: 105px;
             border-radius: 5px;
@@ -150,9 +150,19 @@
 			border-radius: 100%;
 			}
 
+		table{
+			/* border: 1px solid #FD6F22; */
+		}
+		
         table tr td {
-            height: 50px;
-            /* vertical-align: top;*/
+            height: 60px;
+            vertical-align: top;
+            line-height: 33px;
+        }
+        
+        td span{
+        	color:red;
+        	margin-bottom: 10px;
         }
 
         table tr td:last-child {
@@ -161,9 +171,10 @@
         }
 
         .btn {
-            /*border: 1px solid #FD6F22;*/
+            /* border: 1px solid #FD6F22; */
             position: relative;
-            bottom: -180px;
+            bottom: -230px;
+            
         }
 
         /*수정폼*/
@@ -175,6 +186,14 @@
             top: 157px;
             text-align: left;
             margin: 0 auto;
+        }
+        
+        .txt_guide{
+        	display: none;
+        	margin: 0 0 5px 0; 
+        }
+        .txt_guide span{
+        	font-size:12px;
         }
 
         input[type=text],
@@ -243,7 +262,7 @@
         <div class="container">
             <div class="navi">
                 <ul class="side_menu">
-                    <li><a href="">마이 페이지</a>
+                    <li><a href="/myPage/memberInfoPage.do">마이 페이지</a>
                         <ul class="side_submenu">
                             <li><a href="/myPage/memberInfoPage.do">회원 정보</a></li>
                             <li><a href="/myPage/dogInfoPage.do">반려견 정보</a></li>
@@ -255,7 +274,7 @@
             </div>
             <div class="content">
                 <p>회원 정보 수정</p>
-                <form action="/myPage/updateMemberInfo.do" method="post" enctype="multipart/form-data"  >
+                <form action="/myPage/updateMemberInfo.do" method="post" onsubmit="return updateMemberInfo();" enctype="multipart/form-data"  >
                 
 	                <div class="img">
 	                	<c:set var="memberProfile" value="${sessionScope.member.memberProfile }" />
@@ -299,11 +318,16 @@
 	                            <td>${sessionScope.member.memberId }</td>
 	                        </tr>
 	                        <tr>
-	                            <td>닉네임</td>
-	                            <td><input type="text" name="nickname" value="${sessionScope.member.nickname }"></td>
+	                            <td>닉네임<span>*</span></td>
+	                            <td>
+	                            	<input type="text" onfocus="input_txt(this)" onkeyup="check(this)"  name="nickname" value="${sessionScope.member.nickname }">
+	                            	<p class="txt_guide">
+	                                    <span id="nicknameCheck">* 한글 또는 영문 최대 8글자로 입력해 주세요.</span><br>
+	                                </p>
+	                            </td>
 	                        </tr>
 	                        <tr>
-	                            <td>성별</td>
+	                            <td>성별<span>*</span></td>
 	                            <td>
 	                            	
 	                            	<c:choose>
@@ -318,22 +342,37 @@
 	                            </td>
 	                        </tr>
 	                        <tr>
+	                            <td>이메일<span>*</span></td>
+	                            <td>
+	                            	<input type="email" name="email" onfocus="input_txt(this)" onkeyup="check(this)" value="${sessionScope.member.email }">
+	                            	<p class="txt_guide">
+	                                    <span id="emailCheck">* 이메일 형식으로 입력해주세요.</span><br>
+	                                </p>
+	                            </td>
+	                        </tr>
+	                        <tr>
 	                            <td>생년월일</td>
 	                            <td>
-	                            	<select name="yy" id="year" class="birthdate"></select>년 &nbsp;
-           							<select name="mm" id="month" class="birthdate"></select>월 &nbsp;
-            						<select name="dd" id="day" class="birthdate"></select>일 &nbsp;
+	                            	<select name="yy" id="year" class="birthdate">
+	                            		<option value="" selected hidden>--</option>
+		        						<option value="">--</option>
+		        					</select>년 &nbsp;
+           							<select name="mm" id="month" class="birthdate">
+	                            		<option value="" selected hidden>--</option>
+		        						<option value="">--</option>           							
+           							</select>월 &nbsp;
+            						<select name="dd" id="day" class="birthdate">
+	                            		<option value="" selected hidden>--</option>
+		        						<option value="">--</option>            						
+            						</select>일 &nbsp;
             						<!-- <input type="text" id="birthdate" name="birthdate" value="" style="display:none;"> -->
             						<input type="text" id="birthdate" name="b_birthdate" value="${sessionScope.member.birthdate }" style="display:none;">
 	                            </td>
 	                        </tr>
-	                        <tr>
-	                            <td>이메일</td>
-	                            <td><input type="email" name="email" value="${sessionScope.member.email }"></td>
-	                        </tr>
+	                        
 	                        <tr>
 	                            <td>주소</td>
-	                            <td><input type="text" name="address" value="${sessionScope.member.address }"></td>
+	                            <td><input type="text" id="address_kakao" name="address" value="${sessionScope.member.address }"></td>
 	                        </tr>
 	                        <tr>
 	                            <td>상세주소</td>
@@ -346,6 +385,81 @@
 	                	<input type="submit" class="modify_fin_btn" value="수정">
 	                    <button type="button" class="cancel_btn"><a href="/myPage/memberInfoPage.do">취소</a></button>
 	                </div>
+	                
+	                <script>
+	                	/* 필수 값 유효성 검사 가이드 텍스트 보여주기 */
+	                	function input_txt(val) {
+							$(val).next().css("display", "block");
+						}
+	                	
+	                	/* 타이핑과 함께 유효성 검사 진행 -> 검사 여부에 따라 가이드 텍스트 색상 변경 */
+	                	function check(val){
+	                		if($(val).attr('name')=='nickname'){
+	                				var nickname=$(val).val();
+	                				var nicknameRule = /^([a-zA-Zㄱ-ㅎ|ㅏ-ㅣ|가-힣]).{1,8}$/;
+	                				if(!nicknameRule.test(nickname)){
+	                					$('#nicknameCheck').css("color", "red");
+	                					
+	                				}else{
+	                					$('#nicknameCheck').css("color", "green");
+	                				}
+	                		}else{
+	                			var email=$(val).val();
+	                			var emailRule = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+	                			if(!emailRule.test(email)){
+	                				$('#emailCheck').css("color", "red");
+	                			}else{
+	                				$('#emailCheck').css("color", "green");
+	                			}
+	                			
+	                		}
+	                		
+	                	}
+	                	
+	                    
+	                	
+	                </script>
+	                
+	                <!-- 카카오 주소 API -->
+	                    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	              		<script>
+		              		window.onload = function(){
+		              			//주소입력칸을 클릭하면 카카오 지도 발생
+		              		    document.getElementById("address_kakao").addEventListener("click", function(){ 
+		              		        new daum.Postcode({
+		              		            oncomplete: function(data) { //선택시 입력값 세팅
+		              		                document.getElementById("address_kakao").value = data.address; //주소 넣기
+		              		                document.querySelector("input[name=addressDetail]").focus(); //상세입력 포커싱
+		              		            }
+		              		        }).open();
+		              		    });
+		              		}
+	              		</script>
+	                
+	                <script>
+		                function updateMemberInfo(){
+		                	// 플래그값 관리
+		        			var flag = 0;
+		        			// 필수입력값 체크
+		        			var nickname = $('input[name=nickname]').val();
+		        			var email = $('input[name=email]').val();
+		        			
+		        			if(nickname ==''|| nickname== null || nickname == undefined) flag = 1;
+		        			if(email ==''|| email== null || email == undefined) flag = 1;
+		                	
+		        			if(flag == 1){
+		        				alert("필수 입력값을 채워주세요.");
+		        				return false;
+		        			}else{
+		        				return true;
+		        			}
+		                	
+		                }
+	                	
+	                </script>
+	                
+	                
+	                
 	                
                 </form>
             </div>
