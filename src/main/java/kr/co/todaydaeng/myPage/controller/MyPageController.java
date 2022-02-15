@@ -36,10 +36,13 @@ public class MyPageController {
 	@RequestMapping(value = "/myPage/memberInfoPage.do", method = RequestMethod.GET)
 	public String memberInfoPage(@SessionAttribute(required = false) Member member) {
 
+		
+		
 		if (member == null) {
 			return "/resources/views/member/login.jsp";
 		} else {
-			System.out.println(member.getMemberProfile());
+			System.out.println("pro:"+member.getMemberProfile());
+			System.out.println("au:"+member.getAuthProvider());
 			return "myPage/memberInfoPage";
 		}
 	}
@@ -65,7 +68,7 @@ public class MyPageController {
 		map.put("memberPwd", memberPwd);
 
 		Member m = mpService.selectPwdCheck(map);
-
+		
 		if (m != null) {
 			/* 세션 갱신 */
 			member = m;
