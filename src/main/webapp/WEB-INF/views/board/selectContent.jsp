@@ -13,7 +13,7 @@
             font-family: 'Noto Sans KR', sans-serif;
             background-color: #FAFBFE;
             font-weight: bold;
-            color: #919CA7;
+            
         }
 
         .wrap {
@@ -67,9 +67,9 @@
             width: 1000px;
             height: 100%;
             border: 1px solid #D8D3D0;
-            text-align: center;
+            text-align: left;
             margin: 0 auto;
-            color: #919CA7;
+            color: #5C5C5C;
             background-color: white;
             font-size: 15px;
             border-radius: 5px;
@@ -87,8 +87,8 @@
 
         #comments {
             margin: 0 auto;
-            width: 840px;
-            height: 20px;
+            width: 890px;
+            height: 25px;
             border: 1px solid #C4C4C4;
             border-radius: 5px;
             float: left;
@@ -124,9 +124,10 @@
             box-sizing: border-box;
             border-radius: 5px;
             height: 27px;
-            margin-top: 13px;
+            margin-top: 15px;
             margin-left: 7px;
             background-color: white;
+            color: #919CA7;
         }
 
         #deleteBtn {
@@ -134,8 +135,9 @@
             box-sizing: border-box;
             border-radius: 5px;
             height: 27px;
-            margin-top: 13px;
+            margin-top: 15px;
             background-color: white;
+            color: #919CA7;
         }
 
         #commentarea {
@@ -188,7 +190,7 @@
                     <img class="profile" src="/resources/images/jellybear.jpg">
                 </div>
                 
-                <p style="float: left;">${view.memberId }</p><br> 
+                <p style="float: left; color: #919CA7;">${view.memberId }</p><br> 
             </div> 
             
             <br><br>
@@ -204,19 +206,18 @@
             
             
             <!-- 댓글 -->
-            <div style="width: 100%; ">
-            <c:forEach items="${comment }" var="c">
-                <p style="float: left; margin-left: 5px;">${c.memberId }</p>
-
+            <div style="width: 100%; color: #919CA7;">
+            <c:forEach items="${comment }" var="c" >
+             <div>
                 <span id="comments">
                 ${c.bComment }
                 </span>
                  
                 <button id="updateBtn">수정</button>
                 <button id="deleteBtn">삭제</button>
+             </div>
                  </c:forEach>
-                 
-
+    
               <form action="/comment/insertComment.do" method="post">
 
                 <div id="commentbox">

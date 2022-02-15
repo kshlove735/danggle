@@ -10,10 +10,9 @@ import kr.co.todaydaeng.board.model.vo.Comment;
 import kr.co.todaydaeng.board.model.vo.Notice;
 
 public interface BoardService {
-
-	ArrayList<BoardEx> communityList(int currentPage, int pageSize);
 	
-	ArrayList<Notice> noticeList(String searchOption, String keyword);
+	ArrayList<BoardEx> communityList(int currentPage, int pageSize, String searchOption, String keyword);
+	
 	ArrayList<Notice> noticeList();
 
 	public BoardEx view(int boardNo) throws Exception;
@@ -23,13 +22,11 @@ public interface BoardService {
 	int update(HashMap<String,Object> map);
 
 	int deleteBoardPost(int boardNo);
-
-	int getTotalCount();
+	
+	int getTotalCount(String searchOption, String keyword);
 
 	List<Comment> commentList(int boardNo) throws Exception;
 
 	int insertComment(Map<String, Object> map);
-
-	//HashMap<String, Object> communityPaging(int currentPage, int boardNo);
 
 }
