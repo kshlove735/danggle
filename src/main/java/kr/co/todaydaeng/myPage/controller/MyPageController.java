@@ -192,7 +192,7 @@ public class MyPageController {
 			@SessionAttribute Member member, HttpServletResponse response) throws IOException {
 
 		String memberId = member.getMemberId();
-
+		System.out.println(originalMemberPwd);
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("memberId", memberId);
 		map.put("originalMemberPwd", originalMemberPwd);

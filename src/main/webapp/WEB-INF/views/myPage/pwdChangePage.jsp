@@ -163,9 +163,9 @@
 		/* 타이핑과 함께 유효성 검사 진행 -> 검사 여부에 따라 가이드 텍스트 색상 변경 */
 		function check(val){
 			if($(val).attr('name')=='newMemberPwd'){
-				var newMember=$(val).val();
-				var newMemberRule =  /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
-				if(!nicknameRule.test(nickname)){
+				var newMemberPwd=$(val).val();
+				var newMemberPwdRule =  /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
+				if(!newMemberPwdRule.test(newMemberPwd)){
 					$('#newMemberPwdCheck').css("color", "red");
 					
 				}else{
@@ -173,8 +173,8 @@
 				}
 			}else{
 				var newMemberPwd_re=$(val).val();
-				var emailRule = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-				if(!emailRule.test(email)){
+				var newMemberPwd = $('input[name=newMemberPwd]').val();
+				if(newMemberPwd!=newMemberPwd_re){
 					$('#newMemberPwd_reCheck').css("color", "red");
 				}else{
 					$('#newMemberPwd_reCheck').css("color", "green");
