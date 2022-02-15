@@ -238,7 +238,7 @@ table tr td:last-child {
 
         /*비밀 번호 변경 팝업*/
         function pwd_change_page() {
-            var popupWidth = 500;
+            var popupWidth = 550;
             var popupHeight = 500;
 
             var popupX = (window.screen.width / 2) - (popupWidth / 2);

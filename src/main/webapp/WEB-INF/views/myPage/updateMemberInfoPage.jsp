@@ -161,7 +161,7 @@
         }
         
         td span{
-        	color:red;
+        	color:green;
         	margin-bottom: 10px;
         }
 
@@ -416,11 +416,41 @@
 	                		
 	                	}
 	                	
-	                    
+	                </script>
+	                
+	                <script>
+		                function updateMemberInfo(){
+		                	// 플래그값 관리
+		        			var flag = 0;
+		        			// 필수입력값 체크
+		        			var nickname = $('input[name=nickname]').val();
+		        			var email = $('input[name=email]').val();
+		        			
+		        			// 유효성 검사 항목
+		        			var nicknameRule = /^([a-zA-Zㄱ-ㅎ|ㅏ-ㅣ|가-힣]).{1,8}$/;
+		        			var emailRule = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+		        			
+		        			if(nickname ==''|| nickname== null || nickname == undefined) flag = 1;
+		        			if(email ==''|| email== null || email == undefined) flag = 1;
+		                	
+		        			if(flag == 1){
+		        				alert("필수 입력값을 채워주세요.");
+		        				return false;
+		        			}else if(!nicknameRule.test(nickname)){
+		        				alert("닉네임 양식에 맞게 입력해주세요.");
+		        				return false;
+		        			}else if(!emailRule.test(email)){
+		        				alert("이메일 양식에 맞게 입력해주세요.");
+		        				return false;
+		        			}else{
+		        				return true;
+		        			}
+		                	
+		                }
 	                	
 	                </script>
 	                
-	                <!-- 카카오 주소 API -->
+	               	<!-- 카카오 주소 API -->
 	                    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	              		<script>
 		              		window.onload = function(){
@@ -435,29 +465,6 @@
 		              		    });
 		              		}
 	              		</script>
-	                
-	                <script>
-		                function updateMemberInfo(){
-		                	// 플래그값 관리
-		        			var flag = 0;
-		        			// 필수입력값 체크
-		        			var nickname = $('input[name=nickname]').val();
-		        			var email = $('input[name=email]').val();
-		        			
-		        			if(nickname ==''|| nickname== null || nickname == undefined) flag = 1;
-		        			if(email ==''|| email== null || email == undefined) flag = 1;
-		                	
-		        			if(flag == 1){
-		        				alert("필수 입력값을 채워주세요.");
-		        				return false;
-		        			}else{
-		        				return true;
-		        			}
-		                	
-		                }
-	                	
-	                </script>
-	                
 	                
 	                
 	                
