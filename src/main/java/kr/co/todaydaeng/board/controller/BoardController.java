@@ -31,6 +31,7 @@ import com.google.gson.JsonObject;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
+import kr.co.todaydaeng.admin.model.vo.AdminVO;
 import kr.co.todaydaeng.board.model.service.BoardService;
 import kr.co.todaydaeng.board.model.vo.Board;
 import kr.co.todaydaeng.board.model.vo.BoardEx;
@@ -53,13 +54,44 @@ public class BoardController {
 	@Autowired
 	private ServletContext context;
 
+//		@RequestMapping(value = "/board/_community.do", method = RequestMethod.GET)
+//	public ModelAndView _community(ModelAndView mav, @RequestParam(defaultValue = "1") int currentPage)
+//				throws Exception {
+//			int pageSize = 10; // 한페이지당 보낼 게시글
+//			int naviSize = 5; // navi 개수
+//			int maxPage = (int) Math.ceil(bService.getTotalCount() / (double) pageSize);
+//	
+//			int startNavi = currentPage - (currentPage - 1) % naviSize;
+//			int endNavi = startNavi + naviSize - 1;
+//			endNavi = endNavi > maxPage ? maxPage : endNavi;
+//	
+//			ArrayList<Integer> navi = new ArrayList<>();
+//			for (int i = startNavi; i <= endNavi; i++) {
+//				navi.add(i);
+//			}
+//	
+//			// memberId 있는 board
+//			ArrayList<BoardEx> boardList = bService.communityList(currentPage, pageSize);
+//			ArrayList<Notice> noticeList = bService.noticeList();
+//			mav.addObject("boardlist", boardList);
+//			mav.addObject("noticelist", noticeList);
+//			mav.addObject("navi", navi);
+//			mav.addObject("preNavi", startNavi > 1 ? startNavi - 1 : 0);
+//			mav.addObject("nextNavi", maxPage > endNavi ? endNavi + 1 : 0);
+//			mav.setViewName("board/community");
+//			return mav;
+//		}
+	
 	// 커뮤니티 게시판 목록
 	@RequestMapping(value = "/board/community.do", method = RequestMethod.GET)
-	public ModelAndView community(ModelAndView mav, @RequestParam(defaultValue = "1") int currentPage)
+	public ModelAndView community(ModelAndView mav, 
+								  @RequestParam(defaultValue = "1") int currentPage,
+								  @RequestParam(defaultValue = "none") String searchOption,
+								  @RequestParam(defaultValue = "") String keyword)
 			throws Exception {
 		int pageSize = 10; // 한페이지당 보낼 게시글
 		int naviSize = 5; // navi 개수
-		int maxPage = (int) Math.ceil(bService.getTotalCount() / (double) pageSize);
+		int maxPage = (int) Math.ceil(bService.getTotalCount(searchOption, keyword) / (double) pageSize);
 
 		int startNavi = currentPage - (currentPage - 1) % naviSize;
 		int endNavi = startNavi + naviSize - 1;
@@ -71,13 +103,16 @@ public class BoardController {
 		}
 
 		// memberId 있는 board
-		ArrayList<BoardEx> boardList = bService.communityList(currentPage, pageSize);
+		ArrayList<BoardEx> boardList = bService.communityList(currentPage, pageSize, searchOption, keyword);
 		ArrayList<Notice> noticeList = bService.noticeList();
 		mav.addObject("boardlist", boardList);
 		mav.addObject("noticelist", noticeList);
 		mav.addObject("navi", navi);
 		mav.addObject("preNavi", startNavi > 1 ? startNavi - 1 : 0);
 		mav.addObject("nextNavi", maxPage > endNavi ? endNavi + 1 : 0);
+		mav.addObject("searchOption", searchOption);
+		mav.addObject("keyword", keyword);
+		
 		mav.setViewName("board/community");
 		return mav;
 	}
@@ -308,15 +343,7 @@ public class BoardController {
 
 	}
 	
-//	// 댓글 작성
-//	@RequestMapping(value = "/comment/insertComment.do", method = RequestMethod.POST)
-//	public String insertComment(Comment comment) throws Exception {
-//		
-//		bService.insertComment(comment);
-//		
-//		return "redirect:/board/view?boardNo=" + comment.getBoardNo();
-//	}
-	
+	//댓글 작성
 	@RequestMapping(value = "/comment/insertComment.do", method = RequestMethod.POST)
 	public ModelAndView insertComment(HttpServletRequest request, HttpSession session,
 									  @RequestParam("bComment") String bComment, 
@@ -342,12 +369,21 @@ public class BoardController {
 		}
 		mav.setViewName("common/msg");
 		
-//		mav.setViewName("redirect:/board/view?boardNo=" + comment.getBoardNo());
 		return mav;
 	}
-
-
-
+	
+	@RequestMapping(value = "/comment/updateComment.do", method = RequestMethod.POST)
+	public void updateComment() throws Exception {
+		 
+	}
+	
+	@RequestMapping(value = "/comment/deleteComment.do", method = RequestMethod.GET)
+	public void deleteComment() {
+		
+	}
+	
+	
+	
 	@RequestMapping(value = "/hospital/hospitalInfo.do", method = RequestMethod.GET)
 	public void hospital() {
 	}

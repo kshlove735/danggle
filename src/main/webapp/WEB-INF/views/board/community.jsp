@@ -123,24 +123,26 @@
 			            location.href="/board/post.do";
 			        });
 			});
-			 
 			</script>
+			
             <button id="writeBtn">글쓰기</button>
-            <select id="select">
+            
+            <form name="form" method="get" action="/board/community.do">
+            <select id="select" name="searchOption">
                 <option style="text-align: left;" value="subject">
                		<c:if test="${map.searchOption=='subject'}">selected</c:if>
                		 제목</option>
-                <option style="text-align: left;" value="writer">
-					<c:if test="${map.searchOption=='writer'}">selected</c:if>
+                <option style="text-align: left;" value="memberId">
+					<c:if test="${map.searchOption=='memberId'}">selected</c:if>
                		 작성자</option>
                	<option style="text-align: left;" value="all">
 					<c:if test="${map.searchOption=='all'}">selected</c:if>
                		 제목+작성자</option>	 
             </select>
 
-            <input type="text" id="search" name="keyword" value="${map.search }"/>
+            <input id="search" name="keyword" value="${map.keyword }"/>
             <button id="btn" type="submit">검색</button>
-        
+        </form>
     </div>
 
     <table id="commutable" class="table">
@@ -197,13 +199,13 @@
 
     <div id="paging">
     	<c:if test="${ preNavi > 0 }">
-        	<a style="color: #FD6F22;" href="/board/community.do?currentPage=${preNavi}">Prev</a>
+        	<a style="color: #FD6F22;" href="/board/community.do?currentPage=${preNavi}&searchOption=${searchOption}&keyword=${keyword}">Prev</a>
         </c:if>
         <c:forEach items="${navi }" var="n">
-        <a style="color: #919CA7;" href="/board/community.do?currentPage=${n }">${n }</a>
+        <a style="color: #919CA7;" href="/board/community.do?currentPage=${n }&searchOption=${searchOption}&keyword=${keyword}">${n }</a>
         </c:forEach>
         <c:if test="${ nextNavi >0 }">
-        	<a style="color: #FD6F22;" href="/board/community.do?currentPage=${nextNavi}">Next</a>
+        	<a style="color: #FD6F22;" href="/board/community.do?currentPage=${nextNavi}&searchOption=${searchOption}&keyword=${keyword}">Next</a>
         </c:if>
     </div>
 
@@ -234,8 +236,7 @@
 		});
 			}
 		});
-		
-			
+
 </script>
 												
 

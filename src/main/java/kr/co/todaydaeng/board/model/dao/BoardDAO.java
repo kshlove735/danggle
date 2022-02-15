@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import kr.co.todaydaeng.admin.model.vo.AdminVO;
 import kr.co.todaydaeng.board.model.vo.Board;
 import kr.co.todaydaeng.board.model.vo.BoardEx;
 import kr.co.todaydaeng.board.model.vo.Comment;
@@ -23,10 +24,23 @@ public class BoardDAO {
 	@Autowired
 	@Qualifier(value="sqlSessionTemplate")
 	private SqlSessionTemplate sqlSession;
-
-	public ArrayList<BoardEx> communityList(int currentPage, int pageSize) {
+	
+	public ArrayList<BoardEx> communityList(int currentPage, int pageSize, String searchOption, String keyword) {
+		if (keyword.equals("")) searchOption = "none";
+		String condition = "";
+		switch(searchOption) {
+			default: 
+			case "none": 
+				condition = " 1 = 1 "; break;
+			case "subject": 
+				condition = "subject LIKE '%" + keyword + "%' "; break;
+			case "memberId":
+				condition = "member_id LIKE '%" + keyword + "%' "; break;
+			case "all":
+				condition = "(subject LIKE '%" + keyword + "%' OR member_id LIKE '%" + keyword + "%' )"; break;
+		}
 		RowBounds rb = new RowBounds((currentPage - 1) * pageSize, pageSize);
-		return new ArrayList<BoardEx>(sqlSession.selectList("board.communityListEx", null, rb));
+		return new ArrayList<BoardEx>(sqlSession.selectList("board.communityListEx", condition, rb));
 	}
 	
 	public ArrayList<Notice> noticeList() {
@@ -50,9 +64,21 @@ public class BoardDAO {
 		return sqlSession.update("board.update", map);
 	}
 	
-	public int totalCount() {
-		
-		return sqlSession.selectOne("board.selectTotalCount");
+	public int totalCount(String searchOption, String keyword) {
+		if (keyword.equals("")) searchOption = "none";
+		String condition = "";
+		switch(searchOption) {
+			default: 
+			case "none": 
+				condition = " 1 = 1 "; break;
+			case "subject": 
+				condition = "subject LIKE '%" + keyword + "%' "; break;
+			case "memberId":
+				condition = "member_id LIKE '%" + keyword + "%' "; break;
+			case "all":
+				condition = "(subject LIKE '%" + keyword + "%' OR member_id LIKE '%" + keyword + "%' )"; break;
+		}
+		return sqlSession.selectOne("board.searchTotalCount", condition);
 	}
 
 	public int deleteBoardPost(int boardNo) {
@@ -61,6 +87,7 @@ public class BoardDAO {
 	}
 	
 	public List<Comment> commentList(int boardNo) throws Exception {
+		
 		return sqlSession.selectList("comment.commentList", boardNo);
 	}
 
@@ -68,7 +95,6 @@ public class BoardDAO {
 
 		return sqlSession.insert("comment.insertComment",map);
 	}
-
 		
 
 }
