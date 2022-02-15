@@ -30,10 +30,12 @@
             board_photo as boardPhoto,
             member_id as memberId
           FROM
-              BOARD  
+              BOARD 
               LEFT JOIN MEMBER USING (member_no)
-              WHERE DEL_YN='N'
-              ORDER BY BOARD_NO DESC
+          WHERE 
+              DEL_YN='N'
+              AND ${ _parameter }
+          ORDER BY BOARD_NO DESC
     </select>
     
     <!-- 공지사항 목록 -->
@@ -99,6 +101,18 @@
 		select count(*) as count from board where DEL_YN='N'
 	</select>
 	
+	<!-- 페이징 처리 -->
+    <select id="searchTotalCount" resultType="int" parameterType="string">
+		SELECT 
+			count(*) as count 
+		FROM 
+			board 
+			LEFT JOIN MEMBER USING (member_no)
+		WHERE 
+			DEL_YN='N'
+			AND ${ _parameter }
+	</select>
+	
 	<!-- 게시글 삭제 -->
 	<update id="deleteBoardPost">
 		update board set 
@@ -106,9 +120,8 @@
 		where BOARD_NO=#{BoardNo} and DEL_YN='N'
 	</update>
 	
-	<!-- 게시글 검색 -->
-	
-	<select id="listPageSearch" parameterType="hashMap" resultType="board">
+	<!-- 게시글 검색-->
+	<select id="boardSearch" parameterType="map" resultType="boardEx">
 		
 		SELECT
             board_no as boardNo,
@@ -122,41 +135,23 @@
             member_id as memberId
           FROM
               BOARD
-		 
-		 <if test='searchType.equals("subject")'>
-		  WHERE subject LIKE concat('%', #{keyword}, '%')
-		 </if>
-		 
-		 <if test='searchType.equals("writer")'>
-		  WHERE writer LIKE concat('%', #{keyword}, '%')
-		 </if>
-		 
-		 <if test='searchType.equals("subject_memberId")'>
-		  WHERE subject LIKE concat('%', #{keyword}, '%') 
-		   or memberId LIKE concat('%', #{keyword}, '%')
-		 </if>
-		 
-		 order by boardNo desc
-		</select> 
-			
-	<!--
-	<select id="communityAllList" parameterType="hashmap" resultType="boardEx">
-	    SELECT
-	       board_no as boardNo,
-            member_no as memberNo,
-            subject as subject,
-            content as content,
-            regdate as regDate,
-            view_count as viewCount,
-            del_yn as delYN,
-            board_photo as boardPhoto,
-            member_id as memberId
-          FROM
-            BOARD  
               LEFT JOIN MEMBER USING (member_no)
-         (select row_number() over(order by BOARD_NO asc) as num , board.*  from board) 
-         where BOARD_NO=#{boardNo} and num between #{start} and #{end} and DEL_YN='N'     
-	
-	</select>
-	 -->
+              WHERE 
+              DEL_YN='N' AND
+		  <choose>
+			<when test="searchOption.equals('memberId')">
+				member_id LIKE '%' || #{keyword} || '%'
+			</when>
+			
+			<when test="searchOption.equals('subject')">
+				subject LIKE '%' || #{keyword} || '%'
+			</when>
+			
+			<otherwise>
+				(member_id LIKE '%' || #{keyword} || '%') OR (subject LIKE '%' || #{keyword} || '%')
+			</otherwise>
+		</choose>
+		ORDER BY BOARD_NO DESC
+ 	</select>
+
 </mapper> 

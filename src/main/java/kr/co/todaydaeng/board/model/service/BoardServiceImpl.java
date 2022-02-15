@@ -27,18 +27,11 @@ public class BoardServiceImpl implements BoardService{
 	private BoardDAO bDAO;
 	
 	@Override
-	public ArrayList<BoardEx> communityList(int currentPage, int pageSize) {
+	public ArrayList<BoardEx> communityList(int currentPage, int pageSize, String searchOption, String keyword) {
 		
-		return bDAO.communityList(currentPage, pageSize);
+		return bDAO.communityList(currentPage, pageSize, searchOption, keyword);
 	}
 
-	@Override
-	public ArrayList<Notice> noticeList(String searchOption, String keyword) {
-
-		return bDAO.noticeList();
-		
-	}
-	
 	@Override
 	public ArrayList<Notice> noticeList() {
 
@@ -71,10 +64,10 @@ public class BoardServiceImpl implements BoardService{
 
 		return bDAO.deleteBoardPost(boardNo);
 	}
-
+	
 	@Override
-	public int getTotalCount() {
-		return bDAO.totalCount();
+	public int getTotalCount(String searchOption, String keyword) {
+		return bDAO.totalCount(searchOption, keyword);
 	}
 
 	@Override
@@ -89,24 +82,6 @@ public class BoardServiceImpl implements BoardService{
 		return bDAO.insertComment(map);
 		
 	}
-
-//	@Override
-//	public HashMap<String, Object> communityPaging(int currentPage, int boardNo) {
-//		
-//		// 하나의 Page에 보여줄 게시글 갯수 설정
-//		int recordCountPerPage=15;
-//		ArrayList<BoardEx> list = bDAO.communityAllList(currentPage,recordCountPerPage, boardNo);
-//				
-//		// 하나의 PageNavi Bar 에 보여질 Navi 개수 설정
-//		int naviContPerPage=5;
-//		String pageNavi = bDAO.getPageNavi(naviContPerPage,currentPage,recordCountPerPage, boardNo);
-//				
-//		HashMap<String , Object> result=new HashMap<String, Object>();
-//		result.put("list", list);
-//		result.put("pageNavi", pageNavi);
-//				
-//		return result;
-//	}
 
 	
 }
